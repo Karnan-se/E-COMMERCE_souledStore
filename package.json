@@ -1,0 +1,17 @@
+{
+  "name": "week-8",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^8.0.2",
+    "node": "^21.2.0"
+  }
+}

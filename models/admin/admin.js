@@ -1,11 +1,18 @@
 const mongoose= require("mongoose");
-
 const admin = new mongoose.Schema({
      name: {
         type:String,
         required:true,
      },
-     age: {
+     email:{
+      type:String,
+      required:true,
+     },
+     password:{
+      type:String,
+      required:true,
+     },
+     dateOfBirth: {
         type:Number,
         required: true,
      },

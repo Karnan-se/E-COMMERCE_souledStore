@@ -4,12 +4,12 @@
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-error-404.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
 <head>
- <%-include("./partials/header.ejs" %>)
+ <%-include("./partials/header.ejs") %>
 </head>
 
 <body>
     <main>
-<%-include("./partials/navigation.ejs" %>)
+<%- include("./partials/navigation.ejs") %>
 
     <main class="main-wrap">
         <header class="main-header navbar">
@@ -70,7 +70,7 @@
             <div class="row mt-60">
                 <div class="col-sm-12">
                     <div class="w-50 mx-auto text-center">
-                        <img src="assets/imgs/theme/404.png" width="350" alt="Page Not Found">
+                        <img src="/imgs/theme/404.png" width="350" alt="Page Not Found">
                         <h3 class="mt-40 mb-15">Oops! Page not found</h3>
                         <p>It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. Here's a little tip that might help you get back on track.</p>
                         <a href="/dashboard" class="btn btn-primary mt-4"><i class="material-icons md-keyboard_return"></i> Back to main</a>

@@ -69,7 +69,7 @@ let page_orders_2 = async(req, res)=>{
 }
 let page_orders_detail = async(req, res)=>{
     try {
-        res.render("admin/page-orders-details.ejs")
+        res.render("admin/page-orders-detail.ejs")
     } catch (error) {
         console.log(error);
         
@@ -150,7 +150,7 @@ let page_transaction_2= async(req, res)=>{
 }
 let page_account_login= async(req, res)=>{
     try {
-        res.render("admin/page-account-login.ejs")
+        res.render("admin/adminlogin.ejs")
     } catch (error) {
         console.log(error)
         

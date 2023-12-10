@@ -2,7 +2,7 @@ const mongoose= require("mongoose");
 const admin = new mongoose.Schema({
      name: {
         type:String,
-        required:true,
+        required:false,
      },
      email:{
       type:String,
@@ -14,11 +14,11 @@ const admin = new mongoose.Schema({
      },
      dateOfBirth: {
         type:Number,
-        required: true,
+        required: false,
      },
      mobileNumber:{
         type:Number,
-        required:true,
+        required:false,
      }
 })
 

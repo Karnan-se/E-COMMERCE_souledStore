@@ -1,6 +1,8 @@
 const express = require("express")
 const admin= require("./models/admin/admin")
 const app= express();
+
+
 app.set("viewengine", "ejs");
 app.set("views",__dirname+"/views");
 app.use(express.static("public"));
@@ -10,6 +12,7 @@ app.use(express.urlencoded({extended:true}))
 const session= require("express-session");
 const mongoose= require("mongoose");
 const router = require("./route/adminroute/route");
+
 
 async function dbconnect(){
    try {
@@ -22,14 +25,15 @@ async function dbconnect(){
    }
 }
 dbconnect();
-
-app.use("/",router)
-
 app.use(session({
    secret:"your-secret-here",
    resave:false,
    saveUninitialized:true,
 }));
+
+
+app.use("/",router)
+
 
 app.listen(3000,()=>{
    console.log("localhost 3000")

@@ -1,3 +1,6 @@
+const { json } = require("stream/consumers");
+
+
 let adminLogin= async(req, res)=>{
     try {
         res.render("admin/adminlogin.ejs",{message:null})
@@ -158,7 +161,28 @@ let page_account_login= async(req, res)=>{
 }
 let page_account_register= async(req, res)=>{
     try {
-        res.render("admin/page-account-register.ejs")
+     
+        // const message1 =req.query.message1
+        // stringMessage = JSON.stringify(message1)
+       let message1 = ''
+req.session.signuperror = false
+        if(req.session.signuperror)
+        {
+            message1= 'Username already exists'
+           delete req.session.signuperror
+            await res.render("admin/page-account-register.ejs",{message1})
+
+        }
+        else if(req.session.emailerror)
+            {
+                message1 = 'email incorrect'
+                delete req.session.emailerror
+                await res.render("admin/page-account-register.ejs",{message1})
+
+            }
+else{
+         await res.render("admin/page-account-register.ejs",{message1})
+}
     } catch (error) {
         console.log(error)
         

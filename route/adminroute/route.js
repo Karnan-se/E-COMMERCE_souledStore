@@ -1,10 +1,11 @@
 const express= require("express");
 const router= express.Router();
 const adminController= require("../../controller/admincontroller/admincontroller");
+const adminPostcontroller = require("../../controller/admincontroller/adminpostController")
 const admin = require("../../models/admin/admin");
 
 router.get("/admin",adminController.adminLogin);
-router.get("/dashboard",adminController.admindashboard)
+router.get("/admindashboard",adminController.admindashboard)
 router.get("/admin", adminController.adminLogin);
 router.get("/page-products-list", adminController.page_products_list);
 router.get("/page-products-grid", adminController.page_products_grid);
@@ -29,6 +30,9 @@ router.get("/page-brands", adminController.page_brands);
 router.get("/page-settings-1", adminController.page_settings_1);
 router.get("/page-settings-2", adminController.page_settings_2);
 router.get("/page-blank", adminController.page_blank);
+
+
+router.post("/page-account-register",adminPostcontroller.page_account_register)
 
 
 

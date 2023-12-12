@@ -7,8 +7,11 @@ let adminLogin= async(req, res)=>{
         if(req.session.emailerror){
             delete req.session.emailerror
              message1="username not exist"
-        }else{
-             message1=null;
+        }else if(req.session.passworderror){
+             message1="incorrect password"
+             delete req.session.passworderror;
+        } else{
+            message1=null;
         }
         res.render("admin/adminlogin.ejs",{message1})
     } catch (error) {

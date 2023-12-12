@@ -44,7 +44,7 @@ let page_account_login =async(req, res)=>{
         const admins = await admin.find({});
         const matchingAdmin = admins.find((admin)=>{
             return admin.email===email;
-            console.log(matchingAdmin)
+            
 
         })
         

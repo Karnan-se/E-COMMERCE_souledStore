@@ -1,8 +1,6 @@
 const express = require("express")
 const admin= require("./models/admin/admin")
 const app= express();
-
-
 app.set("viewengine", "ejs");
 app.set("views",__dirname+"/views");
 app.use(express.static("public"));

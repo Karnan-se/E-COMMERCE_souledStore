@@ -16,7 +16,7 @@
             <div class="card mx-auto card-login">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Create an Account</h4>
-                    <form method="post" action="/page-account-register" id="myForm">
+                    <form method="post" action="/page-account-register" onsubmit="return validate_form()">
                         <div class="mb-3">
                             <label class="form-label">Name</label>
                             <input class="form-control" placeholder="Your email" type="text" id="adminEmail" name="name">
@@ -39,11 +39,11 @@
                         <div class="mb-3">
                             <label class="form-label">Phone</label>
                             <div class="row gx-2">
-                                <div class="col-4"> <input class="form-control" value="+91" type="text" id="mobileNumber" name="mobileNumber"> </div>
-                                <div class="col-8"> <input class="form-control" placeholder="Phone" type="text"> </div>
+                                <div class="col-4"> <input class="form-control" value="+91" type="text" > </div>
+                                <div class="col-8"> <input class="form-control" placeholder="Phone" type="text" id="mobileNumber" name="mobileNumber"> </div>
                             </div>
                             <div>
-                                <p id="p"></p>
+                                <p  id="p" class="text-danger text-center" ></p>
                             </div>
                         </div> <!-- form-group// -->
                         <div class="mb-3">
@@ -54,8 +54,8 @@
                             <label class="form-label">Confirm Password</label>
                             <input class="form-control" placeholder="Password" type="password" id="password2">
                         </div> 
-                        <div class="text-center mb-3 fa-shake" >
-                            <p>password not matching</p>
+                        <div class="text-center mb-3 fa-shake text-danger" >
+                            <p id="p2"></p>
                         </div>
                         <div class="mb-3">
                             <p class="small text-center text-muted">By signing up, you confirm that you’ve read and accepted our User Notice and Privacy Policy.</p>
@@ -94,7 +94,34 @@
         </footer>
     </main>
     <%- include('./partials/footer.ejs') %>
-    <script src="../../public/js/admin-custom.js"></script>
+    <!-- <script src="/js/admin-custom.js"></script> -->
+    <script>
+        function validate_form() {
+            var phoneInput = document.getElementById('mobileNumber');
+            var password1 = document.getElementById('password1');
+            var password2 = document.getElementById('password2');
+            var error = document.getElementById('p');
+            var passworderror = document.getElementById('p2')
+    
+            if (phoneInput.value.length < 10) {
+                error.textContent = "Minimum 10 characters required";
+                console.log("Mobile number is not enough");
+                setTimeout(()=>{
+                    error.textContent=""
+                },2500)
+                return false; // Prevent form submission
+            } if( password1.value !== password2.value){
+                passworderror.textContent="password not matching Niggha.."
+                console.log("password is not matching")
+                setTimeout(()=>{
+                    passworderror.textContent=""
+                },2500)
+                return false;
+            }
+    
+            return true; // Allow form submission
+        }
+    </script>
 
 </body>
 

@@ -175,7 +175,7 @@ req.session.signuperror = false
         }
         else if(req.session.emailerror)
             {
-                message1 = 'email incorrect'
+                message1 = 'userId already exist please login '
                 delete req.session.emailerror
                 await res.render("admin/page-account-register.ejs",{message1})
 

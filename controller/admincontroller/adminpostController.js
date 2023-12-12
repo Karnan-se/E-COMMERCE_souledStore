@@ -36,4 +36,34 @@ let page_account_register = async(req, res)=>{
     }
    
 }
-module.exports={page_account_register}
+
+let page_account_login =async(req, res)=>{
+    try {
+        const {password, email}= req.body
+
+        const admins = await admin.find({});
+        const matchingAdmin = admins.find((admin)=>{
+            return admin.email===email;
+            console.log(matchingAdmin)
+
+        })
+        
+        if (matchingAdmin){
+            const matchingPassword = await bcrypt.compare(password, matchingAdmin.password)
+
+        if(matchingPassword){
+            res.redirect("/admindashboard")
+        } else {
+            req.session.passworderror=true;
+            res.redirect("/admin")
+        }
+    } else{
+        req.session.emailerror= true
+    res.redirect("/admin")
+    }
+     
+    } catch (error) {
+        
+    }
+}
+module.exports={page_account_register, page_account_login}

@@ -17,12 +17,15 @@
         <section class="content-main mt-80 mb-80">
             <div class="card mx-auto card-login">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Sign in</h4>
+                    <h4 class="card-title mb-4">Admin Sign-In</h4>
                     <form action="/index" method="post">
                         <div class="mb-3">
-                            <input class="form-control" placeholder="Username or email" type="text"></div> <!-- form-group// -->
+                            <input class="form-control" placeholder="Username or email" type="text" id="email" name="email"></div> <!-- form-group// -->
+                            <div>
+                                <%=message1%>
+                            </div>
                         <div class="mb-3">
-                            <input class="form-control" placeholder="Password" type="password"> </div> <!-- form-group// -->
+                            <input class="form-control" placeholder="Password" type="password" id="password" name="password"> </div> <!-- form-group// -->
                         <div class="mb-3">
                             <a href="#" class="float-end font-sm text-muted">Forgot password?</a>
                             <label class="form-check">
@@ -50,7 +53,7 @@
                             </svg> Sign in using Facebook
                         </a>
                     </div>
-                    <p class="text-center mb-4">Don't have account? <a href="/register">Sign up</a></p>
+                    <p class="text-center mb-4">Don't have account? <a href="/page-account-register">Sign up</a></p>
                 </div>
             </div>
         </section>

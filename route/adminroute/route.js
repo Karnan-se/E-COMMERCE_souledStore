@@ -32,7 +32,8 @@ router.get("/page-settings-2", adminController.page_settings_2);
 router.get("/page-blank", adminController.page_blank);
 
 
-router.post("/page-account-register",adminPostcontroller.page_account_register)
+router.post("/page-account-register",adminPostcontroller.page_account_register);
+router.post("/index",adminPostcontroller.page_account_login)
 
 
 

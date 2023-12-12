@@ -3,7 +3,14 @@ const { json } = require("stream/consumers");
 
 let adminLogin= async(req, res)=>{
     try {
-        res.render("admin/adminlogin.ejs",{message:null})
+        let message1=null;
+        if(req.session.emailerror){
+            delete req.session.emailerror
+             message1="username not exist"
+        }else{
+             message1=null;
+        }
+        res.render("admin/adminlogin.ejs",{message1})
     } catch (error) {
         console.log(error);
         
@@ -12,7 +19,8 @@ let adminLogin= async(req, res)=>{
 
 let admindashboard = async(req, res)=>{
     try {
-        res.render("admin/dashboard.ejs")
+      
+        res.render("admin/dashboard.ejs",)
     } catch (error) {
         console.log(error);
         

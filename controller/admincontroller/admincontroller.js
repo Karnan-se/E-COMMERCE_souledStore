@@ -238,6 +238,19 @@ let page_blank= async(req, res)=>{
         console.log(error)
         
     }
+
+}
+
+let forgot_password= async(req, res)=>{
+    try {
+
+        res.render("admin/forgot-password.ejs");
+        
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
 }
 
 module.exports={adminLogin, 
@@ -264,4 +277,5 @@ module.exports={adminLogin,
     page_brands,
     page_settings_1,
     page_settings_2,
-    page_blank}
+    page_blank,
+    forgot_password}

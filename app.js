@@ -1,11 +1,14 @@
 const express = require("express")
 const admin= require("./models/admin/admin")
 const app= express();
+const methodOverride = require('method-override')
+require('dotenv').config();
 app.set("viewengine", "ejs");
 app.set("views",__dirname+"/views");
 app.use(express.static("public"));
 app.use("/css", express.static("public/css"))
 app.use("/js", express.static("public/js"))
+app.use(methodOverride('_method'))
 app.use(express.urlencoded({extended:true}))
 const session= require("express-session");
 const mongoose= require("mongoose");
@@ -35,4 +38,5 @@ app.use("/",router)
 
 app.listen(3000,()=>{
    console.log("localhost 3000")
+   console.log(process.env.EMAIL_HOST)
 })

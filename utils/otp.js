@@ -1,30 +1,35 @@
 const nodemailer = require("nodemailer")
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user:'karnan.se@gmail.com',
-        pass:'seethalakshmi'
+module.exports={
+ sendEmail: async (options)=>{
+   try{
+
+    const transporter = nodemailer.createTransport(
+        {
+        service:"gmail",
+        auth:{
+            user:"mhdrizwanpkd@gmail.com",
+            pass:"sgzmnhpoginjuwat"
+        }
+    })//TRANSPORTER
+
+    const emailoptions={
+        from: 'mhdrizwanpkd@gmail.com',
+        to:options.email,
+        subject:options.subject,
+        text:options.message,
     }
-});
+    await transporter.sendMail(emailoptions);
+    console.log("email sent successfully")
+    
+    
 
-
-function generateotp(){
-    const otp =Math.floor(1000+Math.random()*9000).toString();
-    const timestamp = Date.now();
-    const expiryTIme = 5*60*1000;
-
-    return {otp, timestamp, expiryTIme}
-
+}catch (error){
+    console.log(error)
+    
 }
 
-function sendOTP(email) {
-    const {otp, timestamp, expriytime} =generateotp();
-
-    const mailoption ={
-        from: 'karnan.se@gmail.com',
-        to: email,
-        subject:'your otp for verification',
-        text: `your otp is${otp}. it is valid for 5 minutes`
-    }
 }
+}
+
+

@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt")
 const { encode } = require("punycode");
 const admin = require("../../models/admin/admin")
+const sendemail = require("../../utils/otp")
 let page_account_register = async(req, res)=>{
     try {
         

@@ -32,12 +32,13 @@ router.get("/page-settings-1", adminController.page_settings_1);
 router.get("/page-settings-2", adminController.page_settings_2);
 router.get("/page-blank", adminController.page_blank);
 
-router.get("/forgot-password",adminController.forgot_password)
+router.get("/forgot-password",adminpatchcontroller.forgot_password)
 
 router.post("/page-account-register",adminPostcontroller.page_account_register);
 router.post("/index",adminPostcontroller.page_account_login)
 
 router.post("/resetpassword",adminpatchcontroller.resetpassword)
+router.get("/resetpassword/:token",adminpatchcontroller.patchpassword)
 router.patch("/patchpassword/:token",adminpatchcontroller.patchpassword)
 
 

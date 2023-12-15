@@ -241,14 +241,13 @@ let page_blank= async(req, res)=>{
 
 }
 
-let forgot_password= async(req, res)=>{
-    try {
 
-        res.render("admin/forgot-password.ejs");
-        
+
+let resetpassword = async(req, res)=>{
+    try {
+        res.render()
         
     } catch (error) {
-        console.log(error);
         
     }
 }
@@ -278,4 +277,4 @@ module.exports={adminLogin,
     page_settings_1,
     page_settings_2,
     page_blank,
-    forgot_password}
+    }

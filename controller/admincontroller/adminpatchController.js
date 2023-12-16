@@ -64,12 +64,8 @@ let resetpassword = async(req, res)=>{
 let patchpassword= async(req,res)=>{
 
     try {
-        resetToken= req.query;
-        if(resetToken){
+      
         res.render("admin/resetpassword.ejs",)
-        }else{
-            res.send("reset token doesnot find")
-        }
 
         
     } catch (error) {

@@ -7,6 +7,7 @@ let forgot_password= async(req, res)=>{
         let message=null;
 
         if(req.session.countown=true){
+             req.session.destroy()
             let message="hey"
             let resetToken= req.query
 

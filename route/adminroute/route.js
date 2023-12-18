@@ -38,8 +38,8 @@ router.post("/page-account-register",adminPostcontroller.page_account_register);
 router.post("/index",adminPostcontroller.page_account_login)
 
 router.post("/resetpassword",adminpatchcontroller.resetpassword)
-router.get("/resetpassword/:token",adminpatchcontroller.patchpassword)
-router.patch("/patchpassword/:token",adminpatchcontroller.patchpassword)
+router.get("/resetpassword/:token/:id",adminpatchcontroller.patchpassword)
+router.post("/updatepassword",adminpatchcontroller.updatepassword)
 
 
 

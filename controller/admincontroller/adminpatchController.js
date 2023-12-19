@@ -2,6 +2,8 @@ const sendEmail = require('../../utils/otp')
 const admin = require("../../models/admin/admin");
 const { json } = require('stream/consumers');
 const { error } = require('console');
+const bcrypt = require('bcrypt');
+const { getHashes } = require('crypto');
 
 //it is get of forgot password
 let forgot_password= async(req, res)=>{
@@ -85,9 +87,11 @@ let updatepassword= async(req, res)=>{
         userid= req.session.user;
         console.log(userid)
         const password1 = req.body.password1;
-     
-        
-            const updatedpassword = await admin.updateOne({_id:userid},{$set:{password:password1}})
+
+        const salt = await bcrypt.genSalt(10)
+        const hash =  await bcrypt.hash(password1, salt)
+
+            const updatedpassword = await admin.updateOne({_id:userid},{$set:{password:hash}})
            
             console.log(`password saved successsfully ${updatedpassword}`);
 

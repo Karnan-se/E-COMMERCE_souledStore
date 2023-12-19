@@ -1,5 +1,5 @@
 const express= require("express");
-const router= express.Router();
+const router= express();
 const adminController= require("../../controller/admincontroller/admincontroller");
 const adminPostcontroller = require("../../controller/admincontroller/adminpostController")
 const adminpatchcontroller= require("../../controller/admincontroller/adminpatchController")
@@ -40,6 +40,8 @@ router.post("/index",adminPostcontroller.page_account_login)
 router.post("/resetpassword",adminpatchcontroller.resetpassword)
 router.get("/resetpassword/:token/:id",adminpatchcontroller.patchpassword)
 router.post("/updatepassword",adminpatchcontroller.updatepassword)
+
+
 
 
 

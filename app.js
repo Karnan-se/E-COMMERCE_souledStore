@@ -13,6 +13,7 @@ app.use(express.urlencoded({extended:true}))
 const session= require("express-session");
 const mongoose= require("mongoose");
 const router = require("./route/adminroute/route");
+const userroute=require("./route/userroute/useroute")
 
 
 async function dbconnect(){
@@ -34,6 +35,7 @@ app.use(session({
 
 
 app.use("/",router)
+app.use("/",userroute)
 
 
 app.listen(3000,()=>{

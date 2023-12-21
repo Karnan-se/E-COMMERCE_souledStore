@@ -3,11 +3,13 @@ const router= express();
 const adminController= require("../../controller/admincontroller/admincontroller");
 const adminPostcontroller = require("../../controller/admincontroller/adminpostController")
 const adminpatchcontroller= require("../../controller/admincontroller/adminpatchController")
+const adminusercontroller = require("../../controller/admincontroller/userdetailcontroller")
 const admin = require("../../models/admin/admin");
 
 router.get("/admin",adminController.adminLogin);
 router.get("/admindashboard",adminController.admindashboard)
 router.get("/admin", adminController.adminLogin);
+
 router.get("/page-products-list", adminController.page_products_list);
 router.get("/page-products-grid", adminController.page_products_grid);
 router.get("/page-products-grid-2", adminController.page_products_grid_2);
@@ -15,9 +17,7 @@ router.get("/page-categories", adminController.page_categories);
 router.get("/page-orders-1", adminController.page_orders_1);
 router.get("/page-orders-2", adminController.page_orders_2);
 router.get("/page-orders-detail", adminController.page_orders_detail);
-router.get("/page-sellers-cards", adminController.page_sellers_cards);
-router.get("/page-sellers-list", adminController.page_sellers_list);
-router.get("/page-seller-detail", adminController.page_seller_detail);
+
 router.get("/page-form-product-1", adminController.page_form_product_1);
 router.get("/page-form-product-2", adminController.page_form_product_2);
 router.get("/page-form-product-3", adminController.page_form_product_3);
@@ -41,6 +41,8 @@ router.post("/resetpassword",adminpatchcontroller.resetpassword)
 router.get("/resetpassword/:token/:id",adminpatchcontroller.patchpassword)
 router.post("/updatepassword",adminpatchcontroller.updatepassword)
 
+
+router.get("/admin-user-page",adminusercontroller.admin_user_page);
 
 
 

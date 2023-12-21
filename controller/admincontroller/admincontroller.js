@@ -97,14 +97,7 @@ let page_sellers_cards = async(req, res)=>{
         
     }
 }
-let page_sellers_list = async(req, res)=>{
-    try {
-        res.render("admin/page-sellers-list.ejs")
-    } catch (error) {
-        console.log(error);
-        
-    }
-}
+
 
 let page_seller_detail = async(req, res)=>{
     try {
@@ -262,7 +255,7 @@ module.exports={adminLogin,
     page_orders_2,
     page_orders_detail,
     page_sellers_cards,
-    page_sellers_list,
+   
     page_seller_detail,
     page_form_product_1,
     page_form_product_2,

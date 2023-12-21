@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend//page-account-login by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
 <head>
 
-    <%- include('./partials/header.ejs') %>
+    <%- include('./partials/adminheader.ejs') %>
 </head>
 
 <body>
@@ -17,7 +17,7 @@
         <section class="content-main mt-80 mb-80">
             <div class="card mx-auto card-login">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">login</h4>
+                    <h4 class="card-title mb-4">sign in</h4>
                     <form action="/index" method="post" onsubmit=" return validateForm()">
                         <div class="mb-3">
                             <input class="form-control" placeholder="Username or email" type="text" id="email" name="email"></div> <!-- form-group// -->
@@ -54,7 +54,7 @@
                             </svg> Sign in using Facebook
                         </a>
                     </div>
-                    <p class="text-center mb-4">Don't have account? <a href="/page-account-register">Sign up</a></p>
+                    <p class="text-center mb-4">Don't have account? <a href="/user-register">Sign up</a></p>
                 </div>
             </div>
         </section>
@@ -67,7 +67,7 @@
             <p class="font-xs mb-30">All rights reserved</p>
         </footer>
     </main>
-   <%- include('./partials/footer.ejs') %>
+   <%- include('./partials/adminfooter.ejs') %>
 
    <script>
 

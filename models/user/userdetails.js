@@ -9,7 +9,7 @@ const user = new mongoose.Schema({
         type:String,
         required:true
     },
-    passsword:{
+    password:{
         type:String,
         required:true
     },
@@ -24,10 +24,18 @@ const user = new mongoose.Schema({
 });
 
 
-    user.pre('save',function(next){
-        const currentdate = new Date();
-        this.date= currentdate;
-        next();
+    user.pre('save',async function(next){
+
+        try {
+            if(!this.date) {
+                const currentdate = new Date();
+                this.date= currentdate;
+            }
+            
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
     })
 
     user.methods.formateDate = function () {

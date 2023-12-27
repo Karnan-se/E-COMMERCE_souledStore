@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {format} = require('date-fns')
 const user = new mongoose.Schema({
 
     name:{
@@ -20,6 +21,11 @@ const user = new mongoose.Schema({
     date:{
         type:Date,
         required:false
+    },
+    isActive:{
+        type:Boolean,
+        required:false,
+        default:true
     }
 });
 
@@ -35,6 +41,14 @@ const user = new mongoose.Schema({
         } catch (error) {
             console.log(error)
             next(error)
+        }
+    })
+    user.pre('save', async function(next){
+        try{
+            this.isActive= true;
+            next();
+        }catch(error){
+            console.log(`this is the middleware for save function ${error}`)
         }
     })
 

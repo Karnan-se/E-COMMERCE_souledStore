@@ -65,4 +65,4 @@ else{
 
 
 
-module.exports={user_index, userlogin, user_register}
+module.exports={user_index, userlogin, user_register, }

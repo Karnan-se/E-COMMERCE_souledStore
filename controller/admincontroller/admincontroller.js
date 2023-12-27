@@ -255,7 +255,6 @@ module.exports={adminLogin,
     page_orders_2,
     page_orders_detail,
     page_sellers_cards,
-   
     page_seller_detail,
     page_form_product_1,
     page_form_product_2,

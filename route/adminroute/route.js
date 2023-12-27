@@ -43,6 +43,9 @@ router.post("/updatepassword",adminpatchcontroller.updatepassword)
 
 
 router.get("/admin-user-page",adminusercontroller.admin_user_page);
+router.get("/toggle",adminusercontroller.toggle)
+router.get("/active",adminusercontroller.active)
+router.get("/disabled",adminusercontroller.disabled)
 
 
 

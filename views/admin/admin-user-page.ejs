@@ -138,13 +138,33 @@
                             <input type="text" placeholder="Search..." class="form-control">
                         </div>
                         <div class="col-lg-2 col-md-3 col-6">
-                            <select class="form-select">
-                                <option>Status</option>
-                                <option>Active</option>
-                                <option>Disabled</option>
-                                <option>Show all</option>
+                            <select onchange="selectsort()" class="form-select " id="selectOptions">
+                                <option value="Select option">Select</option>
+                                <option value="showall">Show all</option>
+                                <option id="active" value="Disabled" >Disabled</option></a>
+                               <option id="disabled" value="Active">Active</option></a>
+                              
                             </select>
                         </div>
+                        <script>
+                            async function selectsort()
+                            {
+                              let sortoption =  document.getElementById('selectOptions').value
+                              console.log(sortoption)
+                              
+                              const response = await fetch(`/active?option=${sortoption}`,{
+                                method:'GET'
+                              })
+                              if(!response.ok)
+                              {
+                                throw new Error('error occured')
+                              }
+                              console.log('success')
+                              location.reload()
+                              
+
+                            }
+                        </script>
                         <div class="col-lg-2 col-md-3 col-6">
                             <select class="form-select">
                                 <option>Show 20</option>
@@ -167,6 +187,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                
+                                <% for(let i=0; i< users.length; i++) {%>
+                                    
                                 <tr>
                                     <td width="40%">
                                         <a href="#" class="itemside">
@@ -174,19 +197,21 @@
                                                 
                                             </div>
                                             <div class="info pl-3">
-                                                <h6 class="mb-0 title">Eleanor Pena</h6>
+                                                <h6 class="mb-0 title"> <%= users[i].name %> </h6>
                                                 <small class="text-muted">Seller ID: #439</small>
                                             </div>
                                         </a>
                                     </td>
                                     <td><template class="__cf_email__" data-cfemail="2c4940494d42435e1e1c1e1c6c49544d415c4049024f4341">[email&#160;protected]</template></td>
-                                    <td><span class="badge rounded-pill alert-success">Active</span></td>
-                                    <td>08.07.2020</td>
+                                    <td><span class="badge rounded-pill <%= users[i].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= users[i].isActive==true?"Active" : "blocked"%></span></td>
+                                    <td><%= users[i].formateDate() %></td>
                                     <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15">View details</a>
+                                        <input type="" value="<%= users[i]._id %>" id="userId<%= i %>" hidden> 
+                                        <a class="btn btn-sm btn-brand rounded font-sm mt-15 toggle-btn" onclick="toggle('<%= i %>')"><%= users[i].isActive==true?"block": "activate"%></a>
                                     </td>
                                 </tr>
                                 <tr>
+                                    <% } %>
                                        </tbody>
                         </table> 
                     </div>
@@ -221,6 +246,41 @@
         </footer>
     </main>
     <%- include('./partials/footer.ejs') %>
+    <script src="/js/users.js"> </script>
+
+
+
+
+    <script>
+
+
+
+function toggle(index) {
+    const userId = document.getElementById(`userId${index}`).value
+    
+
+    console.log(userId)
+    fetch(`/toggle?userId=${userId}`, {
+        method: "GET",
+       
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+             response.json();
+        })
+        .then(data => {
+            console.log(data);
+            window.location.reload()
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+        
+}
+
+    </script>
 </body>
 
 

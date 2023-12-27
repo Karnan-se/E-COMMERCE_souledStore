@@ -4,7 +4,7 @@ const user = require("../../models/user/userdetails")
 
 let admin_user_page = async(req, res)=>{
     try {
-        var users
+        
    
     if(req.session.activesort)
     {
@@ -22,10 +22,28 @@ let admin_user_page = async(req, res)=>{
        let users = await user.find({isActive:false});
         return res.render("admin/admin-user-page.ejs",{users:users})
 
-    }
-    else
+    }else if(req.session.searchvalue){
+        
+        console.log("searchvalue is recieved")
+        const searchvalue = req.session.searchvalue;
+        console.log(searchvalue)
+        let users = await user.find({name: {$regex: new RegExp(searchvalue, "i")}});
+        
+
+       if(users){
+        
+         res.render("admin/admin-user-page.ejs",{users})
+        
+       }else{
+        // I have to diplay the no user here for the better approach
+       }
+        
+
+
+    }else
     {
-       
+        delete req. session.searchvalue
+
         delete req.session.activesort   
 
         delete req.session.disabledsort   
@@ -112,24 +130,28 @@ let active = async(req, res)=>{{
    
 }}
 
-
-
-let disabled = async(req, res)=>{{
+let search = async(req, res)=>{
     try {
-        const users= await user.find({isActive:false})
-        console.log(users)
-        res.json(users)       
+        const searchvalue = req.query.searchvalue
+        
+        req.session.searchvalue= searchvalue;
+        console.log(searchvalue)
+        res.redirect(`admin-user-page`)
+        console.log(filtereduser);
+        
+
         
     } catch (error) {
-        console.log(error)
         
-    }   
-}}
+    }
+}
+
+
                         
 
 
 
 module.exports={
     admin_user_page,
-    toggle, active, disabled
+    toggle, active,search
 }

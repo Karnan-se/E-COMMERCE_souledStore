@@ -134,9 +134,34 @@
             <div class="card mb-4">
                 <header class="card-header">
                     <div class="row gx-3">
-                        <div class="col-lg-4 col-md-6 me-auto">
-                            <input type="text" placeholder="Search..." class="form-control">
-                        </div>
+                        <div class="col-lg-3 col-md-6 me-auto">
+                            
+                            <input type="text" placeholder="Search..." class="form-control" id="searchbox"></div>
+                        
+                            <div class="col-lg-4 col-md-3 me-auto">
+                        <button class="btn btn-primary" id="searchButton" type="button" onclick="updatequerry()">Search</button></div>
+                            
+                            <script>
+                               async  function updatequerry(){
+                                const searchpattern = document.getElementById("searchbox")
+                                const searchvalue =searchpattern.value;
+                                console.log(searchvalue)
+
+                                    const response= await fetch(`/search?searchvalue=${searchvalue}`,{
+                                        method:"GET",
+                                    })
+                                    if (!response){
+                                        throw new Error("error occured");
+
+                                    }
+                                    console.log("success")
+                                    location.reload()
+                                    
+
+                                }
+                                </script>
+       
+                                
                         <div class="col-lg-2 col-md-3 col-6">
                             <select onchange="selectsort()" class="form-select " id="selectOptions">
                                 <option value="Select option">Select</option>

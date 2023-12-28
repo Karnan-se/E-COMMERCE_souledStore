@@ -33,6 +33,7 @@ let admin_user_page = async(req, res)=>{
        if(users){
         
          res.render("admin/admin-user-page.ejs",{users})
+         delete req.session.searchvalue
         
        }else{
         // I have to diplay the no user here for the better approach
@@ -116,7 +117,9 @@ let active = async(req, res)=>{{
 
         }
         else if(option == 'showall')
+
         {
+            delete req.session.searchvalue
             
             res.redirect('/admin-user-page')
         }

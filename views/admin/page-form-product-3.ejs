@@ -58,16 +58,14 @@
                         
                     </div>
                 </li>
-                <li class="menu-item has-submenu active">
-                    <a class="menu-link" href="/page-form-product-1"> <i class="icon material-icons md-add_box"></i>
+               <li class="menu-item has-submenu active">
+                    <a class="menu-link" href="/page-form-product-3"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Add product</span>
                     </a>
                     <div class="submenu">
-                        <a href="/page-form-product-1">Add product 1</a>
-                        <a href="/page-form-product-2">Add product 2</a>
-                        <a href="/page-form-product-3" class="active">Add product 3</a>
-                        <a href="/page-form-product-4">Add product 4</a>
-                    </div>
+                        <a href="/page-form-product-3" class="active">Add product </a>
+                    </a>
+                   
                 </li>
                 <%- include('./partials/aside-2.ejs') %>
     <main class="main-wrap">
@@ -152,9 +150,17 @@
                                     <label for="product_color" class="form-label">Color</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="product_color">
                                 </div>
-                                <div class="col-md-4  mb-3">
-                                    <label for="product_size" class="form-label">Size</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_size">
+                                <div class="col-md-4  mb-0 mt-4">
+                                    <!-- size need to be drop dopwn -->
+                                    <select class="form-select">
+                                        <option value="null">select size</option>
+                                        <option>S</option>
+                                        <option>M</option>
+                                        <option>L</option>
+                                        <option>XL</option>
+                                        <option>XXL</option>
+                                    </select>
+                                    
                                 </div>
                             </div>
                             <div class="mb-4">
@@ -203,36 +209,71 @@
                             <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Apple</a>
                             <hr>
                             <h5 class="mb-3">Categories</h5>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="product-cat">
-                                <label class="form-check-label" for="product-cat"> Shirt </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="product-cat-1">
-                                <label class="form-check-label" for="product-cat-1"> T-Shirt </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="product-cat-2">
-                                <label class="form-check-label" for="product-cat-2"> Sneakers </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="product-cat-3">
-                                <label class="form-check-label" for="product-cat-3"> Joggers </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="product-cat-4">
-                                <label class="form-check-label" for="product-cat-4"> Vests </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="product-cat-5">
-                                <label class="form-check-label" for="product-cat-5"> Knitwear </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="product-cat-8">
-                                <label class="form-check-label" for="product-cat-8"> Shorts </label>
-                            </div>
-                        </div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" value="" id="product-cat" name="Categories">
+    <label class="form-check-label" for="product-cat"> Shirt </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" value="" id="product-cat-1" name="Categories">
+    <label class="form-check-label" for="product-cat-1"> T-Shirt </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" value="" id="product-cat-2" name="Categories">
+    <label class="form-check-label" for="product-cat-2"> Sneakers </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" value="" id="product-cat-3" name="Categories">
+    <label class="form-check-label" for="product-cat-3"> Joggers </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" value="" id="product-cat-4" name="Categories">
+    <label class="form-check-label" for="product-cat-4"> Vests </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" value="" id="product-cat-5" name="Categories">
+    <label class="form-check-label" for="product-cat-5"> Knitwear </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" value="" id="product-cat-8" name="Categories">
+    <label class="form-check-label" for="product-cat-8"> Shorts </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" value="" id="product-cat-8" name="Categories">
+    <label class="form-check-label" for="product-cat-8"> top </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" value="" id="product-cat-8" name="Categories">
+    <label class="form-check-label" for="product-cat-8"> jeans </label>
+</div>
+
+
+                
                     </div> <!-- card end// -->
+                    <h5 class="mb-3">Licenced charectors</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" value="" id="product-cat" name="subcategory">
+                        <label class="form-check-label" for="product-cat"> Marvel </label><br>
+                    
+                        <input class="form-check-input" type="radio" value="" id="product-cat-1" name="subcategory">
+                        <label class="form-check-label" for="product-cat-1"> Avengers </label><br>
+                    
+                        <input class="form-check-input" type="radio" value="" id="product-cat-2" name="subcategory">
+                        <label class="form-check-label" for="product-cat-2"> DC </label><br>
+                    
+                        <input class="form-check-input" type="radio" value="" id="product-cat-3" name="subcategory">
+                        <label class="form-check-label" for="product-cat-3"> IronMan </label><br>
+                    
+                        <input class="form-check-input" type="radio" value="" id="product-cat-4" name="subcategory">
+                        <label class="form-check-label" for="product-cat-4"> SpiderMan</label><br>
+                    
+                        <input class="form-check-input" type="radio" value="" id="product-cat-5" name="subcategory">
+                        <label class="form-check-label" for="product-cat-5"> Disney </label><br>
+                    
+                        <input class="form-check-input" type="radio" value="" id="product-cat-6" name="subcategory">
+                        <label class="form-check-label" for="product-cat-6"> Superman</label><br>
+                    </div>
+                    
+            </div> <!-- card end// -->
                 </div>
             </div>
         </section>

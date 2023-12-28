@@ -4,6 +4,7 @@ const adminController= require("../../controller/admincontroller/admincontroller
 const adminPostcontroller = require("../../controller/admincontroller/adminpostController")
 const adminpatchcontroller= require("../../controller/admincontroller/adminpatchController")
 const adminusercontroller = require("../../controller/admincontroller/userdetailcontroller")
+const addproductcontroller= require("../../controller/admincontroller/addproductcontrolle")
 const admin = require("../../models/admin/admin");
 
 router.get("/admin",adminController.adminLogin);
@@ -20,7 +21,7 @@ router.get("/page-orders-detail", adminController.page_orders_detail);
 
 router.get("/page-form-product-1", adminController.page_form_product_1);
 router.get("/page-form-product-2", adminController.page_form_product_2);
-router.get("/page-form-product-3", adminController.page_form_product_3);
+
 router.get("/page-form-product-4", adminController.page_form_product_4);
 router.get("/page-transaction-1", adminController.page_transaction_1);
 router.get("/page-transaction-2", adminController.page_transaction_2);
@@ -47,6 +48,8 @@ router.get("/toggle",adminusercontroller.toggle)
 router.get("/active",adminusercontroller.active)
 router.get("/search",adminusercontroller.search)
 
+router.get("/page-form-product-3", addproductcontroller.page_form_product_3);
+router.get("/updatecategory",addproductcontroller.addcategory)
 
 
 

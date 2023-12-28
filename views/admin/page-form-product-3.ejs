@@ -209,7 +209,41 @@
                             <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Apple</a>
                             <hr>
                             <h5 class="mb-3">Categories</h5>
-<div class="form-check">
+
+<!-- ivde aanu button -->
+                            
+                            <div class="container ml-5 mb-3 ">
+
+                                <button id="addCategoryBtn" class="btn btn-success " style="width: 100%;">+ Add Category</button s>
+                                <div id="categoryFields" class="mt-3 d-none">
+                                    <div class="form-group">
+                                        <input type="text" id="categoryName" class="form-control mb-2" placeholder="Category Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="categoryDescription" class="form-control mb-2" placeholder="Category Description">
+                                    </div>
+                                    <button id="additionBtn" class="btn btn-primary">ADD</button>
+                                </div>
+                            </div>
+                            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addCategoryBtn = document.getElementById('addCategoryBtn');
+    const categoryFields = document.getElementById('categoryFields');
+
+    addCategoryBtn.addEventListener('click', function() {
+        categoryFields.classList.toggle('d-none');
+
+        addCategoryBtn.textContent =(addCategoryBtn.textContent === '+ Add Category') ? '- Add Category' : '+ Add Category';
+    });
+});
+
+
+</script>
+
+<div class="form-check " >
     <input class="form-check-input" type="radio" value="" id="product-cat" name="Categories">
     <label class="form-check-label" for="product-cat"> Shirt </label>
 </div>
@@ -250,28 +284,81 @@
                 
                     </div> <!-- card end// -->
                     <h5 class="mb-3">Licenced charectors</h5>
-                    <div class="form-check">
+
+
+                    
+                        <div class="container ml-5 mb-3">
+                            <button id="newCategoryBtn" class="btn btn-info" style="width: 100%;">+ Add New charectors</button>
+                            <div id="newCategoryFields" class="mt-3 d-none">
+                                <div class="form-group">
+                                    <input type="text" id="newCategoryName" class="form-control mb-2" placeholder="New Category Name">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="newCategoryDescription" class="form-control mb-2" placeholder="New Category Description">
+                                </div>
+                                <button id="newAdditionBtn" class="btn btn-warning" onclick="updatecategory()">ADD </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Add Bootstrap JS and Popper.js -->
+                        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+                        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const newCategoryBtn = document.getElementById('newCategoryBtn');
+                             newCategoryFields = document.getElementById('newCategoryFields');
+                        
+                            newCategoryBtn.addEventListener('click', function() {
+                                newCategoryFields.classList.toggle('d-none');
+                                newCategoryBtn.textContent = (newCategoryBtn.textContent === '+ New Category') ? '- New Charectors' : '+ New Charectors';
+                            });
+                        });
+                        
+                        </script>
+                        <script>
+                             async function updatecategory(){
+                                try {
+
+                                    console.log("function called")
+                                const categoryName=document.getElementById("newCategoryName").value
+                                console.log(categoryName);
+
+                                const response= await fetch(`/updatecategory?category=${categoryName}`,{
+                                    method:"GET",
+
+                                })
+                                if (!response.ok){
+                                    throw new Error("error is occured")
+                                }
+                                console.log("success");
+                                location.reload()
+
+                             
+                                    
+                                } catch (error) {
+
+
+                                    console.log(error)
+                                    
+                                }
+
+
+                             }
+                           
+
+                        </script>
+                       
+                        
+                        <% for(let i=0; i< license.length; i++) {%>
+                        
+                        <div class="form-check">
                         <input class="form-check-input" type="radio" value="" id="product-cat" name="subcategory">
-                        <label class="form-check-label" for="product-cat"> Marvel </label><br>
+                        <label class="form-check-label" for="product-cat"><%= license[i].categoryname %> </label><br>
+                        </div>
                     
-                        <input class="form-check-input" type="radio" value="" id="product-cat-1" name="subcategory">
-                        <label class="form-check-label" for="product-cat-1"> Avengers </label><br>
-                    
-                        <input class="form-check-input" type="radio" value="" id="product-cat-2" name="subcategory">
-                        <label class="form-check-label" for="product-cat-2"> DC </label><br>
-                    
-                        <input class="form-check-input" type="radio" value="" id="product-cat-3" name="subcategory">
-                        <label class="form-check-label" for="product-cat-3"> IronMan </label><br>
-                    
-                        <input class="form-check-input" type="radio" value="" id="product-cat-4" name="subcategory">
-                        <label class="form-check-label" for="product-cat-4"> SpiderMan</label><br>
-                    
-                        <input class="form-check-input" type="radio" value="" id="product-cat-5" name="subcategory">
-                        <label class="form-check-label" for="product-cat-5"> Disney </label><br>
-                    
-                        <input class="form-check-input" type="radio" value="" id="product-cat-6" name="subcategory">
-                        <label class="form-check-label" for="product-cat-6"> Superman</label><br>
-                    </div>
+                  <% } %>
+                  
                     
             </div> <!-- card end// -->
                 </div>

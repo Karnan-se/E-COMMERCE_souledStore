@@ -123,14 +123,7 @@ let page_form_product_2= async(req, res)=>{
         
     }
 }
-let page_form_product_3= async(req, res)=>{
-    try {
-        res.render("admin/page-form-product-3.ejs")
-    } catch (error) {
-        console.log(error)
-        
-    }
-}
+
 let page_form_product_4= async(req, res)=>{
     try {
         res.render("admin/page-form-product-3.ejs")
@@ -258,7 +251,7 @@ module.exports={adminLogin,
     page_seller_detail,
     page_form_product_1,
     page_form_product_2,
-    page_form_product_3,
+   
     page_form_product_4,
     page_transaction_1,
     page_transaction_2,

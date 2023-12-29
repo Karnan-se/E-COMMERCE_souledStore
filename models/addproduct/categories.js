@@ -8,7 +8,7 @@ const categories = new mongoose.Schema ({
     },
     categoryDescription:{
         type:String,
-        required:true
+        required:false
     },
 
     isActive:{

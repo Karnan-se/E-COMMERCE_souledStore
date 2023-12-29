@@ -1,15 +1,38 @@
 const mongoose = require("mongoose");
-
+const { v4: uuidv4 } = require('uuid');
 const addproduct = new mongoose.Schema({
+
+
+
+    productid:{
+        type:String,
+        default: uuidv4(),
+        unique: true,
+        required: false,
+        
+    },
 
     productname:{
         type:String,
         required: true
     },
+    stock:{
+        type:Number,
+        required:true,
+    },
+    color:{
+        type:String,
+        required:false,
+    },
+    size:{
+        type:String,
+        required:true,
+    },
+
 
     category:{
         type:mongoose.Schema.Types.ObjectId,
-        ref: 'category',
+        ref: 'categories',
         required: true
     },
 
@@ -25,15 +48,6 @@ const addproduct = new mongoose.Schema({
         required:true
     },
 
-    size:{
-        type:String,
-        required:true,
-    },
-    color:{
-        type:String,
-        required:false,
-    },
-
     description:{
         type:String,
         required:true
@@ -42,11 +56,23 @@ const addproduct = new mongoose.Schema({
         data:Buffer,
         contentType:String
     }],
-    stock:{
+    price:{
         type:Number,
-        required:true,
+        required:true
+
+    },
+     tags:{
+        type:String,
+        required:false
+     },
+    gender:{
+        type:Boolean,
+        required:true
     }
 })
+
+
+
 
 
 module.exports= (mongoose.model("addproduct", addproduct))

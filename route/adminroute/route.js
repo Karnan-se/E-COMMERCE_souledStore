@@ -5,6 +5,7 @@ const adminPostcontroller = require("../../controller/admincontroller/adminpostC
 const adminpatchcontroller= require("../../controller/admincontroller/adminpatchController")
 const adminusercontroller = require("../../controller/admincontroller/userdetailcontroller")
 const addproductcontroller= require("../../controller/admincontroller/addproductcontrolle")
+const upload = require("../../middlewares/multer/multer")
 const admin = require("../../models/admin/admin");
 
 router.get("/admin",adminController.adminLogin);
@@ -49,7 +50,12 @@ router.get("/active",adminusercontroller.active)
 router.get("/search",adminusercontroller.search)
 
 router.get("/page-form-product-3", addproductcontroller.page_form_product_3);
-router.get("/updatecategory",addproductcontroller.addcategory)
+router.get("/updatecategory",addproductcontroller.addlicense)
+router.get("/updatecategory1",addproductcontroller.addcategory)
+
+
+router.get("/updatebrand",addproductcontroller.addbrands)
+router.post("/save", upload.array('images',3),addproductcontroller.addproduct)
 
 
 

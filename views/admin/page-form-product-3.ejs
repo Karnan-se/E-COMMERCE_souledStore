@@ -12,7 +12,7 @@
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
             <a href="/dashboard" class="brand-wrap">
-                <img src="assets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
+                <img src="imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
@@ -102,10 +102,10 @@
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="assets/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                            <a class="dropdown-item text-brand" href="#"><img src="/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-cn.png" alt="Français">中国人</a>
                         </div>
                     </li>
                     <li class="dropdown nav-item">
@@ -130,50 +130,48 @@
                         <h2 class="content-title">Add New Product</h2>
                         <div>
                             <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
-                            <button class="btn btn-md rounded font-sm hover-up">Publich</button>
+                            <button class="btn btn-md rounded font-sm hover-up" onclick="save()">save</button>
                         </div>
                     </div>
+                    
                 </div>
                 <div class="col-lg-6">
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="mb-4">
                                 <label for="product_title" class="form-label">Product title</label>
-                                <input type="text" placeholder="Type here" class="form-control" id="product_title">
+                                <input type="text" placeholder="Type here" class="form-control" id="product_title" name="productname">
                             </div>
                             <div class="row gx-3">
                                 <div class="col-md-4  mb-3">
                                     <label for="product_sku" class="form-label">SKU</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_sku">
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_sku" name="stock">
                                 </div>
                                 <div class="col-md-4  mb-3">
                                     <label for="product_color" class="form-label">Color</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_color">
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_color" name="color">
                                 </div>
                                 <div class="col-md-4  mb-0 mt-4">
                                     <!-- size need to be drop dopwn -->
-                                    <select class="form-select">
+                                    <select class="form-select" name="size">
                                         <option value="null">select size</option>
-                                        <option>S</option>
-                                        <option>M</option>
-                                        <option>L</option>
-                                        <option>XL</option>
-                                        <option>XXL</option>
+                                        <option value="S">S</option>
+                                        <option value="M">M</option>
+                                        <option value="L">L</option>
+                                        <option value="XL">XL</option>
+                                        <option value="XXL">XXL</option>
                                     </select>
                                     
                                 </div>
                             </div>
-                            <div class="mb-4">
-                                <label for="product_brand" class="form-label">Brand</label>
-                                <input type="text" placeholder="Type here" class="form-control" id="product_brand">
-                            </div>
+                         
                         </div>
                     </div> <!-- card end// -->
                     <div class="card mb-4">
                         <div class="card-body">
                             <div>
                                 <label class="form-label">Description</label>
-                                <textarea placeholder="Type here" class="form-control" rows="4"></textarea>
+                                <textarea placeholder="Type here" class="form-control" rows="4" name="Description"></textarea>
                             </div>
                         </div>
                     </div> <!-- card end// -->
@@ -181,7 +179,7 @@
                         <div class="card-body">
                             <div>
                                 <label class="form-label">Images</label>
-                                <input class="form-control" type="file">
+                                <input class="form-control" type="file" name="Images" id="fileInput" multiple>
                             </div>
                         </div>
                     </div> <!-- card end// -->
@@ -191,18 +189,19 @@
                         <div class="card-body">
                             <div class="mb-4">
                                 <label class="form-label">Price</label>
-                                <input type="text" placeholder="Type here" class="form-control">
+                                <input type="text" placeholder="Type here" class="form-control" name="price">
                             </div>
                             <div class="mb-4">
-                                <label class="form-label">Status</label>
-                                <select class="form-select">
-                                    <option>Published</option>
-                                    <option>Draft</option>
+                                <label class="form-label">gender</label>
+                                <select class="form-select" name="gender">
+                                    <option disabled selected>gender</option>
+                                    <option value="true">Male</option>
+                                    <option value="false">Female</option>
                                 </select>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">Tags</label>
-                                <input type="text" placeholder="Type here" class="form-control">
+                                <input type="text" placeholder="Type here" class="form-control" name="tags">
                             </div>
                             <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Tech</a>
                             <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Mobile</a>
@@ -222,7 +221,7 @@
                                     <div class="form-group">
                                         <input type="text" id="categoryDescription" class="form-control mb-2" placeholder="Category Description">
                                     </div>
-                                    <button id="additionBtn" class="btn btn-primary">ADD</button>
+                                    <button id="additionBtn" class="btn btn-primary" onclick="updatecategory1()">ADD</button>
                                 </div>
                             </div>
                             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -239,56 +238,58 @@ document.addEventListener('DOMContentLoaded', function() {
         addCategoryBtn.textContent =(addCategoryBtn.textContent === '+ Add Category') ? '- Add Category' : '+ Add Category';
     });
 });
-
-
 </script>
+    <script>
+                             async function updatecategory1(){
+                                try {
+
+                                    console.log("function called")
+                                const categoryName=document.getElementById("categoryName").value
+                                console.log(categoryName);
+
+                                const response= await fetch(`/updatecategory1?generalcategory=${categoryName}`,{
+                                    method:"GET",
+
+                                })
+                                if (!response.ok){
+                                    throw new Error("error is occured")
+                                }
+                                console.log("success");
+                                location.reload()
+
+                             
+                                    
+                                } catch (error) {
+
+
+                                    console.log(error)
+                                    
+                                }
+
+
+                             }
+                           
+
+                        </script>
+</script>
+<% for(let i=0; i<newcategories.length; i++) {%>
 
 <div class="form-check " >
-    <input class="form-check-input" type="radio" value="" id="product-cat" name="Categories">
-    <label class="form-check-label" for="product-cat"> Shirt </label>
+    <input class="form-check-input" type="radio" value="<%= newcategories[i]._id %>" id="product-cat" name="Categories">
+    <label class="form-check-label" for="product-cat"><%= newcategories[i].categoryname %> </label>
 </div>
-<div class="form-check">
-    <input class="form-check-input" type="radio" value="" id="product-cat-1" name="Categories">
-    <label class="form-check-label" for="product-cat-1"> T-Shirt </label>
-</div>
-<div class="form-check">
-    <input class="form-check-input" type="radio" value="" id="product-cat-2" name="Categories">
-    <label class="form-check-label" for="product-cat-2"> Sneakers </label>
-</div>
-<div class="form-check">
-    <input class="form-check-input" type="radio" value="" id="product-cat-3" name="Categories">
-    <label class="form-check-label" for="product-cat-3"> Joggers </label>
-</div>
-<div class="form-check">
-    <input class="form-check-input" type="radio" value="" id="product-cat-4" name="Categories">
-    <label class="form-check-label" for="product-cat-4"> Vests </label>
-</div>
-<div class="form-check">
-    <input class="form-check-input" type="radio" value="" id="product-cat-5" name="Categories">
-    <label class="form-check-label" for="product-cat-5"> Knitwear </label>
-</div>
-<div class="form-check">
-    <input class="form-check-input" type="radio" value="" id="product-cat-8" name="Categories">
-    <label class="form-check-label" for="product-cat-8"> Shorts </label>
-</div>
-<div class="form-check">
-    <input class="form-check-input" type="radio" value="" id="product-cat-8" name="Categories">
-    <label class="form-check-label" for="product-cat-8"> top </label>
-</div>
-<div class="form-check">
-    <input class="form-check-input" type="radio" value="" id="product-cat-8" name="Categories">
-    <label class="form-check-label" for="product-cat-8"> jeans </label>
-</div>
+<% }%>
+
 
 
                 
-                    </div> <!-- card end// -->
+                    
                     <h5 class="mb-3">Licenced charectors</h5>
 
 
                     
                         <div class="container ml-5 mb-3">
-                            <button id="newCategoryBtn" class="btn btn-info" style="width: 100%;">+ Add New charectors</button>
+                            <button id="newCategoryBtn" class="btn btn-info" style="width: 100%;">+ Add charectors</button>
                             <div id="newCategoryFields" class="mt-3 d-none">
                                 <div class="form-group">
                                     <input type="text" id="newCategoryName" class="form-control mb-2" placeholder="New Category Name">
@@ -353,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <% for(let i=0; i< license.length; i++) {%>
                         
                         <div class="form-check">
-                        <input class="form-check-input" type="radio" value="" id="product-cat" name="subcategory">
+                        <input class="form-check-input" type="radio" value="<%= license[i]._id %>" id="product-cat" name="subcategory">
                         <label class="form-check-label" for="product-cat"><%= license[i].categoryname %> </label><br>
                         </div>
                     
@@ -361,6 +362,188 @@ document.addEventListener('DOMContentLoaded', function() {
                   
                     
             </div> <!-- card end// -->
+           
+            
+
+            
+<h5 class="mb-3">Brands</h5>
+<div class="container ml-5 mb-3">
+    <button id="newBrandBtn" class="btn btn-success" style="width: 100%;">+ Add Brands</button>
+    <div id="newBrandFields" class="mt-3 d-none">
+        <div class="form-group">
+            <input type="text" id="newbrand" class="form-control mb-2" placeholder="New Brand Name">
+        </div>
+        <div class="form-group">
+            <input type="text" id="newBrandDescription" class="form-control mb-2" placeholder="New Brand Description">
+        </div>
+        <button id="newBrandAdditionBtn" class="btn btn-primary" onclick="updateBrand()">ADD</button>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+       
+        const newBrandBtn = document.getElementById('newBrandBtn');
+        const newBrandFields = document.getElementById('newBrandFields');
+
+        newBrandBtn.addEventListener('click', function () {
+            newBrandFields.classList.toggle('d-none');
+            newBrandBtn.textContent = (newBrandBtn.textContent === '+ Add Brands') ? '- Add Brands' : '+ Add Brands';
+        });
+    });
+    </script>
+<script>
+    
+    async function updateBrand() {
+        try {
+            console.log("fucntion called")
+            const newBrandName =  document.getElementById("newbrand").value;
+            console.log(newBrandName);
+        
+            const response = await fetch(`/updatebrand?brandname=${newBrandName}`,{
+                method:"GET",
+
+            })
+           
+
+            if(!response.ok){
+                throw new Error("update brands have some error")
+            }else{
+
+                location.reload();
+            }
+            
+            console.log("Brand added successfully");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+</script>
+</script>
+<div>
+<% for(let i=0; i<brand.length; i++) {%>
+
+<div class="form-check " >
+    <input class="form-check-input" type="radio" value="<%= brand[i]._id %>" id="product-cat" name="brand-cat">
+    <label class="form-check-label" for="product-cat"><%= brand[i].name %> </label>
+</div>
+<% }%>
+
+<script>
+    
+//    async function save() {
+//         var formData = {};
+
+//         try {
+//             const fileInput = document.getElementById('fileInput');  
+// const formData = new FormData();
+
+//         for (let i = 0; i < fileInput.files.length; i++) {
+//             formData.append(images[${i}], fileInput.files[i]);
+//         }
+//         formData.productTitle = document.getElementById('product_title').value;
+//         formData.productSKU = document.getElementById('product_sku').value;
+//         formData.productColor = document.getElementById('product_color').value;
+
+//         formData.productSize = document.querySelector('select[name="size"]').value;
+//         formData.description = document.querySelector('textarea[name="Description"]').value;
+
+//         formData.images = formData
+
+//         formData.price = document.querySelector('input[name="price"]').value;
+//         formData.gender = document.querySelector('select[name="gender"]').value;
+//         formData.tags = document.querySelector('input[name="tags"]').value;
+
+//         formData.category = getRadioValue('Categories');
+//         formData.subcategory = getRadioValue('subcategory');
+//         formData.brand = getRadioValue('Categories');
+//         console.log(formData);
+
+//        const response = await fetch("/save",{
+//         method: 'POST',
+//         headers: {
+//             'Content-Type' : "application/json"
+//         },
+//         body:JSON.stringify(formData), 
+//        })
+
+//        if(!response.ok){
+//         throw new Error(`error`)
+//        }
+//        const data = await response.json();
+//        console.log(`success:`, data)
+
+//     } catch (error){
+//         console.error(error.message)
+//     }
+// }
+async function save() {
+  try {
+    var formData = new FormData();
+
+const fileInput = document.getElementById('fileInput');
+
+for (let i = 0; i < fileInput.files.length; i++) {
+  formData.append('images', fileInput.files[i]);
+}
+
+formData.append('productTitle', document.getElementById('product_title').value);
+formData.append('productSKU', document.getElementById('product_sku').value);
+formData.append('productColor', document.getElementById('product_color').value);
+formData.append('productSize', document.querySelector('select[name="size"]').value);
+formData.append('description', document.querySelector('textarea[name="Description"]').value);
+formData.append('price', document.querySelector('input[name="price"]').value);
+formData.append('gender', document.querySelector('select[name="gender"]').value);
+formData.append('tags', document.querySelector('input[name="tags"]').value);
+formData.append('category', getRadioValue('Categories'));
+formData.append('subcategory', getRadioValue('subcategory'));
+formData.append('brand', getRadioValue('Categories'));
+
+console.log(formData);
+
+const response = await fetch("/save", {
+  method: 'POST',
+  body: formData
+});
+
+if (!response.ok) {
+  throw new Error(`Error`);
+}
+
+const data = await response.json();
+console.log(`Success:`, data);
+
+
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+
+    function getRadioValue(name) {
+        var radioButtons = document.getElementsByName(name);
+        for (var i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+                return radioButtons[i].value;
+            }
+        }
+        
+        
+        return null; 
+    }
+    
+</script>
+
+  
+
+    
+
+
                 </div>
             </div>
         </section>

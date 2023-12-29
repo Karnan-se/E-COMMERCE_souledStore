@@ -9,6 +9,7 @@ app.use(express.static("public"));
 app.use("/css", express.static("public/css"))
 app.use("/js", express.static("public/js"))
 app.use(methodOverride('_method'))
+app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 const session= require("express-session");
 const mongoose= require("mongoose");

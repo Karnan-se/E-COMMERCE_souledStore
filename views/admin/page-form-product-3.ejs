@@ -272,13 +272,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         </script>
 </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <% for(let i=0; i<newcategories.length; i++) {%>
 
 <div class="form-check " >
     <input class="form-check-input" type="radio" value="<%= newcategories[i]._id %>" id="product-cat" name="Categories">
     <label class="form-check-label" for="product-cat"><%= newcategories[i].categoryname %> </label>
+    <i class="fas fa-edit ml-2 text-primary edit-category" data-category-id="<%= newcategories[i]._id %>"></i>
 </div>
 <% }%>
+<script src="/js/updateCategory.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const editCategoryIcons = document.querySelectorAll('.edit-category');
+        let selectedCategoryId;
+
+        editCategoryIcons.forEach(icon => {
+            icon.addEventListener('click', function () {
+                
+                selectedCategoryId = icon.dataset.categoryId;
+
+               
+                const editedCategoryName = prompt('Enter the new category name:', icon.previousElementSibling.textContent);
+
+                
+                if (editedCategoryName !== null) {
+                    
+                    icon.previousElementSibling.textContent = editedCategoryName;
+
+                    
+                    updateCategory(selectedCategoryId, editedCategoryName);
+                }
+            });
+        });
+    });
+
+  
+   
+    </script>
 
 
 
@@ -437,52 +468,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
     
-//    async function save() {
-//         var formData = {};
-
-//         try {
-//             const fileInput = document.getElementById('fileInput');  
-// const formData = new FormData();
-
-//         for (let i = 0; i < fileInput.files.length; i++) {
-//             formData.append(images[${i}], fileInput.files[i]);
-//         }
-//         formData.productTitle = document.getElementById('product_title').value;
-//         formData.productSKU = document.getElementById('product_sku').value;
-//         formData.productColor = document.getElementById('product_color').value;
-
-//         formData.productSize = document.querySelector('select[name="size"]').value;
-//         formData.description = document.querySelector('textarea[name="Description"]').value;
-
-//         formData.images = formData
-
-//         formData.price = document.querySelector('input[name="price"]').value;
-//         formData.gender = document.querySelector('select[name="gender"]').value;
-//         formData.tags = document.querySelector('input[name="tags"]').value;
-
-//         formData.category = getRadioValue('Categories');
-//         formData.subcategory = getRadioValue('subcategory');
-//         formData.brand = getRadioValue('Categories');
-//         console.log(formData);
-
-//        const response = await fetch("/save",{
-//         method: 'POST',
-//         headers: {
-//             'Content-Type' : "application/json"
-//         },
-//         body:JSON.stringify(formData), 
-//        })
-
-//        if(!response.ok){
-//         throw new Error(`error`)
-//        }
-//        const data = await response.json();
-//        console.log(`success:`, data)
-
-//     } catch (error){
-//         console.error(error.message)
-//     }
-// }
 async function save() {
   try {
     var formData = new FormData();

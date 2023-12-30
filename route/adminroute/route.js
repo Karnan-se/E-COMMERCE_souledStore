@@ -54,9 +54,10 @@ router.get("/updatecategory",addproductcontroller.addlicense)
 router.get("/updatecategory1",addproductcontroller.addcategory)
 
 
+
 router.get("/updatebrand",addproductcontroller.addbrands)
 router.post("/save", upload.array('images',3),addproductcontroller.addproduct)
-
+router.get("/updatecat",addproductcontroller.updatecategory)
 
 
 

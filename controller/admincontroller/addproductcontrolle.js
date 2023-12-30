@@ -4,6 +4,7 @@ const brands = require("../../models/addproduct/brand")
 const product = require("../../models/addproduct/addproduct")
 const path = require("path")
 const { fileURLToPath } = require("url")
+const { updateOne } = require("../../models/admin/admin")
 
 
 
@@ -138,5 +139,32 @@ let addproduct = async(req, res)=>{
     }
 }
 
+let updatecategory = async (req, res)=>{
 
-module.exports={page_form_product_3,addcategory,addlicense,addbrands,addproduct}
+    const {categoryId,categoryName }= req.query;
+    console.log(categoryId,categoryName)
+
+    var newcatergories = await categories.find()
+    var newlicense = await licensedcategories.find()
+    var newbrands =await brands.find()
+
+    if(newcatergories.length > 0){
+
+        const update= await categories.updateOne({_id:categoryId},{$set:{categoryname:categoryName}})
+        console.log("newcategories");
+    }else if(newlicense.length > 0){
+        const update= await newlicense.updateOne({_id:categoryId},{$set:{categoryname:categoryName}})
+
+        console.log("new license");
+        
+    }else if(newbrands.length > 0){
+        const update= await brands.updateOne({_id:categoryId},{$set:{name:categoryName}})
+
+        console.log("newbrands");
+        
+    }
+
+}
+
+
+module.exports={page_form_product_3,addcategory,addlicense,addbrands,addproduct, updatecategory}

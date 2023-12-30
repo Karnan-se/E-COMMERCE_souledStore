@@ -90,10 +90,42 @@ try {
 }
 let addproduct = async(req, res)=>{
     try {
-    //   console.log('body',req.body)
-    //   console.log('fies',req.files);
+  
     const images = req.files.map(file => file.filename);
     console.log(images);
+    const formdata=req.body;
+    const{productTitle,
+        productSKU,
+        productColor,
+        productSize,
+        description,
+        price,
+        gender,
+        tags,
+        category,
+        subcategory,
+        brand}= req.body
+
+
+    const newproducts = new product({
+
+        productname:productTitle,
+        stock:productSKU,
+        color:productColor,
+        size:productSize,
+        category:category,
+        license:subcategory,
+        brand:brand,
+        description:description,
+        images:images,
+        price:price,
+        tags:tags,
+        gender:gender
+
+    })
+
+    await newproducts.save()
+    console.log("new product saved")
     
     
         

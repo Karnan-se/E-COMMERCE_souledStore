@@ -425,6 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 </script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <div>
 <% for(let i=0; i<brand.length; i++) {%>
 
@@ -517,6 +518,15 @@ if (!response.ok) {
 
 const data = await response.json();
 console.log(`Success:`, data);
+
+swal({
+  title: "Saved!",
+  text: "The product have been Saved",
+  icon: "success",
+  button: "okay",
+}).then(()=>{
+    window.location.reload()
+})
 
 
   } catch (error) {

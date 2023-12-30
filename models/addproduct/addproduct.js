@@ -53,8 +53,8 @@ const addproduct = new mongoose.Schema({
         required:true
     },
     images: [{
-        data:Buffer,
-        contentType:String
+        type:String,
+        required:true
     }],
     price:{
         type:Number,

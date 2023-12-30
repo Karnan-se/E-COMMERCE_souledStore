@@ -386,10 +386,37 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         <div class="form-check">
                         <input class="form-check-input" type="radio" value="<%= license[i]._id %>" id="product-cat" name="subcategory">
-                        <label class="form-check-label" for="product-cat"><%= license[i].categoryname %> </label><br>
+                        <label class="form-check-label" for="product-cat"><%= license[i].categoryname %> </label>
+                        <i class="fas fa-edit ml-2 text-primary edit-category1" data-category-id="<%= license[i]._id %>"></i>
                         </div>
                     
                   <% } %>
+                  <script src="/js/updateCategory.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const editCategoryIcons = document.querySelectorAll('.edit-category1');
+        let selectedCategoryId;
+
+        editCategoryIcons.forEach(icon => {
+            icon.addEventListener('click', function () {
+                
+                selectedCategoryId = icon.dataset.categoryId;
+
+               
+                const editedCategoryName = prompt('Enter the new category name:', icon.previousElementSibling.textContent);
+
+                
+                if (editedCategoryName !== null) {
+                    
+                    icon.previousElementSibling.textContent = editedCategoryName;
+
+                    
+                    updateCategory(selectedCategoryId, editedCategoryName);
+                }
+            });
+        });
+    });
+    </script>
                   
                     
             </div> <!-- card end// -->
@@ -463,8 +490,35 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="form-check " >
     <input class="form-check-input" type="radio" value="<%= brand[i]._id %>" id="product-cat" name="brand-cat">
     <label class="form-check-label" for="product-cat"><%= brand[i].name %> </label>
+    <i class="fas fa-edit ml-2 text-primary edit-category2" data-category-id="<%= brand[i]._id %>"></i>
 </div>
 <% }%>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const editCategoryIcons = document.querySelectorAll('.edit-category2');
+        let selectedCategoryId;
+
+        editCategoryIcons.forEach(icon => {
+            icon.addEventListener('click', function () {
+                
+                selectedCategoryId = icon.dataset.categoryId;
+
+               
+                const editedCategoryName = prompt('Enter the new category name:', icon.previousElementSibling.textContent);
+
+                
+                if (editedCategoryName !== null) {
+                    
+                    icon.previousElementSibling.textContent = editedCategoryName;
+
+                    
+                    updateCategory(selectedCategoryId, editedCategoryName);
+                }
+            });
+        });
+    });
+    </script>
+
 
 <script>
     

@@ -141,19 +141,20 @@ let addproduct = async(req, res)=>{
 
 let updatecategory = async (req, res)=>{
 
+try {
     const {categoryId,categoryName }= req.query;
     console.log(categoryId,categoryName)
 
-    var newcatergories = await categories.find()
-    var newlicense = await licensedcategories.find()
-    var newbrands =await brands.find()
+    var newcatergories = await categories.find({_id:categoryId})
+    var newlicense = await licensedcategories.find({_id:categoryId})
+    var newbrands =await brands.find({_id:categoryId})
 
     if(newcatergories.length > 0){
 
         const update= await categories.updateOne({_id:categoryId},{$set:{categoryname:categoryName}})
         console.log("newcategories");
     }else if(newlicense.length > 0){
-        const update= await newlicense.updateOne({_id:categoryId},{$set:{categoryname:categoryName}})
+        const update= await licensedcategories.updateOne({_id:categoryId},{$set:{categoryname:categoryName}})
 
         console.log("new license");
         
@@ -163,7 +164,14 @@ let updatecategory = async (req, res)=>{
         console.log("newbrands");
         
     }
+    res.status(200).json({message:`updated successfully`})
 
+    
+} catch (error) {
+    console.log(error.message)
+    res.status(500).json({message:`internal error error`})
+    
+}
 }
 
 

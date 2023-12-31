@@ -207,13 +207,13 @@
                             <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Mobile</a>
                             <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Apple</a>
                             <hr>
-                            <h5 class="mb-3">Categories</h5>
+                            <h5 class="mb-3 text-brand text-center">Apparel Categories</h5>
 
 <!-- ivde aanu button -->
                             
                             <div class="container ml-5 mb-3 ">
 
-                                <button id="addCategoryBtn" class="btn btn-success " style="width: 100%;">+ Add Category</button s>
+                                <button id="addCategoryBtn" class="btn btn-brand " style="width: 100%;">+ Add Category</button s>
                                 <div id="categoryFields" class="mt-3 d-none">
                                     <div class="form-group">
                                         <input type="text" id="categoryName" class="form-control mb-2" placeholder="Category Name">
@@ -272,6 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         </script>
 </script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <% for(let i=0; i<newcategories.length; i++) {%>
 
@@ -281,6 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <i class="fas fa-edit ml-2 text-primary edit-category" data-category-id="<%= newcategories[i]._id %>"></i>
 </div>
 <% }%>
+<hr>
 <script src="/js/updateCategory.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -293,34 +295,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 selectedCategoryId = icon.dataset.categoryId;
 
                
-                const editedCategoryName = prompt('Enter the new category name:', icon.previousElementSibling.textContent);
+                Swal.fire({
+  title: 'Edit the brand Name',
+  input: 'text',
+  inputLabel: 'Your new category name',
+  inputValue: icon.previousElementSibling.textContent,
+  showCancelButton: true,
+  inputValidator: (value) => {
+    if (!value) {
+      return 'You need to write something!'
+    }
+  }
+}).then((result)=>{
+    if (result.isConfirmed && result.value) {
 
-                
-                if (editedCategoryName !== null) {
-                    
-                    icon.previousElementSibling.textContent = editedCategoryName;
+icon.previousElementSibling.textContent = result.value;
 
-                    
-                    updateCategory(selectedCategoryId, editedCategoryName);
-                }
+
+updateCategory(selectedCategoryId, result.value);
+    }
+
+})
+    
             });
         });
     });
-
-  
-   
     </script>
 
 
 
+
                 
                     
-                    <h5 class="mb-3">Licenced charectors</h5>
+                    <h5 class="mb-3 text-center text-warning">Heroic charecters</h5>
 
 
                     
                         <div class="container ml-5 mb-3">
-                            <button id="newCategoryBtn" class="btn btn-info" style="width: 100%;">+ Add charectors</button>
+                            <button id="newCategoryBtn" class="btn btn-brand" style="width: 100%;">+ Add charectors</button>
                             <div id="newCategoryFields" class="mt-3 d-none">
                                 <div class="form-group">
                                     <input type="text" id="newCategoryName" class="form-control mb-2" placeholder="New Category Name">
@@ -391,6 +403,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     
                   <% } %>
+                  <hr>
                   <script src="/js/updateCategory.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -403,20 +416,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 selectedCategoryId = icon.dataset.categoryId;
 
                
-                const editedCategoryName = prompt('Enter the new category name:', icon.previousElementSibling.textContent);
+                Swal.fire({
+  title: 'Edit the licensed charectors Name',
+  input: 'text',
+  inputLabel: 'Your new category name',
+  inputValue: icon.previousElementSibling.textContent,
+  showCancelButton: true,
+  inputValidator: (value) => {
+    if (!value) {
+      return 'You need to write something!'
+    }
+  }
+}).then((result)=>{
+    if (result.isConfirmed && result.value) {
 
-                
-                if (editedCategoryName !== null) {
-                    
-                    icon.previousElementSibling.textContent = editedCategoryName;
+icon.previousElementSibling.textContent = result.value;
 
-                    
-                    updateCategory(selectedCategoryId, editedCategoryName);
-                }
+
+updateCategory(selectedCategoryId, result.value);
+    }
+
+})
+    
             });
         });
     });
     </script>
+
                   
                     
             </div> <!-- card end// -->
@@ -424,9 +450,12 @@ document.addEventListener('DOMContentLoaded', function() {
             
 
             
-<h5 class="mb-3">Brands</h5>
+<h5 class="mb-3 text-center text-brand">Brands</h5>
 <div class="container ml-5 mb-3">
-    <button id="newBrandBtn" class="btn btn-success" style="width: 100%;">+ Add Brands</button>
+    <button id="newBrandBtn" class="btn btn-brand" style="width: 100%; border-radius: 8px; font-size: 16px; padding: 10px;">
+        + Add Brands
+    </button>
+    
     <div id="newBrandFields" class="mt-3 d-none">
         <div class="form-group">
             <input type="text" id="newbrand" class="form-control mb-2" placeholder="New Brand Name">
@@ -483,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 </script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <div>
 <% for(let i=0; i<brand.length; i++) {%>
 
@@ -493,27 +522,40 @@ document.addEventListener('DOMContentLoaded', function() {
     <i class="fas fa-edit ml-2 text-primary edit-category2" data-category-id="<%= brand[i]._id %>"></i>
 </div>
 <% }%>
+<hr>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const editCategoryIcons = document.querySelectorAll('.edit-category2');
         let selectedCategoryId;
 
         editCategoryIcons.forEach(icon => {
-            icon.addEventListener('click', function () {
+            icon.addEventListener('click',  function () {
                 
                 selectedCategoryId = icon.dataset.categoryId;
 
-               
-                const editedCategoryName = prompt('Enter the new category name:', icon.previousElementSibling.textContent);
+                 Swal.fire({
+  title: 'Edit the brand Name',
+  input: 'text',
+  inputLabel: 'Your new category name',
+  inputValue: icon.previousElementSibling.textContent,
+  showCancelButton: true,
+  inputValidator: (value) => {
+    if (!value) {
+      return 'You need to write something!'
+    }
+  }
+}).then((result)=>{
+    if (result.isConfirmed && result.value) {
 
-                
-                if (editedCategoryName !== null) {
-                    
-                    icon.previousElementSibling.textContent = editedCategoryName;
+icon.previousElementSibling.textContent = result.value;
 
-                    
-                    updateCategory(selectedCategoryId, editedCategoryName);
-                }
+
+updateCategory(selectedCategoryId, result.value);
+    }
+
+})
+    
             });
         });
     });
@@ -558,7 +600,7 @@ if (!response.ok) {
 const data = await response.json();
 console.log(`Success:`, data);
 
-swal({
+swal.fire({
   title: "Saved!",
   text: "The product have been Saved",
   icon: "success",

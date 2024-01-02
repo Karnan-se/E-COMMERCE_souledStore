@@ -54,14 +54,7 @@ let page_products_grid_2 = async(req, res)=>{
         console.log(error)
     }
 }
-let page_categories = async(req, res)=>{
-   try {
-    res.render("admin/page-categories.ejs")
-    
-   } catch (error) {
-    
-   }
-}
+
 let page_orders_1 = async(req, res)=>{
     try {
         res.render("admin/page-orders-1.ejs")
@@ -243,7 +236,6 @@ module.exports={adminLogin,
     page_products_list,
     page_products_grid,
     page_products_grid_2,
-    page_categories,
     page_orders_1,
     page_orders_2,
     page_orders_detail,

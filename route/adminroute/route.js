@@ -6,6 +6,7 @@ const adminpatchcontroller= require("../../controller/admincontroller/adminpatch
 const adminusercontroller = require("../../controller/admincontroller/userdetailcontroller")
 const addproductcontroller= require("../../controller/admincontroller/addproductcontrolle")
 const upload = require("../../middlewares/multer/multer")
+const categories = require("../../controller/admincontroller/category")
 const admin = require("../../models/admin/admin");
 
 router.get("/admin",adminController.adminLogin);
@@ -15,7 +16,7 @@ router.get("/admin", adminController.adminLogin);
 router.get("/page-products-list", adminController.page_products_list);
 router.get("/page-products-grid", adminController.page_products_grid);
 router.get("/page-products-grid-2", adminController.page_products_grid_2);
-router.get("/page-categories", adminController.page_categories);
+
 router.get("/page-orders-1", adminController.page_orders_1);
 router.get("/page-orders-2", adminController.page_orders_2);
 router.get("/page-orders-detail", adminController.page_orders_detail);
@@ -58,6 +59,9 @@ router.get("/updatecategory1",addproductcontroller.addcategory)
 router.get("/updatebrand",addproductcontroller.addbrands)
 router.post("/save", upload.array('images',3),addproductcontroller.addproduct)
 router.get("/updatecat",addproductcontroller.updatecategory)
+
+
+router.get("/page-categories", categories.page_categories);
 
 
 

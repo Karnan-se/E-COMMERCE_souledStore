@@ -62,7 +62,7 @@ router.get("/updatecat",addproductcontroller.updatecategory)
 
 
 router.get("/page-categories", categories.page_categories);
-
+router.get("/blockproduct",categories.blockproduct)
 
 
 module.exports=router;

@@ -147,8 +147,8 @@
                         <div class="col-md-3">
                             <form id="categoryForm">
                                 <div class="mb-4">
-                                    <label for="product_name" class="form-label">Name</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" />
+                                    <label for="product_name" class="form-label ">Name</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="input" class="product_name" />
                                 </div>
 
                                 <div class="mb-4 ">
@@ -189,71 +189,123 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <% for(var i=0;i<cat.length;i++) {%>
+                                        
+                                            <% for(var i=0;i<newcategories.length;i++) {%>
+                                                <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="input" />
+                                                    <input class="form-check-input" type="checkbox" value=""  />
                                                 </div>
                                             </td>
                                             <td></td>
-                                            <td><b>Men clothes</b></td>
-                                            <td>Men clothes</td>
-                                            <td>/men</td>
+                                            <td class="editable-cell<%= i %>"><b> <%= newcategories[i].categoryname %></b></td>
+                                            <td><span><%= newcategories[i].categoryDescription %></span></td>                                       
+                                            <td><span class="badge rounded-pill <%= newcategories[i].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= newcategories[i].isActive==true?"Active" : "blocked"%></span></td>
                                             <td>1</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
                                                     <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item block" >Block</a>
-                                                        <a class="dropdown-item editCategoryButton" >Edit info</a>
+                                                        <a class="dropdown-item block" href="/blockproduct?userId=<%= newcategories[i]._id %>"><%= newcategories[i].isActive==true? "block":"Activate" %></a>
+                                                        <input type="text" value="<%= newcategories[i]._id %>" id="userid<%= i%>" hidden>
+                                                        <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
                                                         <a class="dropdown-item text-danger delete">Delete</a>
                                                     </div>
                                                 </div> <!-- dropdown //end -->
                                             </td>
                                         </tr>
-                                        <%}%>
+                                        <%} %>
+                                    
+                                        <script src="/js/updateCategory.js"></script>
                                         <script>
+                                              
                                             document.addEventListener("DOMContentLoaded", function () {
-    const categoryForm = document.getElementById("categoryForm");
-    const editCategoryButton = document.querySelector(".editCategoryButton");
-    const categorySubmitButton = document.getElementById("categorySubmit");
-
-    editCategoryButton.addEventListener("click", function () {
-     categorySubmitButton.textContent = "Edit Category";
-     categorySubmitButton.classList.add("bg-success")
-                        })
-                    })
+                                                const editButtons = document.querySelectorAll(".editCategoryButton");
+                                                
+                                                
                                             
-                                          
+                                                editButtons.forEach(function (button) {
+                                                    button.addEventListener("click", function () {
+                                                        const dataIndex = button.getAttribute("data-index");
+                                                        const editableCell = document.querySelector(`.editable-cell${dataIndex}`);
+                                         
+                                                        
+                                                        
+                                                        if (editableCell) {
+                                                            const inputField = document.createElement("input");
+                                                            inputField.type = "text";
+                                                            inputField.value = editableCell.textContent.trim();
 
 
+                                                            
+                                            
+                                                            editableCell.innerHTML = inputField.outerHTML;
+                                                            
+                                            
+                                                            const newInputField = editableCell.querySelector("input");
+                                                            if (newInputField) {
+                                                                newInputField.focus();
+                                                                const userId =document.getElementById(`userid${dataIndex}`).value;
+                                                                console.log(userId);
+                                                                
+                                                                
+                                                                
 
+                                                                newInputField.addEventListener("keydown", function(event) {
+                                                                    if(event.key ==="Enter") {
+                                                                         updateCategory(userId, newInputField.value).then(()=>{
+                                                                            location.reload()
+                                                                         })
+
+                                                                         
+                                                                         
+                                                                    }
+                                                                })
+                                                            }
+                                                        } else {
+                                                            console.error("Editable cell not found for index: ", dataIndex);
+                                                        }
+                                                    });
+                                                });
+                                            });
+
+
+                                           
+                     
+                                
                                             </script>
-                                        
-
-
-                                        
+                                            
+                                             <% for(var i=0;i<newcategories.length;i++) {%>
+                                                <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" />
+                                                    <input class="form-check-input" type="checkbox" value=""  />
                                                 </div>
                                             </td>
-                                            <td>8</td>
-                                            <td><b>Interiors</b></td>
-                                            <td>Interiors</td>
-                                            <td>/interior</td>
-                                            <td>8</td>
+                                            <td></td>
+                                            <td class="editable-cell<%= i %>"><b> <%= newcategories[i].categoryname %></b></td>
+                                            <td><span><%= newcategories[i].categoryDescription %></span></td>                                       
+                                            <td><span class="badge rounded-pill <%= newcategories[i].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= newcategories[i].isActive==true?"Active" : "blocked"%></span></td>
+                                            <td>1</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
                                                     <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item" id="block">block</a>
-                                                        <a class="dropdown-item" id="edit">Edit info</a>
-                                                        <a class="dropdown-item text-danger"  id="delete">Delete</a>
+                                                        <a class="dropdown-item block" href="/blockproduct?userId=<%= newcategories[i]._id %>"><%= newcategories[i].isActive==true? "block":"Activate" %></a>
+                                                        <input type="text" value="<%= newcategories[i]._id %>" id="userid<%= i%>" hidden>
+                                                        <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
+                                                        <a class="dropdown-item text-danger delete">Delete</a>
                                                     </div>
                                                 </div> <!-- dropdown //end -->
                                             </td>
+                                        </tr>
+                                        <%} %>
+                                            
+                                       
+
+
+                                        
+                                            
                                         </tr>
                                     </tbody>
                                 </table>

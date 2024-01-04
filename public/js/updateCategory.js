@@ -8,6 +8,9 @@ async function updateCategory(categoryId, categoryName) {
         if (!response.ok) {
             throw new Error("Error updating category");
         }
+        console.log(response)
+            
+            
 
         console.log("Category updated successfully");
     } catch (error) {

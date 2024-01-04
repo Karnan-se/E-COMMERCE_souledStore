@@ -7,7 +7,6 @@ const addproduct = new mongoose.Schema({
     productid:{
         type:String,
         default: uuidv4(),
-        unique: true,
         required: false,
         
     },
@@ -33,19 +32,19 @@ const addproduct = new mongoose.Schema({
     category:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'categories',
-        required: true
+        required: false
     },
 
     license:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'license',
-        required:true
+        required:false
     },
 
     brand:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'brand',
-        required:true
+        required:false
     },
 
     description:{
@@ -68,6 +67,11 @@ const addproduct = new mongoose.Schema({
     gender:{
         type:Boolean,
         required:true
+    },
+    createdat:{
+        type: Date,
+        default:Date.now,
+        required:false
     }
 })
 

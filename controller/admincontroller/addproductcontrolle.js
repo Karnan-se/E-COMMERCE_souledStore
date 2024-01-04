@@ -95,7 +95,7 @@ let addproduct = async(req, res)=>{
     const images = req.files.map(file => file.filename);
     console.log(images);
     const formdata=req.body;
-    const{productTitle,
+    const  {productTitle,
         productSKU,
         productColor,
         productSize,
@@ -107,8 +107,10 @@ let addproduct = async(req, res)=>{
         subcategory,
         brand}= req.body
 
+        console.log(formdata);
 
-    const newproducts = new product({
+
+    const newproducts =  new product({
 
         productname:productTitle,
         stock:productSKU,
@@ -124,8 +126,9 @@ let addproduct = async(req, res)=>{
         gender:gender
 
     })
+    console.log(newproducts)
 
-    await newproducts.save()
+    newproducts.save()
     console.log("new product saved")
     
     
@@ -164,6 +167,7 @@ try {
         console.log("newbrands");
         
     }
+    // res.json({update})
     res.status(200).json({message:`updated successfully`})
 
     

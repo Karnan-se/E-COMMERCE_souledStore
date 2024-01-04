@@ -141,32 +141,46 @@
                     <input type="text" placeholder="Search Categories" class="form-control bg-white">
                 </div>
             </div>
+
+
+
+
+
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form id="categoryForm">
+                            <form id="categoryForm" method="post" action="/addcategory">
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label ">Name</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="input" class="product_name" />
+                                    <input type="text" placeholder="Type here" class="form-control" id="input" class="product_name" name="input" />
                                 </div>
 
                                 <div class="mb-4 ">
                                     <label class="form-label">category</label>
-                                    <select class="form-select">
-                                        <option>Apparel category</option>
-                                        <option>Hero category</option>
-                                        <option>Brands</option>
+                                    <select class="form-select" name="category">
+                                        <option value="apparel">Apparel category</option>
+                                        <option value="hero">Hero category</option>
+                                        <option value="Brands">Brands</option>
                                     </select>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
-                                    <textarea placeholder="Type here" class="form-control"></textarea>
+                                    <textarea placeholder="Type here" class="form-control" name="textarea"></textarea>
                                 </div>
                                 <div class="d-grid">
-                                    <button class="btn btn-primary" id="categorySubmit">Create category</button>
+                                    <button class="btn btn-primary" id="categorySubmit" type="submit">Create category</button>
                                 </div>
                             </form>
+                            <script>
+
+
+
+
+
+
+
+                            </script>
 <!-- focus---------------------------------------- -->
 
                         </div>
@@ -199,7 +213,7 @@
                                             </td>
                                             <td></td>
                                             <td class="editable-cell<%= i %>"><b> <%= newcategories[i].categoryname %></b></td>
-                                            <td><span><%= newcategories[i].categoryDescription %></span></td>                                       
+                                            <td><span><%= newcategories[i].categoryname=true?"Apparel categories":"nil" %></span></td>                                       
                                             <td><span class="badge rounded-pill <%= newcategories[i].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= newcategories[i].isActive==true?"Active" : "blocked"%></span></td>
                                             <td>1</td>
                                             <td class="text-end">
@@ -274,8 +288,8 @@
                      
                                 
                                             </script>
-                                            
-                                             <% for(var i=0;i<newcategories.length;i++) {%>
+
+                                             <% for(var i=0;i<lic.length;i++) {%>
                                                 <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
@@ -283,16 +297,16 @@
                                                 </div>
                                             </td>
                                             <td></td>
-                                            <td class="editable-cell<%= i %>"><b> <%= newcategories[i].categoryname %></b></td>
-                                            <td><span><%= newcategories[i].categoryDescription %></span></td>                                       
-                                            <td><span class="badge rounded-pill <%= newcategories[i].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= newcategories[i].isActive==true?"Active" : "blocked"%></span></td>
+                                            <td class="editable-cell<%= i %>"><b> <%= lic[i].categoryname %></b></td>
+                                            <td><span><%= lic[i].categoryname=true? "licensed caterctors" :"nill" %></span></td>                                       
+                                            <td><span class="badge rounded-pill <%= lic[i].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= lic[i].isActive==true?"Active" : "blocked"%></span></td>
                                             <td>1</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
                                                     <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item block" href="/blockproduct?userId=<%= newcategories[i]._id %>"><%= newcategories[i].isActive==true? "block":"Activate" %></a>
-                                                        <input type="text" value="<%= newcategories[i]._id %>" id="userid<%= i%>" hidden>
+                                                        <a class="dropdown-item block" href="/blockproduct?userId=<%= lic[i]._id %>"><%= lic[i].isActive==true? "block":"Activate" %></a>
+                                                        <input type="text" value="<%= lic[i]._id %>" id="userid<%= i%>" hidden>
                                                         <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
                                                         <a class="dropdown-item text-danger delete">Delete</a>
                                                     </div>
@@ -300,6 +314,32 @@
                                             </td>
                                         </tr>
                                         <%} %>
+
+                                        <% for(var i=0;i<brand.length;i++) {%>
+                                            <tr>
+                                        <td class="text-center">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""  />
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                        <td class="editable-cell<%= i %>"><b> <%= brand[i].name %></b></td>
+                                        <td><span><%= brand[i].name=true? "branded category":"new cat" %></span></td>                                       
+                                        <td><span class="badge rounded-pill <%= brand[i].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= brand[i].isActive==true?"Active" : "blocked"%></span></td>
+                                        <td>1</td>
+                                        <td class="text-end">
+                                            <div class="dropdown">
+                                                <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item block" href="/blockproduct?userId=<%= brand[i]._id %>"><%= brand[i].isActive==true? "block":"Activate" %></a>
+                                                    <input type="text" value="<%= brand[i]._id %>" id="userid<%= i%>" hidden>
+                                                    <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
+                                                    <a class="dropdown-item text-danger delete">Delete</a>
+                                                </div>
+                                            </div> <!-- dropdown //end -->
+                                        </td>
+                                    </tr>
+                                    <%} %>
                                             
                                        
 

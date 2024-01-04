@@ -16,15 +16,6 @@ let page_categories = async(req, res)=>{
     }
  }
 
- let editcategoroies = async(req, res)=>{
-    try {
-
-
-        
-    } catch (error) {
-        
-    }
- }
  let blockproduct =async(req, res)=>{
     try {
 
@@ -80,9 +71,34 @@ let page_categories = async(req, res)=>{
     }
  }
 
+ let createcategory = async(req, res)=>{
+
+try {
+
+    const{input,category,textarea} = req.body;
+    if (category =="apparel"){
+       await categories.create({categoryname:input})
+ 
+    } else if(category == "hero") {
+     await license.create({categoryname:input})
+    }else if(category == "brands") {
+      await brands.create({name:input})
+    }
+ 
+    res.redirect("/page-categories")
+ 
+  
+ 
+    
+} catch (error) {
+    console.log(error.message)
+    
+}
+ }
 
 
 
 
 
- module.exports={page_categories, blockproduct}
+
+ module.exports={page_categories, blockproduct,createcategory}

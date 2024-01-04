@@ -62,7 +62,8 @@ router.get("/updatecat",addproductcontroller.updatecategory)
 
 
 router.get("/page-categories", categories.page_categories);
-router.get("/blockproduct",categories.blockproduct)
+router.get("/blockproduct",categories.blockproduct);
+router.post("/addcategory",categories.createcategory)
 
 
 module.exports=router;

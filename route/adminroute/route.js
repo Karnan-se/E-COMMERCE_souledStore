@@ -5,15 +5,17 @@ const adminPostcontroller = require("../../controller/admincontroller/adminpostC
 const adminpatchcontroller= require("../../controller/admincontroller/adminpatchController")
 const adminusercontroller = require("../../controller/admincontroller/userdetailcontroller")
 const addproductcontroller= require("../../controller/admincontroller/addproductcontrolle")
+const productlist = require("../../controller/admincontroller/productlist")
 const upload = require("../../middlewares/multer/multer")
 const categories = require("../../controller/admincontroller/category")
 const admin = require("../../models/admin/admin");
 
 router.get("/admin",adminController.adminLogin);
 router.get("/admindashboard",adminController.admindashboard)
+router.get("/dashboard",adminController.admindashboard)
 router.get("/admin", adminController.adminLogin);
 
-router.get("/page-products-list", adminController.page_products_list);
+
 router.get("/page-products-grid", adminController.page_products_grid);
 router.get("/page-products-grid-2", adminController.page_products_grid_2);
 
@@ -64,6 +66,9 @@ router.get("/updatecat",addproductcontroller.updatecategory)
 router.get("/page-categories", categories.page_categories);
 router.get("/blockproduct",categories.blockproduct);
 router.post("/addcategory",categories.createcategory)
+
+router.get("/page-products-list", productlist.page_products_list);
+router.get("/productblock", productlist.productblock);
 
 
 module.exports=router;

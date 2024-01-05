@@ -72,6 +72,11 @@ const addproduct = new mongoose.Schema({
         type: Date,
         default:Date.now,
         required:false
+    },
+    isActive:{
+        type:Boolean,
+        default:true,
+        required:false
     }
 })
 

@@ -29,15 +29,7 @@ let admindashboard = async(req, res)=>{
         
     }
 }
-let page_products_list = async(req, res)=>{
-    try {
-        res.render("admin/page-products-list.ejs")
-        
-    } catch (error) {
-        console.log(error);
-        
-    }
-}
+
 
 let page_products_grid = async(req, res)=>{
     try {
@@ -233,7 +225,6 @@ let resetpassword = async(req, res)=>{
 
 module.exports={adminLogin, 
     admindashboard, 
-    page_products_list,
     page_products_grid,
     page_products_grid_2,
     page_orders_1,

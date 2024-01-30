@@ -82,6 +82,14 @@ let productdelete= async(req, res)=>{
     }
 
 }
+let productedit = async(req, res)=>{
+    try {
+        
+        
+    } catch (error) {
+        
+    }
+}
 
 
 module.exports = {page_products_list,productblock}

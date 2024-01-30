@@ -11,20 +11,15 @@ let page_categories = async(req, res)=>{
         const newbrands = await brands.find()
         let message = req.session.error;
         let warning = req.session.warning;
-        console.log(warning)
+        
 
         if(message){
-            
-            res.render("admin/page-categories.ejs",{newcategories,brand:newbrands,lic:newlicense,message})
             delete req.session.error;
-
-         } else if(warning){
-                res.render("admin/page-categories.ejs",{newcategories,brand:newbrands,lic:newlicense,warning})
-                delete req.session.warning;
-            
-            
+            res.render("admin/page-categories.ejs",{newcategories,brand:newbrands,lic:newlicense,message})
+           
 
         }else{
+            delete req.session.error
             
             res.render("admin/page-categories.ejs",{newcategories,brand:newbrands,lic:newlicense})
 
@@ -99,12 +94,11 @@ let page_categories = async(req, res)=>{
 try {
 
     const{input,category,textarea} = req.body;
-    console.log(`${input}`)
+    console.log(`${input}`)  
     if (category =="apparel"){
        const newproduct= await categories.findOne({categoryname:input})
-
-
        if(newproduct){
+
         req.session.error =true;
         res.redirect("/page-categories")
        }else{
@@ -114,11 +108,9 @@ try {
        console.log("category created for apparel")
        res.redirect("/page-categories")
        }
-        
-       
- 
+
     } else if(category == "hero") {
-        const newproduct = await categories.findOne({categoryname:input})
+        const newproduct = await license.findOne({categoryname:input})
         if(newproduct){
            req.session.error=true;
            res.redirect("/page-categories")
@@ -126,13 +118,12 @@ try {
         }else{
             delete req.session.error;
                 await license.create({categoryname:input})
-                console.log("category created")
-                res.redirect("/page-categories")
-
+                 console.log("category created")
+                    res.redirect("/page-categories")
             }   
       
     }else if(category == "Brands") {
-        const newproduct = await categories.findOne({name:input})
+        const newproduct = await brands.findOne({name:input})
 
         if(newproduct){
            req.session.error=true;
@@ -140,7 +131,7 @@ try {
 
         }else{
             delete req.session.error
-                await license.create({name:input})
+                await brands.create({name:input})
                 console.log("category created")
                 res.redirect("/page-categories")
 
@@ -154,66 +145,81 @@ try {
 }
  }
 
-
-
  let laodcategory = async(req, res)=>{
+    try {
+        const selectedcategory = req.query;
 
-    const selectedcategory = req.query;
-
-    console.log(selectedcategory);
-    if(selectedcategory.changeCategory == "hero"){
-
-        const data = await license.find({})
-        console.log(data)
-        const description = "Hero category"
-        res.status(200).json({data, description})
-    }else if (selectedcategory.changeCategory =="category"){
-        console.log("category");
-        const data = await categories.find({})
-        console.log(data)
-        const description = "Apparel category"
-        res.status(200).json({data, description})
-    } else if(selectedcategory.changeCategory =="brand"){
-        console.log("brand");
-        const data = await brands.find({})
-        console.log(data)
-        const description = "Brands"
-        res.status(200).json({data, description})
-    }else if(selectedcategory.changeCategory == "all"){
-        const data = "reload"
-        console.log(data)
-        res.status(200).json(data)
-       
+        console.log(selectedcategory);
+        if(selectedcategory.changeCategory == "hero"){
+    
+            const data = await license.find({})
+            console.log(data)
+            const description = "Hero category"
+            res.status(200).json({data, description})
+        }else if (selectedcategory.changeCategory =="category"){
+            console.log("category");
+            const data = await categories.find({})
+            console.log(data)
+            const description = "Apparel category"
+            res.status(200).json({data, description})
+        } else if(selectedcategory.changeCategory =="brand"){
+            console.log("brand");
+            const data = await brands.find({})
+            console.log(data)
+            const description = "Brands"
+            res.status(200).json({data, description})
+        }else if(selectedcategory.changeCategory == "all"){
+            const data = "reload"
+            console.log(data)
+            res.status(200).json(data)
+           
+        }
+     
+        
+    } catch (error) {
+        console.log(error.message)
+        
     }
- }
+}
+
+
 
  let deleteproduct = async(req, res)=>{
-    const {userId}= req.query
-    console.log(userId);
-
-    const newcategories= await categories.findOne({_id:userId})
-    const newlicense= await license.findOne({_id:userId})
-    const newbrands = await brands.findOne({_id:userId})
-if(newcategories){
-    await categories.deleteOne({_id:userId})
-    console.log("product deleted from categories")
+    try {
+        const {userId}= req.query
+        console.log(userId);
     
-}else if(newlicense){
-    await license.deleteOne({_id:userId})
-    console.log("product deleted from licese")
+        const newcategories= await categories.findOne({_id:userId})
+        const newlicense= await license.findOne({_id:userId})
+        const newbrands = await brands.findOne({_id:userId})
+    if(newcategories){
+        await categories.deleteOne({_id:userId})
+        console.log("product deleted from categories")
+        
+    }else if(newlicense){
+        await license.deleteOne({_id:userId})
+        console.log("product deleted from licese")
+        
     
-
-}else if(newbrands){
-    await brands.deleteOne({_id:userId})
-    console.log("product deleted from brand")
-  
+    }else if(newbrands){
+        await brands.deleteOne({_id:userId})
+        console.log("product deleted from brand")
+      
+    }
+    req.session.warning=true;
+    res.redirect("/page-categories")
+    
+        
+     
+    
+    
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
 }
-req.session.warning=true;
-res.redirect("/page-categories")
-
-    
- }
-
+ 
 
 
 

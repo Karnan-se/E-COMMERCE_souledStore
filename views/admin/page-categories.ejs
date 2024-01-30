@@ -24,19 +24,7 @@
 
     <% } %>
 
-    <% if ( typeof warning !== "undefined") {%>
-        <script>
-            swal.fire({
-                title:"Warning",
-                text:" Are you sure want to delete",
-                icon: "warning",
-                confirmButtonText: "Ok"
 
-            })
-            </script>
-
-
-        <% }%>
 
 <body>
     <div class="screen-overlay"></div>
@@ -61,7 +49,7 @@
                         <span class="text">Products</span>
                     </a>
                     <div class="submenu">
-                        <a href="/page-products-list">Product List</a>
+                         <a href="/page-products-list">Add Product</a>
                         <a href="/page-products-grid">Product grid</a>
                         <a href="/page-products-grid-2">Product grid 2</a>
                         <a href="/page-categories" class="active">Categories</a>
@@ -231,7 +219,9 @@
                             <a class="dropdown-item block" href="/blockproduct?userId=${item._id}">${item.isActive ? 'Block' : 'Activate'}</a>
                             <input type="text" value="${item._id}" hidden>
                             <a class="dropdown-item editCategoryButton" data-index="${item._id}">Edit info</a>
-                            <a class="dropdown-item text-danger delete" href="/deleteproduct?userId=${item._id}">Delete</a>
+                            <a class="dropdown-item text-danger delete" data-userid="${item._id}">Delete</a>
+                            
+                           
                         </div>
                     </div>
                 </td>
@@ -329,7 +319,8 @@
                                                         <a class="dropdown-item block" href="/blockproduct?userId=<%= newcategories[i]._id %>"><%= newcategories[i].isActive==true? "block":"Activate" %></a>
                                                         <input type="text" value="<%= newcategories[i]._id %>" id="userid<%= i%>" hidden>
                                                         <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
-                                                        <a class="dropdown-item text-danger delete" href="/deleteproduct?userId=<%= newcategories[i]._id %>">Delete</a>
+                                                        <a class="dropdown-item text-danger delete" data-userid="<%= newcategories[i]._id %>" href="#">Delete</a>
+                                
                                                     </div>
                                                 </div> <!-- dropdown //end -->
                                             </td>
@@ -414,7 +405,8 @@
                                                         <a class="dropdown-item block" href="/blockproduct?userId=<%= lic[i]._id %>"><%= lic[i].isActive==true? "block":"Activate" %></a>
                                                         <input type="text" value="<%= lic[i]._id %>" id="userid<%= i%>" hidden>
                                                         <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
-                                                        <a class="dropdown-item text-danger delete"  href="/deleteproduct?userId=<%= lic[i]._id %>">Delete </a>
+                                                        <a class="dropdown-item text-danger delete" data-userid="<%= lic[i]._id %>" href="#">Delete</a>
+                                                
                                                     </div>
                                                 </div> <!-- dropdown //end -->
                                             </td>
@@ -440,19 +432,49 @@
                                                     <a class="dropdown-item block" href="/blockproduct?userId=<%= brand[i]._id %>"><%= brand[i].isActive==true? "block":"Activate" %></a>
                                                     <input type="text" value="<%= brand[i]._id %>" id="userid<%= i%>" hidden>
                                                     <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
-                                                    <a class="dropdown-item text-danger delete"  href="/deleteproduct?userId=<%= brand[i]._id %>">Delete</a>
+                                                    <a class="dropdown-item text-danger delete" data-userid="<%= brand[i]._id %>" href="#">Delete</a>
                                                 </div>
                                             </div> <!-- dropdown //end -->
                                         </td>
                                     </tr>
                                     <%} %>
+            <script>
+     document.addEventListener('DOMContentLoaded', function() {
+    const tableBody = document.querySelector('#resultContainer tbody');
+
+   
+    tableBody.addEventListener('click', function(event) {
+        const target = event.target;
+
+    
+        if (target.classList.contains('delete')) {
+            event.preventDefault();
+
+            const userId = target.getAttribute('data-userid');
+
+
+               
+                swal.fire({
+                    title: "Warning",
+                    text: "Are you sure want to delete",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Ok",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       
+                        window.location.href = `/deleteproduct?userId=${userId}`;
+                    }
+                });
+            
+        }
+    })
+})
+
+                                        </script>
                                             
                                        
-
-
-                                        
-                                            
-                                        </tr>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>

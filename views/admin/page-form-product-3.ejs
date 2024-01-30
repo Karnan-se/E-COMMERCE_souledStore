@@ -144,9 +144,35 @@
                             </div>
                             <div class="row gx-3">
                                 <div class="col-md-4  mb-3">
-                                    <label for="product_sku" class="form-label">SKU</label>
+                                    <label for="product_sku" class="form-label">stock</label>
                                     <input type="number" placeholder="Type here" class="form-control" id="product_sku" name="stock">
+                                    <div id="error_message" style="color: red;"></div>
                                 </div>
+                                <script>
+                                     document.addEventListener("DOMContentLoaded", function () {
+                                    const stockValue =document.getElementById("product_sku");
+                                    const errorMessage = document.getElementById("error_message");
+
+                                     function validate(){
+                                        const enteredValue = parseFloat(stockValue.value)
+
+                                        if(enteredValue<=0){
+                                            errorMessage.textContent="stock cannot be less than zero"
+                                            setTimeout(()=>{
+                                                errorMessage.textContent=""
+                                            },3000)
+                                        }else{
+                                           
+                                                error.textContent =""
+
+                                        
+                                            
+                                        }
+                                    }
+                                 stockValue.addEventListener("input", validate)
+                                 stockValue.addEventListener("change", validate)
+                                })
+                                    </script>
                                 <div class="col-md-4  mb-3">
                                     <label for="product_color" class="form-label">Color</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="product_color" name="color">
@@ -560,11 +586,52 @@ updateCategory(selectedCategoryId, result.value);
         });
     });
     </script>
+    <style>
+        .error {
+            border: 1px solid red
+        }
+        </style>
 
 
 <script>
+
+    function validateForm(){
+        const stockValue = parseFloat(document.getElementById('product_sku').value)
+
+        if(stockValue <=0 ){
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Stock cannot be less than zero.',
+            });
+            return false;
+        }
+        const productTitle = document.getElementById('product_title').value;
+        const productColor = document.getElementById('product_color').value;
+        const productSize = document.querySelector('select[name="size"]').value;
+        const description = document.querySelector('textarea[name="Description"]').value;
+        const price = document.querySelector('input[name="price"]').value;
+        const gender = document.querySelector('select[name="gender"]').value;
+        const tags = document.querySelector('input[name="tags"]').value;
+        
+        if (!productTitle || !productColor || !productSize || !description || !price || !gender || !tags) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please fill in all required fields.',
+            });
+            return false;
+ 
+        }
+
+        return true;
+    }
+
+
+    
     
 async function save() {
+    if(validateForm()){
   try {
     var formData = new FormData();
 
@@ -613,6 +680,7 @@ swal.fire({
   } catch (error) {
     console.error(error.message);
   }
+}
 }
 
 

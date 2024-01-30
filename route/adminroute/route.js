@@ -58,6 +58,7 @@ router.get("/updatecategory1",addproductcontroller.addcategory)
 
 
 
+
 router.get("/updatebrand",addproductcontroller.addbrands)
 router.post("/save", upload.array('images',3),addproductcontroller.addproduct)
 router.get("/updatecat",addproductcontroller.updatecategory)
@@ -66,9 +67,13 @@ router.get("/updatecat",addproductcontroller.updatecategory)
 router.get("/page-categories", categories.page_categories);
 router.get("/blockproduct",categories.blockproduct);
 router.post("/addcategory",categories.createcategory)
+router.get("/loadcategory",categories.laodcategory)
+router.get("/deleteproduct",categories.deleteproduct)
+
 
 router.get("/page-products-list", productlist.page_products_list);
 router.get("/productblock", productlist.productblock);
+
 
 
 module.exports=router;

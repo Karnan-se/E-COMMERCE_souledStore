@@ -5,7 +5,38 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend//page-categories by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
 <head>
 <%- include('./partials/header.ejs') %>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 </head>
+<% if( typeof(message) !== "undefined") { %>
+
+    <script>
+              Swal.fire({
+            title: "Error",
+            text: "product already exists in the selected category",
+            icon: "error",
+            confirmButtonText: "OK"
+        });
+        </script>
+
+
+
+    <% } %>
+
+    <% if ( typeof warning !== "undefined") {%>
+        <script>
+            swal.fire({
+                title:"Warning",
+                text:" Are you sure want to delete",
+                icon: "warning",
+                confirmButtonText: "Ok"
+
+            })
+            </script>
+
+
+        <% }%>
 
 <body>
     <div class="screen-overlay"></div>
@@ -131,16 +162,91 @@
                     <h2 class="content-title card-title">Categories </h2>
                     <p>Add, edit or delete a category</p>
                 </div>
-                <select class="form-select w-25 d-none d-lg-block">
-                    <option >All category</option>
-                    <option>Apparel category</option>
-                    <option>Hero category</option>
-                    <option>Brands</option>
+                <select class="form-select w-25 d-none d-lg-block" id="changeCategory">
+                    <option value="all">All category</option>
+                    <option value="category">Apparel category</option>
+                    <option value="hero">Hero category</option>
+                    <option value="brand">Brands</option>
                 </select>
                 <div>
                     <input type="text" placeholder="Search Categories" class="form-control bg-white">
                 </div>
             </div>
+            <script>
+                document.getElementById("changeCategory").addEventListener("change", loadData);
+                async function loadData(){
+                    const selectedCategory = document.getElementById("changeCategory").value;
+                    try {
+
+                        const response = await fetch(`/loadcategory?changeCategory=${selectedCategory}`)
+
+                            if (!response.ok){
+                                throw new Error(`htttp error ! status: ${response.status}`)
+                            }
+                            const data = await response.json();
+
+                            console.log(data)
+
+                            if(data=="reload"){
+                                window.location.reload()
+                                
+                            }else{
+                                
+                            console.log(data.description)
+                            
+                            displayDate(data);
+
+
+                            }
+
+                        }
+                        
+                     catch (error) {
+                        console.error(`Error`, error);
+                        
+                    }
+                }
+                function displayDate(data) {
+                    const resultContainer = document.getElementById("resultContainer")
+                    const tableBody = document.querySelector("#resultContainer tbody" )
+                    tableBody.innerHTML ="";
+
+                    data.data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="text-center">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" />
+                    </div>
+                </td>
+                <td></td>
+                <td class="editable-cell"><b>${item.categoryname ? item.categoryname: item.name }</b></td>
+                <td>${data.description}</td>
+                <td><span class="badge rounded-pill ${item.isActive ? 'alert-success' : 'alert-warning'}">${item.isActive ? 'Active' : 'Blocked'}</span></td>
+                <td></td>
+                <td class="text-end">
+                    <div class="dropdown">
+                        <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item block" href="/blockproduct?userId=${item._id}">${item.isActive ? 'Block' : 'Activate'}</a>
+                            <input type="text" value="${item._id}" hidden>
+                            <a class="dropdown-item editCategoryButton" data-index="${item._id}">Edit info</a>
+                            <a class="dropdown-item text-danger delete" href="/deleteproduct?userId=${item._id}">Delete</a>
+                        </div>
+                    </div>
+                </td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+    }
+
+
+                   
+                   
+                
+
+                </script>
 
 
 
@@ -185,7 +291,7 @@
 
                         </div>
                         <div class="col-md-9">
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="resultContainer">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
@@ -223,7 +329,7 @@
                                                         <a class="dropdown-item block" href="/blockproduct?userId=<%= newcategories[i]._id %>"><%= newcategories[i].isActive==true? "block":"Activate" %></a>
                                                         <input type="text" value="<%= newcategories[i]._id %>" id="userid<%= i%>" hidden>
                                                         <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
-                                                        <a class="dropdown-item text-danger delete">Delete</a>
+                                                        <a class="dropdown-item text-danger delete" href="/deleteproduct?userId=<%= newcategories[i]._id %>">Delete</a>
                                                     </div>
                                                 </div> <!-- dropdown //end -->
                                             </td>
@@ -308,7 +414,7 @@
                                                         <a class="dropdown-item block" href="/blockproduct?userId=<%= lic[i]._id %>"><%= lic[i].isActive==true? "block":"Activate" %></a>
                                                         <input type="text" value="<%= lic[i]._id %>" id="userid<%= i%>" hidden>
                                                         <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
-                                                        <a class="dropdown-item text-danger delete">Delete</a>
+                                                        <a class="dropdown-item text-danger delete"  href="/deleteproduct?userId=<%= lic[i]._id %>">Delete </a>
                                                     </div>
                                                 </div> <!-- dropdown //end -->
                                             </td>
@@ -334,7 +440,7 @@
                                                     <a class="dropdown-item block" href="/blockproduct?userId=<%= brand[i]._id %>"><%= brand[i].isActive==true? "block":"Activate" %></a>
                                                     <input type="text" value="<%= brand[i]._id %>" id="userid<%= i%>" hidden>
                                                     <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
-                                                    <a class="dropdown-item text-danger delete">Delete</a>
+                                                    <a class="dropdown-item text-danger delete"  href="/deleteproduct?userId=<%= brand[i]._id %>">Delete</a>
                                                 </div>
                                             </div> <!-- dropdown //end -->
                                         </td>

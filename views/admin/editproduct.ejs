@@ -5,6 +5,7 @@
 
 <head>
 <%- include('./partials/header.ejs') %>
+<link rel="stylesheet" href="/assets/css/deletethis.css">
 </head>
 
 <body>
@@ -127,9 +128,9 @@
             <div class="row">
                 <div class="col-9">
                     <div class="content-header">
-                        <h2 class="content-title">Add New Product</h2>
+                        <h2 class="content-title">Edit product</h2>
                         <div>
-                            <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                           
                             <button class="btn btn-md rounded font-sm hover-up" onclick="save()">save</button>
                         </div>
                     </div>
@@ -140,69 +141,55 @@
                         <div class="card-body">
                             <div class="mb-4">
                                 <label for="product_title" class="form-label">Product title</label>
-                                <input type="text" placeholder="Type here" class="form-control" id="product_title" name="productname">
+                                <input type="text" placeholder="" class="form-control" id="product_title" name="productname" value="<%= product.productname %>">
                             </div>
                             <div class="row gx-3">
                                 <div class="col-md-4  mb-3">
                                     <label for="product_sku" class="form-label">stock</label>
-                                    <input type="number" placeholder="Type here" class="form-control" id="product_sku" name="stock">
+                                    <input type="number" placeholder="Type here" class="form-control" id="product_sku" name="stock" value="<%= product.stock %>">
                                     <div id="error_message" style="color: red;"></div>
                                 </div>
                                 <script>
                                      document.addEventListener("DOMContentLoaded", function () {
                                     const stockValue =document.getElementById("product_sku");
                                     const errorMessage = document.getElementById("error_message");
-                                    const PriceError =document.getElementById("priceError")
-                                    const price = document.getElementById("price");
 
                                      function validate(){
                                         const enteredValue = parseFloat(stockValue.value)
-                                        const priceValue = parseFloat(price.value)
 
                                         if(enteredValue<=0){
                                             errorMessage.textContent="stock cannot be less than zero"
                                             setTimeout(()=>{
                                                 errorMessage.textContent=""
                                             },3000)
-
-                                        }else if(priceValue<=0){
-                                            priceError.textContent="Price cannot be less than zero"
-                                            setTimeout(() => {
-                                                priceError.textContent=""
-                                                
-                                            },3000);
-          
                                         }else{
                                            
                                                 error.textContent =""
 
-
                                         
                                             
                                         }
-
                                     }
                                  stockValue.addEventListener("input", validate)
                                  stockValue.addEventListener("change", validate)
-                                 price.addEventListener("change", validate);
-                                 price.addEventListener("input", validate);
                                 })
                                     </script>
                                 <div class="col-md-4  mb-3">
                                     <label for="product_color" class="form-label">Color</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_color" name="color">
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_color" name="color" value="<%= product.color%>">
                                 </div>
                                 <div class="col-md-4  mb-0 mt-4">
                                     <!-- size need to be drop dopwn -->
+
                                     <select class="form-select" name="size">
-                                        <option value="null">select size</option>
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
-                                        <option value="XL">XL</option>
-                                        <option value="XXL">XXL</option>
+                                        <option value="null" <% if (product.size === 'null') { %>selected<% } %>>select size</option>
+                                        <option value="S" <% if (product.size === 'S') { %>selected<% } %>>S</option>
+                                        <option value="M" <% if (product.size === 'M') { %>selected<% } %>>M</option>
+                                        <option value="L" <% if (product.size === 'L') { %>selected<% } %>>L</option>
+                                        <option value="XL" <% if (product.size === 'XL') { %>selected<% } %>>XL</option>
+                                        <option value="XXL" <% if (product.size === 'XXL') { %>selected<% } %>>XXL</option>
                                     </select>
-                                    
+                                     
                                 </div>
                             </div>
                          
@@ -212,10 +199,50 @@
                         <div class="card-body">
                             <div>
                                 <label class="form-label">Description</label>
-                                <textarea placeholder="Type here" class="form-control" rows="4" name="Description"></textarea>
+                                <textarea placeholder="Type here" class="form-control" rows="4" name="Description" value="<%= product.description %>"></textarea>
                             </div>
                         </div>
-                    </div> <!-- card end// -->
+                        <div class="tab-content wow fadeIn animated mx-4 d-flex" id="myTabContent">
+                            <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+                                <div class="row product-grid-4">
+                                    <% for(let i=0; i < product.images.length; i++) { %>
+                                        <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                                            <div class="product-cart-wrap mb-30 custom-product-card">
+                                                <div class="product-img-action-wrap">
+                                                    <div class="product-img product-img-zoom">
+                                                        <a href="shop-product-right.html">
+                                                            <div class="hover-image">
+                                                                <!-- Add your new image or symbol here -->
+                                                                <!-- <img src="" alt="New Image"> -->
+                                                            </div>
+                                                            <img class="default-img" src="/temp/<%= product.images[i] %>" alt="">
+                                                            <img class="hover-img" src="/temp/<%= product.images[i+1] %>" alt="">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-action-1">
+                                                        <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                                    </div>
+                                                    
+                                                    <div class="product-action-1 show">
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+
+
+                        
+
+
+                    </div> 
                     <div class="card mb-4">
                         <div class="card-body">
                             <div>
@@ -229,380 +256,77 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="mb-4">
-<!-- price xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
                                 <label class="form-label">Price</label>
-                                <input type="number" placeholder="Type here" class="form-control" name="price" id="price" >
-                                <div style="color: red; " > <p id="priceError" ></p></div>
+                                <input type="number" placeholder="Type here" class="form-control" name="price" value="<%=product.price %>">
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">gender</label>
                                 <select class="form-select" name="gender">
                                     <option disabled selected>gender</option>
-                                    <option value="true">Male</option>
-                                    <option value="false">Female</option>
+                                    <option value="true"<% if (product.gender== true) { %>selected<% } %>>Male</option>
+                                    <option value="false" <% if (product.gender == false) { %>selected<% } %>>Female</option>
                                 </select>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">Tags</label>
-                                <input type="text" placeholder="Type here" class="form-control" name="tags">
+                                <input type="text" placeholder="Type here" class="form-control" name="tags" value="<%=product.tags%>">
                             </div>
-                            <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Tech</a>
-                            <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Mobile</a>
-                            <a href="#" class="font-xs hover-up mr-15"><i class="font-xs material-icons md-close text-body"></i> Apple</a>
                             <hr>
-                            <h5 class="mb-3 text-brand text-center">Apparel Categories</h5>
 
-<!-- ivde aanu button -->
-                            
+
+
+                            <h5 class="mb-3 text-brand text-center">Apparel Categories</h5>                           
                             <div class="container ml-5 mb-3 ">
+            <% for(let i=0; i<newcategories.length; i++) {%>
 
-                                <button id="addCategoryBtn" class="btn btn-brand " style="width: 100%;">+ Add Category</button s>
-                                <div id="categoryFields" class="mt-3 d-none">
-                                    <div class="form-group">
-                                        <input type="text" id="categoryName" class="form-control mb-2" placeholder="Category Name">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" id="categoryDescription" class="form-control mb-2" placeholder="Category Description">
-                                    </div>
-                                    <button id="additionBtn" class="btn btn-primary" onclick="updatecategory1()">ADD</button>
-                                </div>
-                            </div>
-                            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const addCategoryBtn = document.getElementById('addCategoryBtn');
-    const categoryFields = document.getElementById('categoryFields');
-
-    addCategoryBtn.addEventListener('click', function() {
-        categoryFields.classList.toggle('d-none');
-
-        addCategoryBtn.textContent =(addCategoryBtn.textContent === '+ Add Category') ? '- Add Category' : '+ Add Category';
-    });
-});
-</script>
-    <script>
-                             async function updatecategory1(){
-                                try {
-
-                                    console.log("function called")
-                                const categoryName=document.getElementById("categoryName").value
-                                console.log(categoryName);
-
-                                const response= await fetch(`/updatecategory1?generalcategory=${categoryName}`,{
-                                    method:"GET",
-
-                                })
-                                if (!response.ok){
-                                    throw new Error("error is occured")
-                                }
-                                console.log("success");
-                                location.reload()
-
-                             
-                                    
-                                } catch (error) {
-
-
-                                    console.log(error)
-                                    
-                                }
-
-
-                             }
-                           
-
-                        </script>
-</script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<% for(let i=0; i<newcategories.length; i++) {%>
-
-<div class="form-check " >
-    <input class="form-check-input" type="radio" value="<%= newcategories[i]._id %>" id="product-cat" name="Categories">
-    <label class="form-check-label" for="product-cat"><%= newcategories[i].categoryname %> </label>
-    <i class="fas fa-edit ml-2 text-primary edit-category" data-category-id="<%= newcategories[i]._id %>"></i>
-</div>
-<% }%>
-<hr>
-<script src="/js/updateCategory.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const editCategoryIcons = document.querySelectorAll('.edit-category');
-        let selectedCategoryId;
-
-        editCategoryIcons.forEach(icon => {
-            icon.addEventListener('click', function () {
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" 
+                           value="<%= newcategories[i]._id %>" 
+                           <% if (newcategories[i]._id == ApparelCategory) { %>checked<% } %> 
+                           id="product-cat<%= i %>" name="Categories">
+                    <label class="form-check-label" for="product-cat<%= i %>"><%= newcategories[i].categoryname %></label>
+                </div>
                 
-                selectedCategoryId = icon.dataset.categoryId;
-
-               
-                Swal.fire({
-  title: 'Edit the brand Name',
-  input: 'text',
-  inputLabel: 'Your new category name',
-  inputValue: icon.previousElementSibling.textContent,
-  showCancelButton: true,
-  inputValidator: (value) => {
-    if (!value) {
-      return 'You need to write something!'
-    }
-  }
-}).then((result)=>{
-    if (result.isConfirmed && result.value) {
-
-icon.previousElementSibling.textContent = result.value;
-
-
-updateCategory(selectedCategoryId, result.value);
-    }
-
-})
-    
-            });
-        });
-    });
-    </script>
-
-
-
-
-                
-                    
+            <% }%>
+            <hr> 
+             </div>
+                  
                     <h5 class="mb-3 text-center text-warning">Heroic charecters</h5>
-
-
-                    
+                   
                         <div class="container ml-5 mb-3">
-                            <button id="newCategoryBtn" class="btn btn-brand" style="width: 100%;">+ Add charectors</button>
-                            <div id="newCategoryFields" class="mt-3 d-none">
-                                <div class="form-group">
-                                    <input type="text" id="newCategoryName" class="form-control mb-2" placeholder="New Category Name">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" id="newCategoryDescription" class="form-control mb-2" placeholder="New Category Description">
-                                </div>
-                                <button id="newAdditionBtn" class="btn btn-warning" onclick="updatecategory()">ADD </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Add Bootstrap JS and Popper.js -->
-                        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-                        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-                        <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const newCategoryBtn = document.getElementById('newCategoryBtn');
-                             newCategoryFields = document.getElementById('newCategoryFields');
-                        
-                            newCategoryBtn.addEventListener('click', function() {
-                                newCategoryFields.classList.toggle('d-none');
-                                newCategoryBtn.textContent = (newCategoryBtn.textContent === '+ New Category') ? '- New Charectors' : '+ New Charectors';
-                            });
-                        });
-                        
-                        </script>
-                        <script>
-                             async function updatecategory(){
-                                try {
-
-                                    console.log("function called")
-                                const categoryName=document.getElementById("newCategoryName").value
-                                console.log(categoryName);
-
-                                const response= await fetch(`/updatecategory?category=${categoryName}`,{
-                                    method:"GET",
-
-                                })
-                                if (!response.ok){
-                                    throw new Error("error is occured")
-                                }
-                                console.log("success");
-                                location.reload()
-
-                             
-                                    
-                                } catch (error) {
-
-
-                                    console.log(error)
-                                    
-                                }
-
-
-                             }
-                           
-
-                        </script>
-                       
-                        
+                    
                         <% for(let i=0; i< license.length; i++) {%>
                         
                         <div class="form-check">
-                        <input class="form-check-input" type="radio" value="<%= license[i]._id %>" id="product-cat" name="subcategory">
+                        <input class="form-check-input" type="radio" value="<%= license[i]._id %>" <% if(license[i]._id == licenseCategory) { %>checked<% }%> id="product-cat" name="subcategory">
                         <label class="form-check-label" for="product-cat"><%= license[i].categoryname %> </label>
-                        <i class="fas fa-edit ml-2 text-primary edit-category1" data-category-id="<%= license[i]._id %>"></i>
                         </div>
                     
-                  <% } %>
+                  <% } %>-
                   <hr>
-                  <script src="/js/updateCategory.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const editCategoryIcons = document.querySelectorAll('.edit-category1');
-        let selectedCategoryId;
-
-        editCategoryIcons.forEach(icon => {
-            icon.addEventListener('click', function () {
-                
-                selectedCategoryId = icon.dataset.categoryId;
-
-               
-                Swal.fire({
-  title: 'Edit the licensed charectors Name',
-  input: 'text',
-  inputLabel: 'Your new category name',
-  inputValue: icon.previousElementSibling.textContent,
-  showCancelButton: true,
-  inputValidator: (value) => {
-    if (!value) {
-      return 'You need to write something!'
-    }
-  }
-}).then((result)=>{
-    if (result.isConfirmed && result.value) {
-
-icon.previousElementSibling.textContent = result.value;
-
-
-updateCategory(selectedCategoryId, result.value);
-    }
-
-})
-    
-            });
-        });
-    });
-    </script>
-
                   
-                    
-            </div> <!-- card end// -->
+                
+           </div> <!-- card end// -->
            
             
 
             
 <h5 class="mb-3 text-center text-brand">Brands</h5>
 <div class="container ml-5 mb-3">
-    <button id="newBrandBtn" class="btn btn-brand" style="width: 100%; border-radius: 8px; font-size: 16px; padding: 10px;">
-        + Add Brands
-    </button>
-    
-    <div id="newBrandFields" class="mt-3 d-none">
-        <div class="form-group">
-            <input type="text" id="newbrand" class="form-control mb-2" placeholder="New Brand Name">
-        </div>
-        <div class="form-group">
-            <input type="text" id="newBrandDescription" class="form-control mb-2" placeholder="New Brand Description">
-        </div>
-        <button id="newBrandAdditionBtn" class="btn btn-primary" onclick="updateBrand()">ADD</button>
-    </div>
-</div>
-
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-       
-        const newBrandBtn = document.getElementById('newBrandBtn');
-        const newBrandFields = document.getElementById('newBrandFields');
-
-        newBrandBtn.addEventListener('click', function () {
-            newBrandFields.classList.toggle('d-none');
-            newBrandBtn.textContent = (newBrandBtn.textContent === '+ Add Brands') ? '- Add Brands' : '+ Add Brands';
-        });
-    });
-    </script>
-<script>
-    
-    async function updateBrand() {
-        try {
-            console.log("fucntion called")
-            const newBrandName =  document.getElementById("newbrand").value;
-            console.log(newBrandName);
-        
-            const response = await fetch(`/updatebrand?brandname=${newBrandName}`,{
-                method:"GET",
-
-            })
-           
-
-            if(!response.ok){
-                throw new Error("update brands have some error")
-            }else{
-
-                location.reload();
-            }
-            
-            console.log("Brand added successfully");
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-</script>
-</script>
 
 <div>
 <% for(let i=0; i<brand.length; i++) {%>
 
 <div class="form-check " >
-    <input class="form-check-input" type="radio" value="<%= brand[i]._id %>" id="product-cat" name="brand-cat">
+    <input class="form-check-input" type="radio" value="<%= brand[i]._id %>"  <% if(brand[i]._id == brandCategory) { %>checked<% }%>   id="product-cat" name="brand-cat">
     <label class="form-check-label" for="product-cat"><%= brand[i].name %> </label>
-    <i class="fas fa-edit ml-2 text-primary edit-category2" data-category-id="<%= brand[i]._id %>"></i>
+    
 </div>
 <% }%>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 <hr>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const editCategoryIcons = document.querySelectorAll('.edit-category2');
-        let selectedCategoryId;
 
-        editCategoryIcons.forEach(icon => {
-            icon.addEventListener('click',  function () {
-                
-                selectedCategoryId = icon.dataset.categoryId;
-
-                 Swal.fire({
-  title: 'Edit the brand Name',
-  input: 'text',
-  inputLabel: 'Your new category name',
-  inputValue: icon.previousElementSibling.textContent,
-  showCancelButton: true,
-  inputValidator: (value) => {
-    if (!value) {
-      return 'You need to write something!'
-    }
-  }
-}).then((result)=>{
-    if (result.isConfirmed && result.value) {
-
-icon.previousElementSibling.textContent = result.value;
-
-
-updateCategory(selectedCategoryId, result.value);
-    }
-
-})
-    
-            });
-        });
-    });
-    </script>
     <style>
         .error {
             border: 1px solid red
@@ -614,22 +338,13 @@ updateCategory(selectedCategoryId, result.value);
 
     function validateForm(){
         const stockValue = parseFloat(document.getElementById('product_sku').value)
-        const pricevalue = parseFloat(document.getElementById("price").value);
-        
 
         if(stockValue <=0 ){
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Stock cannot be less than zero.',
-            })
-        }else if(pricevalue <=0){
-                Swal.fire({
-                    icon : "error",
-                    title: "Error",
-                    text: "price cannot be less than zero"
-                })
-            
+            });
             return false;
         }
         const productTitle = document.getElementById('product_title').value;
@@ -708,6 +423,7 @@ swal.fire({
   }
 }
 }
+
 
     function getRadioValue(name) {
         var radioButtons = document.getElementsByName(name);

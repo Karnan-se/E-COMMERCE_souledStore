@@ -73,6 +73,7 @@ router.get("/deleteproduct",categories.deleteproduct)
 
 router.get("/page-products-list", productlist.page_products_list);
 router.get("/productblock", productlist.productblock);
+router.get("/productedit",productlist.editproduct)
 
 
 

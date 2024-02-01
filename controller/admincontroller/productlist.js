@@ -1,5 +1,11 @@
 const { log } = require("console");
 const products = require("../../models/addproduct/addproduct")
+const licensedcategories= require("../../models/addproduct/licensedchar")
+const categories= require("../../models/addproduct/categories")
+const brands = require("../../models/addproduct/brand")
+const mongoose = require("mongoose");
+const asyncLookup = require('../../utils/asynclookup.js');
+
 
 
 let page_products_list = async(req, res)=>{
@@ -82,8 +88,38 @@ let productdelete= async(req, res)=>{
     }
 
 }
-let productedit = async(req, res)=>{
+let editproduct = async(req, res)=>{
     try {
+        const license= await licensedcategories.find()
+        const newcategories = await categories.find()
+        const brand = await brands.find() 
+
+        console.log(`${newcategories[0]._id} this is the object id off newca`)
+
+        const productDetail = req.query.userid;
+        console.log(productDetail);
+        
+        const productId = new mongoose.Types.ObjectId(productDetail);      
+          console.log(productId)
+
+
+        const fcat=await asyncLookup.karnan("categories","category","_id",productId);
+        const licenseModule=await asyncLookup.karnan("licenses","license","_id",productId);
+        const brandModule= await asyncLookup.karnan("brands","brand","_id",productId);
+
+        const licenseCategory = licenseModule[0]?.newcat[0]._id?.toString() ?? null;
+
+        let brandCategory = null;
+        if (brandModule && brandModule.length > 0 && brandModule[0].newcat && brandModule[0].newcat.length > 0) {
+            brandCategory = brandModule[0].newcat[0]._id?.toString() ?? null;
+        } 
+        const ApparelCategory = fcat[0]?.newcat[0]._id?.toString() ?? null;
+       const product= await products.findOne({_id:productDetail})
+       console.log("worked")
+      
+       
+       res.render("admin/editproduct.ejs",{product,license,newcategories,brand,ApparelCategory,brandCategory,licenseCategory})
+
         
         
     } catch (error) {
@@ -92,4 +128,4 @@ let productedit = async(req, res)=>{
 }
 
 
-module.exports = {page_products_list,productblock}
+module.exports = {page_products_list,productblock, editproduct}

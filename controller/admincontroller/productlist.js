@@ -107,15 +107,17 @@ let editproduct = async(req, res)=>{
         const licenseModule=await asyncLookup.karnan("licenses","license","_id",productId);
         const brandModule= await asyncLookup.karnan("brands","brand","_id",productId);
 
-        const licenseCategory = licenseModule[0]?.newcat[0]._id?.toString() ?? null;
+        const licenseCategory = (licenseModule && licenseModule[0] && licenseModule[0].newcat && licenseModule[0].newcat.length > 0) ?
+        licenseModule[0].newcat[0]._id?.toString() ?? null : null;
 
         let brandCategory = null;
         if (brandModule && brandModule.length > 0 && brandModule[0].newcat && brandModule[0].newcat.length > 0) {
             brandCategory = brandModule[0].newcat[0]._id?.toString() ?? null;
         } 
-        const ApparelCategory = fcat[0]?.newcat[0]._id?.toString() ?? null;
-       const product= await products.findOne({_id:productDetail})
-       console.log("worked")
+        const ApparelCategory = (fcat && fcat[0] && fcat[0].newcat && fcat[0].newcat.length > 0) ?
+         fcat[0].newcat[0]._id?.toString() ?? null : null;
+         const product= await products.findOne({_id:productDetail})
+        console.log("worked")
       
        
        res.render("admin/editproduct.ejs",{product,license,newcategories,brand,ApparelCategory,brandCategory,licenseCategory})
@@ -128,4 +130,4 @@ let editproduct = async(req, res)=>{
 }
 
 
-module.exports = {page_products_list,productblock, editproduct}
+module.exports = {page_products_list,productblock, editproduct, }

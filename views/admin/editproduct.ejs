@@ -255,12 +255,12 @@
                                     <div class="product-cart-wrap mb-30 custom-product-card">
                                         <div class="product-img-action-wrap">
                                             <div class="product-img product-img-zoom">
-                                                <a href="shop-product-right.html">
+                                                <!-- <a href="shop-product-right.html"> -->
                                                     <div class="hover-image"></div>
                                                     <div class="preview-images d-flex flex-wrap justify-content-start position-relative">
                                                         <!-- Images and buttons will be dynamically inserted here -->
                                                     </div>
-                                                </a>
+                                                <!-- </a> -->
                                             </div>
                                         </div>
                                     </div>
@@ -284,41 +284,97 @@
                         
                         <script>
                             $(document).ready(function() {
-                                let createImageContainer = function(imageSrc) {
-                                    let imageContainer = $($.parseHTML(`
-                                        <div class="col-lg-4 col-md-4 col-12 col-sm-6 position-relative">
-                                            <div class="product-cart-wrap mb-30 custom-product-card">
-                                                <div class="product-img-action-wrap">
-                                                    <div class="product-img product-img-zoom">
-                                                        <a href="shop-product-right.html">
-                                                            <div class="hover-image"></div>
-                                                            <img class="default-img" src="${imageSrc}" alt="">
-                                                            <button class="btn btn-primary btn-center">
-                                                                <i class="fas fa-solid fa-trash text-sm" style="font-size: 10px"> delete</i> 
-                                                            </button>
-                                                        </a>
+                                let createImageContainer = function(imageSrc, imageName) {
+                                        let imageContainer = $($.parseHTML(`
+                                            <div class="col-lg-4 col-md-4 col-12 col-sm-6 position-relative">
+                                                <div class="product-cart-wrap mb-30 custom-product-card">
+                                                    <div class="product-img-action-wrap">
+                                                        <div class="product-img product-img-zoom">
+                                                            
+                                                                <div class="hover-image"></div>
+                                                                <img class="default-img" src="${imageSrc}" alt="">
+                                                                <button class="btn btn-primary btn-center delete-btn" data-image="${imageName}">
+                                                                    <i class="fas fa-solid fa-trash text-sm" style="font-size: 10px;"></i> 
+                                                                    delete
+                                                                </button>
+                                                            
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    `));
-                                    return imageContainer;
-                                };
+                                        `));
+                                        return imageContainer;
+                                    };
+
                         
                                 let imagesPreview = function(input, placeToInsertImagePreview) {
                                     if (input.files) {
                                         let filesAmount = input.files.length;
+                                        
+                                        placeToInsertImagePreview.html('');
                                         for (let i = 0; i < filesAmount; i++) {
                                             let reader = new FileReader();
                                             reader.onload = function(event) {
                                                 let imageSrc = event.target.result;
-                                                let imageContainer = createImageContainer(imageSrc);
+                                                let imageName = input.files[i].name;
+                                                let imageContainer = createImageContainer(imageSrc , imageName);
                                                 placeToInsertImagePreview.append(imageContainer);
                                             };
                                             reader.readAsDataURL(input.files[i]);
+                                            
                                         }
                                     }
                                 };
+
+                                
+                                $(document).on("click", ".delete-btn", function() {
+                                    console.log("delete button clicked");
+                                    let imageName = event.target.getAttribute('data-image');  
+                                    $(this).closest(".position-relative").remove();                                
+                                    let positionRelative = event.target.closest('.position-relative');
+                                    let inputImages = document.getElementById("input-images")
+                                    console.log(inputImages.files)
+                                    
+
+                                    if(inputImages){
+                                        let inputFiles=inputImages.files;
+                                        console.log(inputFiles)
+                                        console.log("inputfiles worked");
+                                        let newFiles =[]
+                                    for(let i=0; i<inputFiles.length; i++){
+                                        if(inputFiles[i].name !== imageName){
+                                            newFiles.push(inputFiles[i])
+                                            console.log(newFiles[i])
+                                            console.log(i)
+                                        }
+                                    }
+
+                                    let newFileList = new DataTransfer();
+                                    for(let i=0; i< newFiles.length; i++){
+                                        newFileList.items.add(newFiles[i])
+                                    }
+                                    inputImages.files =newFileList.files;
+          
+                                 
+                                    let newInput = $("<input>")
+                                        .attr("type", "file")
+                                        .attr("name", "Images")
+                                        .attr("id", "input-images")
+                                        .attr("accept", "image/*")
+                                        .attr("multiple", true)
+                                        .css("display", "none");
+                                        
+                                        $(document.body).append(newInput);
+                                        newInput.files = inputFiles;
+                                        console.log(`${newInput.files} hey this is newFile`)
+                                      
+                                        newInput.prop("files", newInput.files);
+                                        newInput.trigger('change');
+                                        positionRelative.remove();
+                                                               
+                                        }
+                                })
+                            
                         
                                 $("#input-images").on("change", function() {
                                     $('.preview-images').html('');
@@ -472,10 +528,13 @@ async function save() {
   try {
     var formData = new FormData();
 
-const fileInput = document.getElementById('fileInput');
+const fileInput = document.getElementById('input-images');
+console.log(fileInput)
+
 
 for (let i = 0; i < fileInput.files.length; i++) {
   formData.append('images', fileInput.files[i]);
+  console.log(fileInput.files[i]);
 }
 
 formData.append('productTitle', document.getElementById('product_title').value);

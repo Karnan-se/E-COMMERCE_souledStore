@@ -94,8 +94,6 @@ let editproduct = async(req, res)=>{
         const newcategories = await categories.find()
         const brand = await brands.find() 
 
-        console.log(`${newcategories[0]._id} this is the object id off newca`)
-
         const productDetail = req.query.userid;
         console.log(productDetail);
         
@@ -113,6 +111,7 @@ let editproduct = async(req, res)=>{
         let brandCategory = null;
         if (brandModule && brandModule.length > 0 && brandModule[0].newcat && brandModule[0].newcat.length > 0) {
             brandCategory = brandModule[0].newcat[0]._id?.toString() ?? null;
+            console.log(`${brandCategory} this is value of brandCategory`)
         } 
         const ApparelCategory = (fcat && fcat[0] && fcat[0].newcat && fcat[0].newcat.length > 0) ?
          fcat[0].newcat[0]._id?.toString() ?? null : null;
@@ -129,5 +128,72 @@ let editproduct = async(req, res)=>{
     }
 }
 
+let deleteImage = async(req, res)=>{
+    try {
+        
 
-module.exports = {page_products_list,productblock, editproduct, }
+    const imageName= req.query.imageName;
+    const selectedproduct= req.query.id
+    console.log(selectedproduct)
+    console.log(imageName);
+
+        const imagenametoDelete = await products.updateOne({_id:selectedproduct},{$pull:{images:imageName}})
+        console.log(imagenametoDelete);
+    console.log("product deleted")
+
+    
+    res.status(200).json({message:`response send`});
+        
+    } catch (error) {
+        
+        console.log(error.message);
+    }
+}
+let updateprouct = async(req, res)=>{
+    try {
+        const images = req.files.map(file => file.filename);
+        console.log(images)
+       
+        const  {productTitle,
+            productSKU,
+            productColor,
+            productSize,
+            description,
+            price,
+            gender,
+            tags,
+            category,
+            subcategory,
+            brand}= req.body
+
+            console.log(productTitle)
+        const updatedproduct= await products.updateOne({productname:productTitle},{$set:{
+
+            productname:productTitle,
+            stock:productSKU,
+            color:productColor,
+            size:productSize,
+            category:category,
+            license:subcategory,
+            brand:brand,
+            description:description,
+            
+            price:price,
+            tags:tags,
+            gender:gender
+        }, $addToSet:{images: {$each: images}}})
+
+        console.log(updatedproduct)
+        console.log("product updated")
+
+        
+        res.status(200).json({message:`product added successfully`});
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+module.exports = {page_products_list,productblock, editproduct, deleteImage,updateprouct}

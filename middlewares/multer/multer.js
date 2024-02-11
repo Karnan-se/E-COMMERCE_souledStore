@@ -10,6 +10,7 @@ const storage = multer.diskStorage({
 
     filename:(req, file, cb)=>{
         const ext = path.extname(file.originalname);
+        const timestamp = Date.now();
 
         // if the image section is not working undo this code
         // const filename = `${uuidv4()}${ext}`;

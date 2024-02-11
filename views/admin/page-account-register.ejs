@@ -54,6 +54,10 @@
                             <label class="form-label">Confirm Password</label>
                             <input class="form-control" placeholder="Password" type="password" id="password2">
                         </div> 
+                        <div class="row gx-1">
+                            <div class="col-5"> <input class="form-control" value="" type="text"   placeholder="OTP" ></div>
+                            <button type="button" class="btn btn-primary w-50" onclick="sendOtp()"> Send OTP</button>
+                            </div>
                         <div class="text-center mb-3 fa-shake text-danger" >
                             <p id="p2"></p>
                         </div>
@@ -64,6 +68,26 @@
                             <button type="submit" class="btn btn-primary w-100"> create Account </button>
                         </div> <!-- form-group// -->
                     </form>
+
+                    <script>
+                       async function sendOtp(){
+                            const response = await fetch("/sendotp",{
+                                method: "GET",
+                                
+                            })
+
+                        }
+
+
+                    </script>
+
+
+
+
+
+
+
+
                     <p class="text-center small text-muted mb-15">or sign up with</p>
                     <div class="d-flex gap-2 mb-4">
                         <a href="#" class="w-50 btn btn-light font-sm">

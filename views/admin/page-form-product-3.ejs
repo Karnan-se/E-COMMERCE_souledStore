@@ -8,6 +8,26 @@
 </head>
 
 <body>
+
+    <% if( typeof(newmessage) !== "undefined") { %>
+
+        <script>
+            Swal.fire({
+            title: "Error",
+            text: "product already exists in the selected category",
+            icon: "error",
+            confirmButtonText: "OK"
+        });
+
+
+</script>
+
+        <%}%>
+
+
+
+
+
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">

@@ -11,6 +11,9 @@ userrouter.get("/user-register",userController.user_register)
 userrouter.post("/user-login",userpostcontroller.user_login)
 userrouter.post("/user-register",userpostcontroller.user_register)
 
+userrouter.get("/sendotp",userpostcontroller.sendOtp)
+userrouter.get("/verifyotp",userpostcontroller.verifyOtp)
+
 
 
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const {format} = require('date-fns')
+const bcrypt = require("bcrypt")
 const user = new mongoose.Schema({
 
     name:{
@@ -26,7 +27,16 @@ const user = new mongoose.Schema({
         type:Boolean,
         required:false,
         default:true
-    }
+    },
+    passwordResetToken: {
+        type: String,
+        required: false,
+    },
+    passwordResetTokenExpires: {
+        type: Date,
+        required: false,
+    },
+  
 });
 
 
@@ -55,5 +65,6 @@ const user = new mongoose.Schema({
     user.methods.formateDate = function () {
         return format(this.date, 'dd-MM-yyyy')
     }
+    
 
     module.exports=mongoose.model('user',user);

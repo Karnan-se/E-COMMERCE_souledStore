@@ -5,6 +5,7 @@ const product = require("../../models/addproduct/addproduct")
 const path = require("path")
 const { fileURLToPath } = require("url")
 const { updateOne } = require("../../models/admin/admin")
+const session = require("express-session")
 
 
 
@@ -16,8 +17,23 @@ let page_form_product_3= async(req, res)=>{
         const branddetails = await brands.find() 
         console.log(license)
         console.log(`${newcategories} here is the value`)
-        res.render("admin/page-form-product-3.ejs",{license:license,newcategories:newcategories, brand:branddetails})
+        let categorysession = await req.session.category
+        console.log(categorysession)
+        var newmessage = null;
+       
+        if(categorysession ==true){
+            delete req.session.category     
+             newmessage = "session passed"          
+             res.render("admin/page-form-product-3.ejs",{license:license,newcategories:newcategories, brand:branddetails,newmessage})
+      
 
+        }else{
+            delete req.session.category;
+            console.log("no session created")   
+       return res.render("admin/page-form-product-3.ejs",{license:license,newcategories:newcategories, brand:branddetails})
+
+        }
+       
         
     } catch (error) {
         console.log(error)
@@ -25,22 +41,23 @@ let page_form_product_3= async(req, res)=>{
     }
 }
 
-
-
 let addlicense= async(req, res)=>{
     try {
         const categoryname= req.query.category
     console.log(categoryname);
-    const newCategory = new licensedcategories({ categoryname: categoryname });
-
-        
+    const licenseName = await licensedcategories.findOne({categoryname:categoryname})
+    if(!licenseName){
+        const newCategory = new licensedcategories({ categoryname: categoryname });
         await newCategory.save();
         console.log(newCategory);
-    
-   
-    res.redirect("/page-form-product-3")
-    
-        
+        res.redirect("/page-form-product-3")
+
+
+    }else{
+        req.session.category=true
+        res.redirect("/page-form-product-3")
+    }
+     
     } catch (error) {
         console.log(error)
         
@@ -51,22 +68,29 @@ let addcategory = async(req, res)=>{
     try {
         const categoryname= req.query.generalcategory
         console.log(categoryname);
-        const newCat = new categories({ categoryname: categoryname });
-    
-            
+        const categoryName= await categories.findOne({categoryname:categoryname})
+
+        if(!categoryName){
+            const newCat = new categories({ categoryname: categoryname });
+
             await newCat.save();
             console.log(newCat);
             console.log("username saved")
-        
-       
-        res.redirect("/page-form-product-3")
-        
-        
+            return res.redirect("/page-form-product-3")
+
+        }else{
+
+            req.session.category =true
+           return res.redirect("/page-form-product-3")
+        }
+
         
     } catch (error) {
+        console.log(error.message);
         
     }
 }
+
 let addbrands = async(req, res)=>{
 try {
     const brandname = req.query.brandname;
@@ -74,15 +98,24 @@ try {
     console.log(brandname);
 
     console.log("brandname is recieved")
-    const brand = new brands ({
-        name: brandname
-    })
-    await brand.save();
-    console.log(brand)
-    res.redirect("/page-form-product-3")
+
+    const brandName = await brands.findOne({name:brandname});
+
+    if(!brandName){
+        const brand = new brands ({
+            name: brandname
+        })
+        await brand.save();
+        console.log(brand)
+       return res.redirect("/page-form-product-3")
+
+    }else{
+
+        req.session.category=true
+       return res.redirect("/page-form-product-3")
+    }
 
 
-    
 } catch (error) {
     console.log(error.message)
     
@@ -148,9 +181,9 @@ try {
     const {categoryId,categoryName }= req.query;
     console.log(categoryId,categoryName)
 
-    var newcatergories = await categories.find({_id:categoryId})
-    var newlicense = await licensedcategories.find({_id:categoryId})
-    var newbrands =await brands.find({_id:categoryId})
+    const newcatergories = await categories.find({_id:categoryId})
+    const newlicense = await licensedcategories.find({_id:categoryId})
+    const newbrands =await brands.find({_id:categoryId})
 
     if(newcatergories.length > 0){
 

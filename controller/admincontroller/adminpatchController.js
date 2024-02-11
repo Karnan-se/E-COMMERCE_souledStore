@@ -14,7 +14,7 @@ let forgot_password= async(req, res)=>{
              req.session.destroy()
             let message="hey"
             let resetToken= req.query.token;
-            let id= req.query.id;
+            let id=req.query.id;
             console.log(id);
             res.render("admin/forgot-password.ejs",{message,resetToken,id});   
         }else{
@@ -36,7 +36,7 @@ let resetpassword = async(req, res)=>{
    
     else{
         console.log(user)
-       
+        
     }
     var resetToken = await user.createResetPasswordToken();
     await user.save()
@@ -51,7 +51,7 @@ let resetpassword = async(req, res)=>{
             message:message,
   
     });
-    req.session.countown=true;
+    
     
      res.redirect(`/forgot-password?token=${resetToken}&id=${user._id}`)
      return;
@@ -91,12 +91,13 @@ let updatepassword= async(req, res)=>{
         const salt = await bcrypt.genSalt(10)
         const hash =  await bcrypt.hash(password1, salt)
 
-            const updatedpassword = await admin.updateOne({_id:userid},{$set:{password:hash}})
+        const updatedpassword = await admin.updateOne({_id:userid},{$set:{password:hash}})
            
-            console.log(`password saved successsfully ${updatedpassword}`);
+        console.log(`password saved successsfully ${updatedpassword}`);
 
         }catch{
-            console.log(error)
+        console.log(error)
+        
         }
         
         res.redirect("/forgot-password")

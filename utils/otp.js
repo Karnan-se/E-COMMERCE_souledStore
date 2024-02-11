@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer")
 module.exports={
  sendEmail: async (options)=>{
    try{
-
+console.log(options);
     const transporter = nodemailer.createTransport(
         {
         service:"gmail",
@@ -11,7 +11,7 @@ module.exports={
             user:"mhdrizwanpkd@gmail.com",
             pass:"sgzmnhpoginjuwat"
         }
-    })//TRANSPORTER
+    })
 
     const emailoptions={
         from: 'mhdrizwanpkd@gmail.com',

@@ -15,15 +15,15 @@
         <section class="content-main mt-80 mb-80">
             <div class="card mx-auto card-login">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Create an Account</h4>
+                    <h4 class="card-title mb-4">Create an user Account</h4>
                     <form method="post" action="/user-register" onsubmit="return validate_form()">
                         <div class="mb-3">
                             <label class="form-label">Name</label>
-                            <input class="form-control" placeholder="Your email" type="text" id="adminEmail" name="name">
+                            <input class="form-control" placeholder="Your Name" type="text" id="adminName" name="name">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input class="form-control" placeholder="Your email" type="text" id="adminEmail" name="email">
+                            <input class="form-control" placeholder="Your email" type="text" id="Email" name="email">
                         </div> <!-- form-group// -->
                         <div class="text-center fa-shake text-danger">
                             <% if (message1) { %>
@@ -57,13 +57,96 @@
                         <div class="text-center mb-3 fa-shake text-danger" >
                             <p id="p2"></p>
                         </div>
-                        <div class="mb-3">
-                            <p class="small text-center text-muted">By signing up, you confirm that you’ve read and accepted our User Notice and Privacy Policy.</p>
-                        </div> <!-- form-group  .// -->
+
+                        <div class="row gx-1 mb-4">
+                            <div class="col-6"> <input class="form-control" value="" type="text"   placeholder="OTP" id="otpBox"></div>
+                            <button type="button" id="time" class="btn btn-brand w-50" onclick="sendOtp()"> Send OTP</button>
+                            </div>
+                    
+                        <!-- form-group  .// -->
                         <div class="mb-4">
                             <button type="submit" class="btn btn-primary w-100"> create Account </button>
                         </div> <!-- form-group// -->
                     </form>
+
+
+
+                    <script>
+
+
+                        async function sendOtp(){
+                          try {
+                            const gmail = document.getElementById("Email").value
+                            const response= await fetch(`/sendotp?email=${gmail}`,{
+                                method: "GET",
+
+                            })
+                            if(!response.ok){
+                                throw new Error("Internal server error")
+                            }
+                            const data = await response.json()
+                            console.log(data);
+                            const button = document.getElementById("time")
+                            button.disabled = true;
+                            let count = 60;
+
+                            const countdown = setInterval(()=>{
+                                if(count > 0) {
+                                    button.textContent = `${count}`;
+                                    button.classList.add("bg-warning");
+                                    count --;
+                                }else{
+                                    clearInterval(countdown);
+                                    button.textContent ="Resend Otp"
+                                    button.disabled = false;
+                                }
+                            },1000)
+                            const otpBox= document.getElementById("otpBox")
+                            otpBox.focus();
+
+                            otpBox.addEventListener("input", async()=>{
+                                if(otpBox.value.length === 4){
+                                    const otpResponse = await fetch(`verifyotp?otp=${otpBox.value}`,{
+                                        method : "GET",
+                                    })
+                                    if(!otpResponse.ok){
+                                        throw new Error("otp validation error")
+                                    }
+                                    const otpData = await otpResponse.json();
+                                    if(otpData=="otp Matched"){
+                                        clearInterval(countdown);
+                                        button.textContent= "";
+                                        button.textContent = "verified"
+                                        button.disabled= "true"
+                                        button.classList.remove("bg-warning")
+                                        button.classList.add("bg-primary")
+                                        return true;
+                                    }else if(otpData=="otp doesnot matched"){
+                                        clearInterval(countdown);
+                                        button.textContent = "invalid OTP"
+                                        button.classList.remove("bg-warning");
+                                        button.classList.add("bg-red")
+                                        
+                                    }
+                                }
+                            })
+
+
+   
+                          } catch (error) {
+
+                            console.log(error.message)
+                          
+                            
+                          }
+
+
+                        }
+                        </script>
+
+
+
+                    
                     <p class="text-center small text-muted mb-15">or sign up with</p>
                     <div class="d-flex gap-2 mb-4">
                         <a href="#" class="w-50 btn btn-light font-sm">
@@ -93,10 +176,16 @@
             <p class="font-xs mb-30">All rights reserved</p>
         </footer>
     </main>
-    <%- include('./partials/footer.ejs') %>
+    
     <!-- <script src="/js/admin-custom.js"></script> -->
     <script>
         function validate_form() {
+            if(saveotp()!==true){
+                Swal.fire({
+                    icon:error,
+                    title:"verify otp"
+                })
+            }
             var phoneInput = document.getElementById('mobileNumber');
             var password1 = document.getElementById('password1');
             var password2 = document.getElementById('password2');

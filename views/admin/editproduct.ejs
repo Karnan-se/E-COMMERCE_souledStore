@@ -213,7 +213,7 @@
                         <div class="card-body">
                             <div>
                                 <label class="form-label">Description</label>
-                                <textarea placeholder="Type here" class="form-control" rows="4" name="Description" value="<%= product.description %>"></textarea>
+                                <textarea placeholder="Type here" class="form-control" rows="4" name="Description" value="<%= product.description %>"><%= product.description %></textarea>
                             </div>
                         </div>
                         </div>
@@ -224,22 +224,28 @@
                         <div class="tab-content wow fadeIn animated mx-4 d-flex" id="myTabContent">
                             <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
                                 <div class="row product-grid-4">
-                                    <% for(let i=0; i < product.images.length +3; i++) { %>
+                                    <% for(let i=0; i < product.images.length; i++) { %>
                                         <div class="col-lg-4 col-md-4 col-12 col-sm-6">
                                             <div class="product-cart-wrap mb-30 custom-product-card">
-                                                <div class="product-img-action-wrap">
+                                                <div class="product-img-action-wrap position-relative"> <!-- Set position:relative here -->
                                                     <div class="product-img product-img-zoom">
-                                                        <a href="shop-product-right.html">
+                                                       
                                                             <div class="hover-image">
                                                                 <!-- Add your new image or symbol here -->
                                                                 <!-- <img src="" alt="New Image"> -->
                                                             </div>
-                                                            <div >
-                                                            <img class="default-img" src="/temp/<%= product.images[i] %>" alt="">
-                                                            <img class="hover-img" src="/temp/<%= product.images[i+1] %>" alt="">
-                                                          
+                                                            <div class="product-images">
+                                                                <img class="default-img" src="/temp/<%= product.images[i] %>" alt="">
+                                                                <img class="hover-img" src="/temp/<%= product.images[i] %>" alt="">
                                                             </div>
-                                                        </a>
+                                                            <div class="product-delete-button position-absolute bottom-0 start-50 translate-middle-x mb-1 d-none col-lg-12"> 
+                                                                <button class="btn btn-primary" style="font-size: 12px; line-height: 1; max-width: 100%" onclick="deleteImage(`<%= product.images[i] %>`)" >
+                                                                    <i class="fas fa-trash text-sm " style="font-size: 8px;"></i> 
+                                                                    delete
+                                                                </button>
+                                                                <input type="text" value="<%= product._id%>" class="d-none" id="inimage">
+                                                            </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -248,6 +254,41 @@
                                 </div>
                             </div>
                         </div>
+                        <style>
+                            .product-img-action-wrap:hover .product-delete-button {
+                                display: block !important;
+                            }
+
+                            </style>
+                            <script>
+                                async function deleteImage(imageId) {
+                                    try {
+                                        const imageName = imageId;
+                                        const productId = document.getElementById("inimage");
+                                        const selectedProductId = productId.value;
+                                        console.log(selectedProductId);
+                                        console.log(imageName);
+                                        
+                                        const response = await fetch(`deleteimage?imageName=${imageName}&id=${selectedProductId}`, {
+                                            method: "GET",
+                                        });
+                                
+                                        if (!response.ok) {
+                                            throw new Error("Failed to delete image");
+                                        }
+                                        window.location.reload()
+                                
+                                        const data = await response.json();
+                                        console.log(data);
+                                
+                                    } catch (error) {
+                                        console.error("Error:", error);
+                                    }
+                                }
+                                </script>
+                                
+                        
+                        
 
                         <div class="tab-content wow fadeIn animated mx-4 d-flex" id="myTabContent">
                             <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
@@ -293,8 +334,8 @@
                                                             
                                                                 <div class="hover-image"></div>
                                                                 <img class="default-img" src="${imageSrc}" alt="">
-                                                                <button class="btn btn-primary btn-center delete-btn" data-image="${imageName}">
-                                                                    <i class="fas fa-solid fa-trash text-sm" style="font-size: 10px;"></i> 
+                                                                <button class="btn btn-primary btn-center delete-btn" data-image="${imageName}" style="font-size: 12px; line-height: 1.5; max-width: 100%>
+                                                                    <i class="fas fa-solid fa-trash text-sm" style="font-size: 8px;"></i> 
                                                                     delete
                                                                 </button>
                                                             
@@ -551,10 +592,13 @@ formData.append('brand', getRadioValue('Categories'));
 
 console.log(formData);
 
-const response = await fetch("/Updateproduct", {
+const response = await fetch("/updateproduct", {
   method: 'POST',
-  body: formData
+  body: formData,
+  
+  
 });
+
 
 if (!response.ok) {
   throw new Error(`Error`);

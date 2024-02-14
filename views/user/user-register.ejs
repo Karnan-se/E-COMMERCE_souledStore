@@ -10,13 +10,14 @@
 
 <body>
     <main>
+        
 <%- include("./partials/navigation.ejs") %>
 
         <section class="content-main mt-80 mb-80">
             <div class="card mx-auto card-login">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Create an user Account</h4>
-                    <form method="post" action="/user-register" onsubmit="return validate_form()">
+                    <form method="post" action="/user-register" onsubmit="return validate_form(event)">
                         <div class="mb-3">
                             <label class="form-label">Name</label>
                             <input class="form-control" placeholder="Your Name" type="text" id="adminName" name="name">
@@ -73,6 +74,9 @@
 
                     <script>
 
+                        let isOtpMatched = null
+                        console.log(isOtpMatched)
+
 
                         async function sendOtp(){
                           try {
@@ -104,9 +108,11 @@
                             const otpBox= document.getElementById("otpBox")
                             otpBox.focus();
 
+                            
+
                             otpBox.addEventListener("input", async()=>{
                                 if(otpBox.value.length === 4){
-                                    const otpResponse = await fetch(`verifyotp?otp=${otpBox.value}`,{
+                                    const otpResponse = await fetch(`/verifyotp?otp=${otpBox.value}`,{
                                         method : "GET",
                                     })
                                     if(!otpResponse.ok){
@@ -120,16 +126,31 @@
                                         button.disabled= "true"
                                         button.classList.remove("bg-warning")
                                         button.classList.add("bg-primary")
-                                        return true;
+                                        isOtpMatched = true
+                                    
+
+                                        setTimeout(()=>{
+                                            isOtpMatched =null;
+                                            
+                                        },90000)
+                                        
                                     }else if(otpData=="otp doesnot matched"){
                                         clearInterval(countdown);
                                         button.textContent = "invalid OTP"
                                         button.classList.remove("bg-warning");
                                         button.classList.add("bg-red")
+                                        isOtpMatched= false
+                                        setTimeout(()=>{
+                                            button.textContent = " Resend otp"
+                                            button.disabled =false;
+
+                                        },7000)
                                         
                                     }
                                 }
                             })
+
+                    
 
 
    
@@ -179,13 +200,20 @@
     
     <!-- <script src="/js/admin-custom.js"></script> -->
     <script>
-        function validate_form() {
-            if(saveotp()!==true){
+        async function validate_form() {
+           
+            if(isOtpMatched === null || isOtpMatched === false){ 
+                console.log("otp not verified")
+
                 Swal.fire({
-                    icon:error,
-                    title:"verify otp"
+                    icon: "error",
+                    title: "please verify the otp"
                 })
+                event.preventDefault()
+                return false;    
             }
+           
+
             var phoneInput = document.getElementById('mobileNumber');
             var password1 = document.getElementById('password1');
             var password2 = document.getElementById('password2');
@@ -209,6 +237,7 @@
             }
     
             return true; // Allow form submission
+            
         }
     </script>
 

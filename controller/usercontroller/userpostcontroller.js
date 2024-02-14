@@ -19,7 +19,7 @@ let user_register = async (req, res) => {
     });
     const users = await user.find({});
     const matchingusers = users.find(
-      (user) => user.name === name || user.email === email
+      (user) => user.mobile === mobileNumber || user.email === email
     );
 
     if (matchingusers) {
@@ -52,7 +52,7 @@ let user_login = async (req, res) => {
         matchingUser.password
       );
 
-      if (matchingPassword) {
+      if (matchingPassword && matchingUser.isActive == true) {
         res.redirect("/");
       } else {
         req.session.passworderror = true;
@@ -70,10 +70,10 @@ let sendOtp = async (req, res) => {
     var email = req.query.email
 
     const message = `this message is only valid for few minutes`;
-    const otp = generateOtp.generateOtp();
+    const otp = await generateOtp.generateOtp();
     console.log(otp);
 
-   const newOtp = new otpSchema({
+   const newOtp =  new otpSchema({
     otp:otp,
     gmail:email
 })
@@ -84,14 +84,14 @@ console.log("hhhhh")
 
     const options = {
       email,
-      subject: `passsword change request recieved ${otp}`,
+      subject: `otp for your registeration is ${otp}`,
       message,
     };
     await sendEmail(options);
     
     const data="otp is send"
 
-    res.status(200).json(data);
+    await res.status(200).json(data);
 
   } catch (error) {
     console.log(error.message);

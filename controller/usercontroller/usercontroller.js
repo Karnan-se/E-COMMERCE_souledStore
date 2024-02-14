@@ -19,7 +19,7 @@ let userlogin = async (req, res)=>{
         let message1=null;
         if(req.session.emailerror){
             delete req.session.emailerror
-             message1="username not exist"
+             message1="username not exist or user is blocked"
         }else if(req.session.passworderror){
              message1="incorrect password"
              delete req.session.passworderror;

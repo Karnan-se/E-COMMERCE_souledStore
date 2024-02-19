@@ -244,7 +244,7 @@
                                 <div class="product-cart-wrap mb-30 custom-product-card">
                                     <div class="product-img-action-wrap">
                                         <div class="product-img product-img-zoom">
-                                            <!-- <a href="shop-product-right.html"> -->
+                                            <!-- <a href="/shop-product-right"> -->
                                                 <div class="hover-image"></div>
                                                 <div class="preview-images d-flex flex-wrap justify-content-start position-relative">
                                                     <!-- Images and buttons will be dynamically inserted here -->
@@ -345,9 +345,29 @@
                                 newFileList.items.add(newFiles[i])
                             }
                             inputImages.files =newFileList.files;
+
+                                
+                                        let newInput = $("<input>")
+                                        .attr("type", "file")
+                                        .attr("name", "Images")
+                                        .attr("id", "input-images")
+                                        .attr("accept", "image/*")
+                                        .attr("multiple", true)
+                                        .css("display", "none");
+                                        
+                                        $(document.body).append(newInput);
+                                        newInput.files = inputFiles;
+                                        console.log(`${newInput.files} hey this is newFile`)
+                                      
+                                        newInput.prop("files", newInput.files);
+                                        newInput.trigger('change');
+                                        positionRelative.remove();
+                                                               
+                                        }
+                                })
                                                        
-                                }
-                        })
+                                
+                        
                     
                 
                         $("#input-images").on("change", function() {
@@ -368,69 +388,7 @@
 
 
 
-                            <script>
-                                
-                                $(document).on("click", "#newImages", function(event) {
-                                    let imgFiles = [];
-                                    let fileCounter = 1; // Assuming this is defined elsewhere
-
-                                    const imageSrc = event.target.getAttribute("src");
-                                    const imagesInput = document.getElementById("input-images");
-                                    const image = document.getElementById("newImages")
-
-                                    for (let i = 0; i < imagesInput.files.length; i++) {
-                                        imgFiles.push(imagesInput.files[i]);
-                                    }
-
-                                    console.log(imageSrc);
-                                    Swal.fire({
-
-                                        title: "Crop images",
-                                        imageUrl: imageSrc,
-                                        imageWidth: 700,
-                                        imageHeight: 400,
-                                        showConfirmButton: true,
-                                        confirmButtonText: "Crop",
-                                        allowOutsideClick: true,
-                                        customClass: {
-                                            container: 'custom-modal-container'
-                                        },
-                                        preConfirm: () => {
-                                            const image = document.createElement("img")
-                                            image.src = imageSrc;
-                                           const cropper = new Cropper(image,{
-                                            aspectRatio: 1, 
-                                             zoomable: false, 
-                                             movable: true, 
-                                            scalable: true, 
-
-                                           })
-                                
-                                            
-                                            let croppedCanvas = cropper.getCroppedCanvas();
-
-                                            croppedCanvas.toBlob((blob) => {
-                                                const croppedFile = new File([blob], `cropped-image-${fileCounter}.png`, { type: 'image/png' });
-
-                                                fileCounter++;
-
-                                                imgFiles = imgFiles.map((file) => {
-                                                    return file !== imagesInput.files[0] ? file : croppedFile;
-                                                });
-
-                                                let newFileList = new DataTransfer();
-
-                                                imgFiles.forEach((file) => {
-                                                    newFileList.items.add(file);
-                                                });
-
-                                                imagesInput.files = newFileList.files;
-                                            });
-                                        }
-                                    });
-                                });
-
-                                </script>
+                           
                 
                 <style>
                     .btn-center {
@@ -860,7 +818,7 @@ updateCategory(selectedCategoryId, result.value);
         const gender = document.querySelector('select[name="gender"]').value;
         const tags = document.querySelector('input[name="tags"]').value;
         
-        if (!productTitle || !productColor || !productSize || !description || !price || !gender || !tags) {
+        if (!productTitle || !productColor || !productSize || !description || !price || !gender) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -881,7 +839,7 @@ async function save() {
   try {
     var formData = new FormData();
 
-const fileInput = document.getElementById('fileInput');
+const fileInput = document.getElementById('input-images');
 
 for (let i = 0; i < fileInput.files.length; i++) {
   formData.append('images', fileInput.files[i]);
@@ -897,7 +855,7 @@ formData.append('gender', document.querySelector('select[name="gender"]').value)
 formData.append('tags', document.querySelector('input[name="tags"]').value);
 formData.append('category', getRadioValue('Categories'));
 formData.append('subcategory', getRadioValue('subcategory'));
-formData.append('brand', getRadioValue('Categories'));
+formData.append('brand', getRadioValue('brand-cat'));
 
 console.log(formData);
 

@@ -9920,6 +9920,26 @@ span.fi-rs-apps {
   }
 }
 
+
+
+@keyframes blink {
+  0%, 100% {
+   transform: scaleY(1); /* Normal size */
+   }
+   45%, 30% {
+     transform: scaleY(0.1); /* Squeezed */
+  }
+  }
+
+  .blinking-eyes {
+    
+    animation: blink 2s infinite;
+    transform-origin: bottom; /* Set the origin to the bottom */
+  }
+
+
+
+
 .zoomContainer{ z-index: 9999;}
 .zoomWindow{ z-index: 9999;}
 /*# sourceMappingURL=main.css.map */

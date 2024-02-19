@@ -19,7 +19,7 @@ const brand = new mongoose.Schema ({
 
 
     })
-
+    
 
 
     module.exports=mongoose.model("brand", brand)

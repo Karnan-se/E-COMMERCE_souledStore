@@ -15,7 +15,11 @@ const brand = new mongoose.Schema ({
     createdAt:{
         type:Date,
         default:()=>Date.now()
-    }
+    },
+    images:[{
+        type:String,
+        required:false,
+    }]
 
 
     })

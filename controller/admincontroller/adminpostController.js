@@ -40,31 +40,41 @@ let page_account_register = async(req, res)=>{
 
 let page_account_login =async(req, res)=>{
     try {
+        delete req.session.passworderror;
+        delete req.session.emailerror;
+
         const {password, email}= req.body
 
-        const admins = await admin.find({});
-        const matchingAdmin = admins.find((admin)=>{
-            return admin.email===email;
+        const matchingAdmin = await admin.find({email:email})
+        console.log(matchingAdmin)
             
-
-        })
         
-        if (matchingAdmin){
-            const matchingPassword = await bcrypt.compare(password, matchingAdmin.password)
+        if (matchingAdmin.length> 0){
+            const matchingPassword = await bcrypt.compare(password, matchingAdmin[0].password)
+            console.log(matchingPassword)
+            delete req.session.passworderror
 
-        if(matchingPassword){
-            res.redirect("/admindashboard")
+            if(matchingPassword == true){
+                console.log("passwordMatched")
+                req.session.adminisAuth=true;
+                res.redirect("admindashboard")
+
+            }else{
+                req.session.passworderror=true;
+                res.redirect("/admin-login")
+            }
+
         } else {
-            req.session.passworderror=true;
-            res.redirect("/admin")
+            req.session.emailerror = true
+            res.redirect("/admin-login")
         }
-    } else{
-        req.session.emailerror= true
-    res.redirect("/admin")
-    }
+    
      
     } catch (error) {
+        console.log(error.message)
         
     }
 }
+
+
 module.exports={page_account_register, page_account_login}

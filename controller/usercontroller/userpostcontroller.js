@@ -53,7 +53,10 @@ let user_login = async (req, res) => {
       );
 
       if (matchingPassword && matchingUser.isActive == true) {
-        res.redirect("/");
+        req.session.userisAuth= true;
+        console.log(req.session.userisAuth);
+        
+        res.redirect("/",);
       } else {
         req.session.passworderror = true;
         res.redirect("/user-login");
@@ -62,7 +65,9 @@ let user_login = async (req, res) => {
       req.session.emailerror = true;
       res.redirect("/user-login");
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error.message)
+  }
 };
 
 let sendOtp = async (req, res) => {

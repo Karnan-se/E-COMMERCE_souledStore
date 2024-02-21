@@ -219,10 +219,39 @@ try {
         
     }
 }
+
+let edit_info_image = async (req, res)=>{
+    try {
+
+        console.log("hi")
+        const categoryId = req.body.itemId;
+
+        
+       
+        const image = req.files.map(file => file.filename);
+        console.log(image)
+        console.log(categoryId)
+    
+        
+        const category  = await brands.findOne({_id:categoryId})
+        console.log(category);
+
+        const update = await brands.updateOne({_id:categoryId},{$push:{images:image}}, {$upsert: true})
+        if(update){
+            console.log(`product updated successfully`)
+            const data="hello"
+            res.status(200).json({data})
+        }
+
+        
+    } catch (error) {
+        
+    }
+}
  
 
 
 
 
 
- module.exports={page_categories, blockproduct,createcategory, deleteproduct,laodcategory}
+ module.exports={page_categories, blockproduct,createcategory, deleteproduct,laodcategory, edit_info_image}

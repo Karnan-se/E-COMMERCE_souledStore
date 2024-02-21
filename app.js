@@ -17,6 +17,12 @@ const router = require("./route/adminroute/route");
 const userroute=require("./route/userroute/useroute")
 
 
+app.use((req, res, next) => {
+   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+   next();
+ });
+
+
 async function dbconnect(){
    try {
       await mongoose.connect("mongodb://127.0.0.1:27017/souled-store")

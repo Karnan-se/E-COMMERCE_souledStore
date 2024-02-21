@@ -22,11 +22,22 @@
                         <div class="mb-3">
                             <input class="form-control" placeholder="Username or email" type="text" id="email" name="email"></div> <!-- form-group// -->
                           
-                        <div class="mb-3">
+                        <div class="mb-3">                      
                             <input class="form-control" placeholder="Password" type="password" id="password" name="password"> </div> <!-- form-group// -->
                             <div class=" text-center text-danger">
-                                <%=message1%>
+                                
                             </div>
+                           
+                            <% if (typeof message1 !== "undefined") {%>
+                                <% if(message1) { %>
+                                <p class="alert alert-danger text-center"><%= message1 %></p>
+                                <% }%>
+                                
+
+                                <% } else { %>
+                                    <p class="alert alert-danger text-center d-none"><%= message1 %></p>
+                                <% } %>
+                            
                         <div class="mb-3">
                             <a href="/forgot-password" class="float-end font-sm text-muted">Forgot password?</a>
                             <label class="form-check">
@@ -61,7 +72,10 @@
             const passwordValue = passwordInput.value.trim();
 
             if (emailValue === '') {
-                alert('Email cannot be empty');
+                Swal.fire({
+                    icon: error,
+                    title: "Email cannot be null"
+                })
                 return false;
             }
 

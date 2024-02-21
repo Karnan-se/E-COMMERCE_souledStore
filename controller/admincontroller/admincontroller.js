@@ -1,25 +1,6 @@
 const { json } = require("stream/consumers");
 
 
-let adminLogin= async(req, res)=>{
-    try {
-        let message1=null;
-        if(req.session.emailerror){
-            delete req.session.emailerror
-             message1="username not exist"
-        }else if(req.session.passworderror){
-             message1="incorrect password"
-             delete req.session.passworderror;
-        } else{
-            message1=null;
-        }
-        res.render("admin/adminlogin.ejs",{message1})
-    } catch (error) {
-        console.log(error);
-        
-    }
-}
-
 let admindashboard = async(req, res)=>{
     try {
       
@@ -144,10 +125,9 @@ let page_account_login= async(req, res)=>{
 let page_account_register= async(req, res)=>{
     try {
      
-        // const message1 =req.query.message1
-        // stringMessage = JSON.stringify(message1)
+ 
        let message1 = ''
-req.session.signuperror = false
+        req.session.signuperror = false
         if(req.session.signuperror)
         {
             message1= 'Username already exists'
@@ -222,8 +202,17 @@ let resetpassword = async(req, res)=>{
         
     }
 }
+let logout = async(req,res)=>{
+    try {
+        delete  req.session.adminisAuth
+        res.redirect("/admin-login")
+        
+    } catch (error) {
+        
+    }
+}
 
-module.exports={adminLogin, 
+module.exports={ 
     admindashboard, 
     page_products_grid,
     page_products_grid_2,
@@ -245,4 +234,5 @@ module.exports={adminLogin,
     page_settings_1,
     page_settings_2,
     page_blank,
+    logout
     }

@@ -2,37 +2,29 @@ const { register } = require("module");
 const user = require("../../models/user/userdetails")
 const products = require("../../models/addproduct/addproduct")
 const asyncLookup = require("../../utils/asynclookup")
+const lookupAll = require("../../utils/lookupallCat")
+const brand = require("../../models/addproduct/brand")
 const mongoose = require("mongoose")
-const categories= require("../../models/addproduct/categories")
+const categories= require("../../models/addproduct/categories");
+
 
 
 let user_index = async(req, res)=>{
     try {
         let message1=null;
 
-        const apparelcategory =[]
+    
 
-        const product= await products.find()
-        const ApparelCategory = await categories.find()
-        const productDetails = await products.find()
+        const product= await products.find({isActive:true})
+        const ApparelCategory = await categories.find({isActive:true})
+        const productDetails = await products.find({isActive:true})
+        const brandDetails = await brand.find({isActive: true})
+        const fcat = await lookupAll.lookupAllCategory("categories", "category", "_id")
+        console.log(fcat)
+        const data= req.session.userisAuth;
+        console.log(data)
 
-
-
-        for(let i= 0; i< product.length; i++){
-            console.log(product[i]._id)
-            
-            const productId = new mongoose.Types.ObjectId(product[i]._id);
-            console.log(productId);
-             const fcat=await asyncLookup.karnan("categories","category","_id",productId);
-            const apparelCategoryId = fcat[0]?.newcat[0]?._id?.toString() ?? null;
-            apparelcategory.push(apparelCategoryId)
-     
-
-        }
-        // console.log (...apparelcategory)
-        
-
-        res.render("user/index.ejs",{message1, product, apparelcategory, ApparelCategory, productDetails})
+        res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data})
     } catch (error) {
         console.log(error.message);
         
@@ -92,6 +84,8 @@ const shop_grid_right = async(req, res)=>{
         const productId=product[0]._id
         console.log(productId)
         
+        
+        
         const shirt = await asyncLookup.karnan("categories", "category","_id",productId )
         console.log(shirt[0]?.newcat[0].categoryname)
         const apparelcategoryId = req.query.ApparelCategory
@@ -132,7 +126,18 @@ let submit_image = async(req, res)=>{
     }
 }
 
+let user_out = async(req, res)=>{
+    try {
+
+        delete req.session.userisAuth;
+        res.redirect("/user-login")
+        
+    } catch (error) {
+        
+    }
+}
 
 
 
-module.exports={user_index, userlogin, user_register,shop_grid_right, submit_image }
+
+module.exports={user_index, userlogin, user_register,shop_grid_right, submit_image, user_out}

@@ -138,7 +138,7 @@
                             <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
                             <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            <a class="dropdown-item text-danger" href="/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -237,6 +237,53 @@
                 
 
                 </script>
+               <script>
+                 document.addEventListener("DOMContentLoaded", async function() {
+               await document.querySelectorAll(".edit-info").forEach(editInfoButton => {
+                console.log("jijij")
+                  editInfoButton.addEventListener("click", async function() {
+                        console.log("event")
+                        const itemId = this.getAttribute("data-index1");
+                        const { value: file } = await Swal.fire({
+                            title: "Select the image to upload",
+                            input: "file",
+                            inputAttributes: {
+                                accept: 'image/*',
+                                'aria-label': 'Upload your profile picture'
+                            }
+                        });
+                        
+                        if (file) {
+                            const formData = new FormData();
+                            formData.append("itemId", itemId);
+                            formData.append("image", file);
+                            
+                            try {
+                                const response = await fetch(`/edit-info-image`, {
+                                    method: "POST",
+                                    body: formData
+                                });
+            
+                                if (!response.ok) {
+                                    throw new Error("Network response was not ok");
+                                }
+            
+                                const data = await response.json();
+            
+                                console.log(data);
+            
+                                Swal.fire("Success", "Image uploaded successfully", "success");
+                            } catch (error) {
+                                console.error("There was a problem with the fetch operation:", error);
+                                Swal.fire("Error", "Failed to upload image", "error");
+                            }
+                        }
+                    });
+                });
+            })
+            </script>
+            
+            
 
 
 
@@ -269,14 +316,76 @@
                                 </div>
                             </form>
                             <script>
-
-
-
-
-
-
-
+                                async function addImage(itemId) {
+                                    console.log("Edit-info button clicked");
+                                    console.log("Item ID:", itemId);
+                            
+                                    const { value: file } = await Swal.fire({
+                                        title: "Select the image to upload",
+                                        html: `
+                                            <input type="file" id="imageInput" accept="image/*" aria-label="Upload your profile picture" multiple>
+                                            <div id="imagePreview"></div>
+                                        `,
+                                        showCancelButton: true,
+                                        confirmButtonText: "Upload",
+                                        cancelButtonText: "Cancel",
+                                        preConfirm: () => {
+                                            const imageInput = document.getElementById('imageInput');
+                                            const file = imageInput.files[0];
+                                            return file;
+                                        },
+                                        didOpen: () => {
+                                            const imageInput = document.getElementById('imageInput');
+                                            const imagePreview = document.getElementById('imagePreview');
+                            
+                                            imageInput.addEventListener('change', () => {
+                                                const file = imageInput.files[0];
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onload = (e) => {
+                                                        const img = document.createElement('img');
+                                                        img.src = e.target.result;
+                                                        img.style.maxWidth = '100%';
+                                                        imagePreview.innerHTML = '';
+                                                        imagePreview.appendChild(img);
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                } else {
+                                                    imagePreview.innerHTML = '';
+                                                }
+                                            });
+                                        }
+                                    });
+                            
+                                    if (file) {
+                                        const formData = new FormData();
+                                        formData.append("itemId", itemId);
+                                        formData.append("image", file);
+                            
+                                        try {
+                                            const response = await fetch(`/edit-info-image`, {
+                                                method: "POST",
+                                                body: formData
+                                            });
+                            
+                                            if (!response.ok) {
+                                                throw new Error("Network response was not ok");
+                                            }
+                            
+                                            const data = await response.json();
+                            
+                                            console.log(data);
+                            
+                                            Swal.fire("Success", "Image uploaded successfully", "success");
+                                        } catch (error) {
+                                            console.error("There was a problem with the fetch operation:", error);
+                                            Swal.fire("Error", "Failed to upload image", "error");
+                                        }
+                                    }
+                                }
                             </script>
+                            
+                            
 <!-- focus---------------------------------------- -->
 
                         </div>
@@ -319,10 +428,11 @@
                                                         <a class="dropdown-item block" href="/blockproduct?userId=<%= newcategories[i]._id %>"><%= newcategories[i].isActive==true? "block":"Activate" %></a>
                                                         <input type="text" value="<%= newcategories[i]._id %>" id="userid<%= i%>" hidden>
                                                         <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
+                                                        
                                                         <a class="dropdown-item text-danger delete" data-userid="<%= newcategories[i]._id %>" href="#">Delete</a>
                                 
                                                     </div>
-                                                </div> <!-- dropdown //end -->
+                                                </div> 
                                             </td>
                                         </tr>
                                         <%} %>
@@ -330,13 +440,13 @@
                                         <script src="/js/updateCategory.js"></script>
                                         <script>
                                               
-                                            document.addEventListener("DOMContentLoaded", function () {
+                                            document.addEventListener("DOMContentLoaded", async function () {
                                                 const editButtons = document.querySelectorAll(".editCategoryButton");
                                                 
                                                 
                                             
                                                 editButtons.forEach(function (button) {
-                                                    button.addEventListener("click", function () {
+                                                    button.addEventListener("click",async function () {
                                                         const dataIndex = button.getAttribute("data-index");
                                                         const editableCell = document.querySelector(`.editable-cell${dataIndex}`);
                                          
@@ -379,12 +489,13 @@
                                                     });
                                                 });
                                             });
-
-
-                                           
-                     
-                                
                                             </script>
+
+
+
+
+
+                                            
 
                                              <% for(var i=0;i<lic.length;i++) {%>
                                                 <tr>
@@ -432,6 +543,7 @@
                                                     <a class="dropdown-item block" href="/blockproduct?userId=<%= brand[i]._id %>"><%= brand[i].isActive==true? "block":"Activate" %></a>
                                                     <input type="text" value="<%= brand[i]._id %>" id="userid<%= i%>" hidden>
                                                     <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
+                                                    <a class="dropdown-item" onclick="addImage(`<%= brand[i]._id %>`)">add Image</a>
                                                     <a class="dropdown-item text-danger delete" data-userid="<%= brand[i]._id %>" href="#">Delete</a>
                                                 </div>
                                             </div> <!-- dropdown //end -->

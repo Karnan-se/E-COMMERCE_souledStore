@@ -1,7 +1,7 @@
 
 const products = require("../models/addproduct/addproduct")
 
-async function lookupAllCategory(from, localField, foreignField,productId){
+async function lookupAllCategory(from, localField, foreignField){
 try {
     const fcat =  await products.aggregate([
     
@@ -12,11 +12,16 @@ try {
                 as:"newcat"
             } 
         },
-        
-    
-    
+        {$match:
+        {
+           $and:[
+            {"newcat.isActive": true},
+            {isActive : true}
+           ] 
+        }}
+           
     ])
-    
+    console.log(fcat)   
     return fcat
 } catch (error) {
     console.log(error.message);
@@ -24,5 +29,5 @@ try {
 
 }
 module.exports ={
-    lookupAllCategory
+    lookupAllCategory,
 };

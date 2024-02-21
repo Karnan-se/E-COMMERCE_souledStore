@@ -191,7 +191,12 @@
                                         <li><a href="#"><img src="/assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
                                     </ul>
                                 </li>
-                                <li><i class="fi-rs-user"></i><a href="user-login">Log In </a> <a href="user-register">/ Sign Up</a></li>
+                                <% if(typeof data !=="undefined" ) {%>
+                                <li><i class="fi-rs-user"></i><a href="/user-logout">logout</a></li>
+                                <% }else { %>
+                                    <li><i class="fi-rs-user"></i><a href="user-login">Log In </a> <a href="user-register">/ Sign Up</a></li>
+
+                                    <% }%>
                             </ul>
                         </div>
                     </div>
@@ -547,13 +552,15 @@
                             <div class="header-action-icon-2">
                                 <a href="/shop-wishlist">
                                     <img alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg">
-                                    <span class="pro-count white">4</span>
+                                    <!-- <span class="pro-count white">4</span> -->
+                                    <!-- heart number -->
                                 </a>
                             </div>
                             <div class="header-action-icon-2">
                                 <a class="mini-cart-icon" href="/shop-cart">
                                     <img alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg">
-                                    <span class="pro-count white">2</span>
+                                    <!-- <span class="pro-count white">2</span> -->
+                                    <!-- cartNumber -->
                                 </a>
                                 <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                     <ul>

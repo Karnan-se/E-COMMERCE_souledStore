@@ -1,4 +1,5 @@
 const { register } = require("module");
+const moment = require("moment")
 const user = require("../../models/user/userdetails")
 const products = require("../../models/addproduct/addproduct")
 const asyncLookup = require("../../utils/asynclookup")
@@ -14,19 +15,25 @@ let user_index = async(req, res)=>{
         let message1=null;
 
     
-
+        const threedays = new Date();
+        threedays.setDate(threedays.getDate()-3)
         const product= await products.find({isActive:true})
         const ApparelCategory = await categories.find({isActive:true})
-        const productDetails = await products.find({isActive:true})
+        const productDetails = await products.find({isActive:true, gender: true})
         const brandDetails = await brand.find({isActive: true})
         const fcat = await lookupAll.lookupAllCategory("categories", "category", "_id")
         console.log(fcat)
         const data= req.session.userisAuth;
-        console.log(data)
+        console.log(data);
+        const newProducts = await products.aggregate([{$match:{
+            createdat: {$gte: threedays}}}])
+        console.log(newProducts);
 
-        res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data})
+
+        res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts})
     } catch (error) {
         console.log(error.message);
+        
         
     }
 
@@ -83,6 +90,7 @@ const shop_grid_right = async(req, res)=>{
         const product = await products.find();
         const productId=product[0]._id
         console.log(productId)
+        const ApparelCategory = await categories.find({isActive:true})
         
         
         
@@ -93,7 +101,7 @@ const shop_grid_right = async(req, res)=>{
         
        
         
-        const newproduct = await products.find({category:apparelcategoryId});
+        const newproduct = await products.find({category:apparelcategoryId,});
        
         console.log(newproduct)
         
@@ -101,7 +109,7 @@ const shop_grid_right = async(req, res)=>{
         
         
 
-        res.render("user/user-shop-grid-right.ejs",{product:newproduct})
+        res.render("user/user-shop-grid-right.ejs",{product:newproduct, ApparelCategory})
         
     } catch (error) {
         

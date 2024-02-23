@@ -17,7 +17,7 @@ const addproduct = new mongoose.Schema({
     },
     stock:{
         type:Number,
-        required:true,
+        required:false,
     },
     color:{
         type:String,
@@ -25,26 +25,66 @@ const addproduct = new mongoose.Schema({
     },
     size:{
         type:String,
-        required:true,
+        required:false,
+    },
+
+    sizes :{
+        
+        S: {
+        newStock: {
+            type: Number,
+            default: 0
+        }
+    },
+    M: {
+        newStock: {
+            type: Number,
+            default: 0
+        }
+    },
+    L: {
+        newStock: {
+            type: Number,
+            default: 0
+        }
+    },
+    Xl: {
+        newStock: {
+            type: Number,
+            default: 0
+        }
+    },
+    XXl: {
+        newStock: {
+            type: Number,
+            default: 0
+        }
+    },
+
+
     },
 
 
     category:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'categories',
-        required: false
+        required: false,
+        
     },
 
     license:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'license',
-        required:false
+        required:false,
+        
     },
 
     brand:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'brand',
-        required:false
+        required:false,
+        defaul: "0"
+        
     },
 
     description:{

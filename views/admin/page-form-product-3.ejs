@@ -155,7 +155,7 @@
                     </div>
                     
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="mb-4">
@@ -163,10 +163,11 @@
                                 <input type="text" placeholder="Type here" class="form-control" id="product_title" name="productname">
                             </div>
                             <div class="row gx-3">
-                                <div class="col-md-4  mb-3">
-                                    <label for="product_sku" class="form-label">stock</label>
-                                    <input type="number" placeholder="Type here" class="form-control" id="product_sku" name="stock">
-                                    <div id="error_message" style="color: red;"></div>
+                                <div class="col-md-5  mb-3 d-none" >
+                                    <label for="product_sku" class="form-label d-none d-none">stock</label>
+                                    <input type="number" placeholder="Type here" class="form-control d-none" id="product_sku" name="stock">
+
+                                    
                                 </div>
                                 <script>
                                      document.addEventListener("DOMContentLoaded", function () {
@@ -212,9 +213,9 @@
                                     <label for="product_color" class="form-label">Color</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="product_color" name="color">
                                 </div>
-                                <div class="col-md-4  mb-0 mt-4">
+                                <div class="col-md-3  mb-0 mt-4 d-none">
                                     <!-- size need to be drop dopwn -->
-                                    <select class="form-select" name="size">
+                                    <select class="form-select d-none" name="size">
                                         <option value="null">select size</option>
                                         <option value="S">S</option>
                                         <option value="M">M</option>
@@ -224,7 +225,44 @@
                                     </select>
                                     
                                 </div>
+                                
+                                <div class="row newSizes">
+                                    <div class="col-md-4  mb-3" >
+                                        
+                                        <label for="sizeS">Size S:</label>
+                                        <input type="number" id="sizeS" name="sizes[S]" class="form-control"  min="0" value="0">
+                                      </div>
+                                      <div class="col-md-4  mb-3">
+                                        <label for="sizeM">Size M:</label>
+                                        <input type="number" id="sizeM" name="sizes[M]" min="0" value="0" class="form-control">
+                                      </div>
+                                      <div class="col-md-4  mb-3">
+                                        <label for="sizeL">Size L:</label>
+                                        <input type="number" id="sizeL" name="sizes[L]" min="0" value="0" class="form-control">
+                                      </div>
+                                      <div class="col-md-4  mb-3">
+                                        <label for="sizeXL">Size XL:</label>
+                                        <input type="number" id="sizeXL" name="sizes[XL]" min="0" value="0" class="form-control">
+                                      </div>
+                                      <div class="col-md-4  mb-3">
+                                        <label for="sizeXXL">Size XXL:</label>
+                                        <input type="number" id="sizeXXL" name="sizes[XXL]" min="0" value="0" class="form-control">
+                                      </div>
+                                    <div id="error_message" style="color: red;"></div>
+
+                                    </div>
                             </div>
+                            <script>
+                                 const smallStock = document.getElementById("sizeS").value;
+                                 const mediumStock = document.getElementById("sizeS").value;
+                                 const largeStock = document.getElementById("sizeS").value;
+                                 const XlStock = document.getElementById("sizeS").value;
+                                 const XXLStock = document.getElementById("sizeS").value;
+
+                            
+                                 
+                                 
+                                </script>
                          
                         </div>
                     </div> <!-- card end// -->
@@ -817,16 +855,34 @@ updateCategory(selectedCategoryId, result.value);
         const price = document.querySelector('input[name="price"]').value;
         const gender = document.querySelector('select[name="gender"]').value;
         const tags = document.querySelector('input[name="tags"]').value;
+
+        const smallStock = document.getElementById("sizeS").value;
+        const mediumStock = document.getElementById("sizeS").value;
+        const largeStock = document.getElementById("sizeS").value;
+        const XlStock = document.getElementById("sizeS").value;
+        const XXLStock = document.getElementById("sizeS").value;
+
         
-        if (!productTitle || !productColor || !productSize || !description || !price || !gender) {
+        if (!productTitle || !productColor || !productSize || !description || !price || !gender ) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Please fill in all required fields.',
             });
             return false;
- 
         }
+
+            if(gender == "" || gender== "gender"){
+                Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please select the gender',
+            });
+            return false;
+
+            }
+ 
+        
 
         return true;
     }
@@ -856,6 +912,12 @@ formData.append('tags', document.querySelector('input[name="tags"]').value);
 formData.append('category', getRadioValue('Categories'));
 formData.append('subcategory', getRadioValue('subcategory'));
 formData.append('brand', getRadioValue('brand-cat'));
+
+formData.append('size_s', document.getElementById("sizeS").value);
+formData.append('size_m', document.getElementById("sizeM").value);
+formData.append('size_l', document.getElementById("sizeL").value);
+formData.append('size_xl', document.getElementById("sizeXL").value);
+formData.append('size_xxl', document.getElementById("sizeXXL").value);
 
 console.log(formData);
 

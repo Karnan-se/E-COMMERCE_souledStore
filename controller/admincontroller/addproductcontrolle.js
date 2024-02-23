@@ -138,7 +138,13 @@ let addproduct = async(req, res)=>{
         tags,
         category,
         subcategory,
-        brand}= req.body
+        brand,
+        size_s,
+        size_m,
+        size_l,
+        size_xl,
+        size_xxl
+        }= req.body
 
         console.log(formdata);
 
@@ -156,12 +162,18 @@ let addproduct = async(req, res)=>{
         images:images,
         price:price,
         tags:tags,
-        gender:gender
+        gender:gender,
+        "sizes.S.newStock":size_s,
+        "sizes.M.newStock":size_m,
+        "sizes.L.newStock":size_l,
+        "sizes.XL.newStock":size_xl,
+        "sizes.XXL.newStock":size_xxl,
+
 
     })
     console.log(newproducts)
 
-    newproducts.save()
+    newproducts.save({ validateBeforeSave: false})
     console.log("new product saved")
     
     

@@ -62,21 +62,11 @@ let productdelete= async(req, res)=>{
         const newproduct= await products.findOne({_id:userId})
 
         if(newproduct){    
-            
-            const result = await swal.fire({
-                title: "Are you sure ?",
-                text: "you won't be able to revert this",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-
-            })
-        await products.deleteOne({_id:userId})
-        console.log("product deleted")
-        res.redirect("/page-products-list")
-        
+            await products.deleteOne({_id:userId})
+            console.log("product deleted");
+            const data = "hey";
+            res.status(200).json({data});
+          
         }else{
         console.log("no match is found");
     }
@@ -153,26 +143,36 @@ let updateprouct = async(req, res)=>{
     try {
         const images = req.files.map(file => file.filename);
         console.log(images)
+
+        
+
        
-        const  {productTitle,
+        let  {productTitle,
             productSKU,
             productColor,
-            productSize,
+            
             description,
             price,
             gender,
             tags,
             category,
             subcategory,
-            brand}= req.body
+            brand,
+            size_s,
+            size_m,
+            size_l,
+            size_xl,
+            size_xxl}= req.body
 
             console.log(productTitle)
+        
+        
         const updatedproduct= await products.updateOne({productname:productTitle},{$set:{
 
             productname:productTitle,
             stock:productSKU,
             color:productColor,
-            size:productSize,
+           
             category:category,
             license:subcategory,
             brand:brand,
@@ -180,7 +180,13 @@ let updateprouct = async(req, res)=>{
             
             price:price,
             tags:tags,
-            gender:gender
+            gender:gender,
+            
+            "sizes.S.newStock":size_s,
+            "sizes.M.newStock":size_m,
+            "sizes.L.newStock":size_l,
+            "sizes.XL.newStock":size_xl,
+            "sizes.XXL.newStock":size_xxl,
         }, $addToSet:{images: {$each: images}}})
 
         console.log(updatedproduct)
@@ -196,4 +202,4 @@ let updateprouct = async(req, res)=>{
 }
 
 
-module.exports = {page_products_list,productblock, editproduct, deleteImage,updateprouct}
+module.exports = {page_products_list,productblock, editproduct, deleteImage,updateprouct, productdelete}

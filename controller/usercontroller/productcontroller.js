@@ -49,9 +49,12 @@ let shop_product_right = async(req, res)=>{
 
         
     } catch (error) {
+        console.log(error.message)
         
     }
 }
+
+
 
 
 

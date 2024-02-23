@@ -74,6 +74,7 @@ router.get("/deleteproduct",auth.isLogin,categories.deleteproduct)
 
 
 router.get("/page-products-list",auth.isLogin, productlist.page_products_list);
+router.get("/productDelete",auth.isLogin,productlist.productdelete)
 router.get("/productblock",auth.isLogin, productlist.productblock);
 router.get("/productedit",auth.isLogin,productlist.editproduct)
 router.get("/deleteimage",productlist.deleteImage)

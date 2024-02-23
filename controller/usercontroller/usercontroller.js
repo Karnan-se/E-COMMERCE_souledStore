@@ -19,7 +19,9 @@ let user_index = async(req, res)=>{
         threedays.setDate(threedays.getDate()-3)
         const product= await products.find({isActive:true})
         const ApparelCategory = await categories.find({isActive:true})
+
         const productDetails = await products.find({isActive:true, gender: true})
+
         const brandDetails = await brand.find({isActive: true})
         const fcat = await lookupAll.lookupAllCategory("categories", "category", "_id")
         console.log(fcat)
@@ -144,6 +146,8 @@ let user_out = async(req, res)=>{
         
     }
 }
+
+
 
 
 

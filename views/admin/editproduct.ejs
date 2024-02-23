@@ -195,17 +195,50 @@
                                 <div class="col-md-4  mb-0 mt-4">
                                     <!-- size need to be drop dopwn -->
 
-                                    <select class="form-select" name="size">
-                                        <option value="null" <% if (product.size === 'null') { %>selected<% } %>>select size</option>
-                                        <option value="S" <% if (product.size === 'S') { %>selected<% } %>>S</option>
-                                        <option value="M" <% if (product.size === 'M') { %>selected<% } %>>M</option>
-                                        <option value="L" <% if (product.size === 'L') { %>selected<% } %>>L</option>
-                                        <option value="XL" <% if (product.size === 'XL') { %>selected<% } %>>XL</option>
-                                        <option value="XXL" <% if (product.size === 'XXL') { %>selected<% } %>>XXL</option>
-                                    </select>
+                                  
+
+                                </div>
+
+                                <div class="row newSizes">
+                                    <div class="col-md-4  mb-3" >
+                                        
+                                        <label for="sizeS">Size S:</label>
+                                        <input type="number" id="sizeS" name="sizes[S]" class="form-control"  min="0" value="<%= product.sizes.S.newStock %>">
+                                      </div>
+                                      <div class="col-md-4  mb-3">
+                                        <label for="sizeM">Size M:</label>
+                                        <input type="number" id="sizeM" name="sizes[M]" min="0" value="<%= product.sizes.M?.newStock %>" class="form-control">
+                                      </div>
+                                      <div class="col-md-4  mb-3">
+                                        <label for="sizeL">Size L:</label>
+                                        <input type="number" id="sizeL" name="sizes[L]" min="0" value="<%= product.sizes.L?.newStock %>" class="form-control">
+                                      </div>
+                                      <div class="col-md-4  mb-3">
+                                        <label for="sizeXL">Size XL:</label>
+                                        <input type="number" id="sizeXL" name="sizes[XL]" min="0" value="<%= product.sizes.Xl?.newStock %>" class="form-control">
+                                      </div>
+                                      <div class="col-md-4  mb-3">
+                                        <label for="sizeXXL">Size XXL:</label>
+                                        <input type="number" id="sizeXXL" name="sizes[XXL]" min="0" value="<%= product.sizes.XXL?.newStock %>" class="form-control">
+                                      </div>
+                                    <div id="error_message" style="color: red;"></div>
+
+                                    </div>
+                            
+                            <script>
+                                 const smallStock = document.getElementById("sizeS").value;
+                                 const mediumStock = document.getElementById("sizeS").value;
+                                 const largeStock = document.getElementById("sizeS").value;
+                                 const XlStock = document.getElementById("sizeS").value;
+                                 const XXLStock = document.getElementById("sizeS").value;
+
+                            
+                                 
+                                 
+                                </script>
                                      
                                 </div>
-                            </div>
+                            
                          
                         </div>
                     </div> <!-- card end// -->
@@ -542,13 +575,13 @@
         }
         const productTitle = document.getElementById('product_title').value;
         const productColor = document.getElementById('product_color').value;
-        const productSize = document.querySelector('select[name="size"]').value;
+        
         const description = document.querySelector('textarea[name="Description"]').value;
         const price = document.querySelector('input[name="price"]').value;
         const gender = document.querySelector('select[name="gender"]').value;
         const tags = document.querySelector('input[name="tags"]').value;
         
-        if (!productTitle || !productColor || !productSize || !description || !price || !gender || !tags) {
+        if (!productTitle || !productColor || !description || !price || !gender || !tags) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -581,7 +614,6 @@ for (let i = 0; i < fileInput.files.length; i++) {
 formData.append('productTitle', document.getElementById('product_title').value);
 formData.append('productSKU', document.getElementById('product_sku').value);
 formData.append('productColor', document.getElementById('product_color').value);
-formData.append('productSize', document.querySelector('select[name="size"]').value);
 formData.append('description', document.querySelector('textarea[name="Description"]').value);
 formData.append('price', document.querySelector('input[name="price"]').value);
 formData.append('gender', document.querySelector('select[name="gender"]').value);
@@ -589,6 +621,13 @@ formData.append('tags', document.querySelector('input[name="tags"]').value);
 formData.append('category', getRadioValue('Categories'));
 formData.append('subcategory', getRadioValue('subcategory'));
 formData.append('brand', getRadioValue('brand-cat'));
+
+
+formData.append('size_s', document.getElementById("sizeS").value);
+formData.append('size_m', document.getElementById("sizeM").value);
+formData.append('size_l', document.getElementById("sizeL").value);
+formData.append('size_xl', document.getElementById("sizeXL").value);
+formData.append('size_xxl', document.getElementById("sizeXXL").value);
 
 console.log(formData);
 

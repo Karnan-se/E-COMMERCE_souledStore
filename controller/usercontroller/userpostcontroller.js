@@ -53,7 +53,7 @@ let user_login = async (req, res) => {
       );
 
       if (matchingPassword && matchingUser.isActive == true) {
-        req.session.userisAuth= true;
+        req.session.userisAuth= matchingUser;
         console.log(req.session.userisAuth);
         
         res.redirect("/",);
@@ -62,7 +62,7 @@ let user_login = async (req, res) => {
         res.redirect("/user-login");
       }
     } else {
-      req.session.emailerror = true;
+      req.session.emailerror = user.email;
       res.redirect("/user-login");
     }
   } catch (error) {

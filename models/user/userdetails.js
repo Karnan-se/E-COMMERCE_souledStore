@@ -36,6 +36,30 @@ const user = new mongoose.Schema({
         type: Date,
         required: false,
     },
+    Address:[{
+        housename:{
+            type:String,
+            required: false,
+        },
+        Street:{
+            type:String,
+            required:false,
+        },
+        City:{
+            type:String,
+            required:false,
+        },
+        State:{
+            type:String,
+            required:false,
+        },
+        status:{
+            type:Boolean,
+            default: false,
+        },
+        
+    }],
+ 
   
 });
 

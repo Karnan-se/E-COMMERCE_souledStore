@@ -19,9 +19,7 @@ let user_index = async(req, res)=>{
         threedays.setDate(threedays.getDate()-3)
         const product= await products.find({isActive:true})
         const ApparelCategory = await categories.find({isActive:true})
-
         const productDetails = await products.find({isActive:true, gender: true})
-
         const brandDetails = await brand.find({isActive: true})
         const fcat = await lookupAll.lookupAllCategory("categories", "category", "_id")
         console.log(fcat)
@@ -31,7 +29,27 @@ let user_index = async(req, res)=>{
             createdat: {$gte: threedays}}}])
         console.log(newProducts);
 
+        const lowtohigh = req.session.low_High;
+        
+            if(lowtohigh){
+                delete req.session.low_High
+               fcat.sort((a, b)=>{
+                return a.price - b.price
+               })
+               console.log(fcat)
+                
+                return res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts})    
+            }
+            const Hightolow = req.session.Highlow;
+            console.log(Hightolow)
+            if(Hightolow){
+                delete req.session.Highlow;
+                fcat.sort((a, b)=>{
+                    return b.price - a.price;
+                })
+            }
 
+            console.log(lowtohigh)
         res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts})
     } catch (error) {
         console.log(error.message);
@@ -143,7 +161,28 @@ let user_out = async(req, res)=>{
         res.redirect("/user-login")
         
     } catch (error) {
+        console.log(error.message)
         
+    }
+}
+
+let low_High = async (req, res)=>{
+    try {
+        req.session.low_High = true;
+        res.redirect("/")
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+let High_low = async(req, res)=>{
+    try {
+        req.session.Highlow = true;
+        res.redirect("/")
+        
+    } catch (error) {
+        console.log(error.message)
     }
 }
 
@@ -152,4 +191,11 @@ let user_out = async(req, res)=>{
 
 
 
-module.exports={user_index, userlogin, user_register,shop_grid_right, submit_image, user_out}
+module.exports={user_index,
+     userlogin, 
+     user_register,
+     shop_grid_right, 
+     submit_image, 
+     user_out,
+    low_High,
+    High_low}

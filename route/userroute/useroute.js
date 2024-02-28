@@ -4,6 +4,8 @@ const userController= require("../../controller/usercontroller/usercontroller")
 const userpostcontroller= require("../../controller/usercontroller/userpostcontroller")
 const productController = require("../../controller/usercontroller/productcontroller")
 const auth = require("../../middlewares/multer/userSession")
+const MyAccount = require("../../controller/usercontroller/user-account")
+const wishlist = require("../../controller/usercontroller/shopwishlist")
 
 userrouter.use(express.static("public"));
 
@@ -19,7 +21,20 @@ userrouter.get("/sendotp",userpostcontroller.sendOtp)
 userrouter.get("/verifyotp",userpostcontroller.verifyOtp)
 userrouter.get("/shop-grid-right",userController.shop_grid_right)
 userrouter.get("/submit-image", userController.submit_image)
+userrouter.get("/low-to-high",userController.low_High)
+userrouter.get("/High-to-low",userController.High_low)
+
+userrouter.get("/shop-wishlist",wishlist.shopWishlist)
+
+userrouter.get("/myAccount",MyAccount.user_page_account)
+userrouter.post("/currentPassword",MyAccount.currentPassword)
+userrouter.post("/newpasswordchange",MyAccount.newpasswordchange)
+userrouter.post("/addAddress", MyAccount.addAddress)
+userrouter.get("/updateAddressStatus",MyAccount.updateAddressStatus)
+
+
 userrouter.get("/shop-product-right",productController.shop_product_right)
+
 
 
 

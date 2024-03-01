@@ -6,6 +6,7 @@ let user_page_account = async(req, res)=>{
     try {
         const userDetails = req.session.userisAuth;
         console.log(userDetails);
+        
         if(req.session.passwordUpdated){
             delete req.session.passwordUpdated;
             const message="passwordUpdated";
@@ -71,6 +72,8 @@ let newpasswordchange = async(req, res)=>{
     }
 }
 
+
+// here i like to add if there only one element then it should the status should be true
 let addAddress = async(req, res)=>{
     try {
         
@@ -80,6 +83,8 @@ let addAddress = async(req, res)=>{
             const userEmail=req.session.userisAuth.email;
             console.log(userEmail);
             const address = req.body.address;
+            
+
             const update = await userdetail.updateOne({email:userEmail},
                 {$addToSet:{Address: {housename:address.houseName, Street : address.streetName, City :address.city,State: address.state}}})
 
@@ -116,8 +121,11 @@ let updateAddressStatus = async(req, res)=>{
         const updateallfalse = await userdetail.updateMany({Address:{$exists: true} },{$set:{"Address.$[].status":false}})
         const updateaoneTOtrue= await userdetail.updateOne({email:userEmail},{$set:{[`Address.${index}.status`]:true}})
         console.log("selected address status become true");
-        console.log(updateaoneTOtrue);
         console.log(updateallfalse);
+        console.log(updateaoneTOtrue);
+        const newuserisAuth = await userdetail.findOne({email:userDetails.email});
+        req.session.userisAuth=newuserisAuth
+        console.log(req.session.userisAuth);
        const data="Address Status updated to true";
 
         res.status(200).json({data})
@@ -129,9 +137,38 @@ let updateAddressStatus = async(req, res)=>{
          console.log(error.message);
         
     }
+
 }
+
+let deleteAddress = async(req, res)=>{
+    try {
+        const index= (req.query.index1);
+       console.log(index);
+
+        const userEmail = req.session.userisAuth.email;
+        const updatedUser = await userdetail.findOneAndUpdate(
+            { email: userEmail },
+            { $pull: { Address: { _id: { $in: [index] } } } },
+            { new: true } 
+          );
+          
+        console.log(updatedUser);
+        const userdetails = await userdetail.findOne({email:userEmail});
+        req.session.userisAuth=userdetails;
+        const data ="hey";
+        await res.status(200).json({data});
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
 module.exports={user_page_account, 
     currentPassword,
      newpasswordchange,
         addAddress,
-        updateAddressStatus}
+        updateAddressStatus,
+        deleteAddress }

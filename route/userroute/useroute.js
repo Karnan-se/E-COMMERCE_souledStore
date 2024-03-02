@@ -38,6 +38,8 @@ userrouter.get("/deleteAddress",MyAccount.deleteAddress)
 userrouter.get("/shop-product-right",productController.shop_product_right)
 
 userrouter.get("/shop-cart",shopCart.shop_cart )
+userrouter.get("/addtoCart",shopCart.addtoCart )
+
 
 
 

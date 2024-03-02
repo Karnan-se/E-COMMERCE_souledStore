@@ -83,7 +83,7 @@ const addproduct = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'brand',
         required:false,
-        defaul: "0"
+       
         
     },
 

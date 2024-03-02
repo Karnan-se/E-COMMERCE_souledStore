@@ -173,7 +173,8 @@ let addproduct = async(req, res)=>{
     })
     console.log(newproducts)
 
-    newproducts.save({ validateBeforeSave: false})
+    newproducts.save({ validateBeforeSave: false    
+    })
     console.log("new product saved")
     
     

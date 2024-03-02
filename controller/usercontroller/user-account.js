@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt")
 let user_page_account = async(req, res)=>{
     try {
         const userDetails = req.session.userisAuth;
-        console.log(userDetails);
+       
         
         if(req.session.passwordUpdated){
             delete req.session.passwordUpdated;

@@ -22,12 +22,12 @@ let user_index = async(req, res)=>{
         const productDetails = await products.find({isActive:true, gender: true})
         const brandDetails = await brand.find({isActive: true})
         const fcat = await lookupAll.lookupAllCategory("categories", "category", "_id")
-        console.log(fcat)
+       
         const data= req.session.userisAuth;
-        console.log(data);
+       
         const newProducts = await products.aggregate([{$match:{
             createdat: {$gte: threedays}}}])
-        console.log(newProducts);
+
 
         const lowtohigh = req.session.low_High;
         
@@ -36,7 +36,7 @@ let user_index = async(req, res)=>{
                fcat.sort((a, b)=>{
                 return a.price - b.price
                })
-               console.log(fcat)
+            
                 
                 return res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts})    
             }

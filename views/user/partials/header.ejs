@@ -237,14 +237,16 @@
                         <div class="header-action-right">
                             <div class="header-action-2">
                                 <div class="header-action-icon-2">
-                                    <a href="/shop-wishlist">
-                                        <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg">
-                                        <!-- <span class="pro-count blue">4</span> -->
+                                    <a href="/shop-cart">
+                                        <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg">
+                                        <% if (typeof userinCart !== "undefined" && userinCart?.items?.length) { %>
+                                        <span class="pro-count blue"><%= userinCart.items.length %></span>
+                                        <% }%>
                                     </a>
                                 </div>
                                 <div class="header-action-icon-2">
-                                    <a class="mini-cart-icon" href="/shop-cart">
-                                        <img alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg">
+                                    <a class="mini-cart-icon" href="/shop-wishlist">
+                                        <img alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg">
                                         <!-- <span class="pro-count blue">2</span> -->
                                     </a>
                                     <div class="cart-dropdown-wrap cart-dropdown-hm2">
@@ -294,20 +296,18 @@
         
 
         <style>
-        /* .header-middle{
-            height: 50px;
-        } */
+        
 
 
 .blinking-eyes {
-    top: 13px; /* Adjust the top position of the blinking-eyes element */
+    top: 13px; 
 }
 
 
 
   .header-middle.header-middle-ptb-1 {
-    padding-top: 5px; /* Adjust the top padding as needed */
-    padding-bottom: 5px; /* Adjust the bottom padding as needed */
+    padding-top: 5px; 
+    padding-bottom: 5px;
   }
 
   .header-wrap {
@@ -317,17 +317,17 @@
   }
 
   .logo.logo-width-1 {
-    width: 100px; /* Adjust the width of the logo as needed */
+    width: 100px; 
   }
 
   .blinking-eyes {
-    top: 15px !important; /* Adjust the top position as needed */
-    left: 0; /* Adjust the left position as needed */
-    transform: translateY(10px); /* Adjust the vertical translation as needed */
+    top: 15px !important; 
+    left: 0; 
+    transform: translateY(10px); 
   }
 
   .search-style-2 {
-    margin-right: 10px; /* Adjust the right margin as needed */
+    margin-right: 10px; 
   }
 
   .header-right {
@@ -338,7 +338,7 @@
   .header-action-2 {
     display: flex;
     align-items: center;
-    margin-left: 10px; /* Adjust the left margin as needed */
+    margin-left: 10px;
   }
 </style>
 
@@ -544,15 +544,16 @@
                     <div class="header-action-right d-block d-lg-none">
                         <div class="header-action-2">
                             <div class="header-action-icon-2">
-                                <a href="/shop-wishlist">
-                                    <img alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg">
-                                    <!-- <span class="pro-count white">4</span> -->
-                                    <!-- heart number -->
+                                <a href="/shop-cart">
+                                    <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg">
+                                    <% if (typeof userinCart !== "undefined" && userinCart?.items?.length) { %>
+                                    <span class="pro-count blue"><%= userinCart.items.length %></span>
+                                    <% }%>
                                 </a>
                             </div>
                             <div class="header-action-icon-2">
-                                <a class="mini-cart-icon" href="/shop-cart">
-                                    <img alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg">
+                                <a class="mini-cart-icon" href="/shop-wishlist">
+                                    <img alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg">
                                     <!-- <span class="pro-count white">2</span> -->
                                     <!-- cartNumber -->
                                 </a>

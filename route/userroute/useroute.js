@@ -25,7 +25,7 @@ userrouter.get("/submit-image", userController.submit_image)
 userrouter.get("/low-to-high",userController.low_High)
 userrouter.get("/High-to-low",userController.High_low)
 
-userrouter.get("/shop-wishlist",wishlist.shopWishlist)
+
 
 userrouter.get("/myAccount",MyAccount.user_page_account)
 userrouter.post("/currentPassword",MyAccount.currentPassword)
@@ -39,6 +39,9 @@ userrouter.get("/shop-product-right",productController.shop_product_right)
 
 userrouter.get("/shop-cart",shopCart.shop_cart )
 userrouter.get("/addtoCart",shopCart.addtoCart )
+
+
+userrouter.get("/shop-wishlist",wishlist.shopWishlist)
 
 
 

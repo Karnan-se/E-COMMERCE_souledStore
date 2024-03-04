@@ -2821,7 +2821,7 @@ table.clean td, table.clean th {
 }
 
 table .product-thumbnail img {
-  max-width: 80px;
+  max-width: 90px;
 }
 
 /*divider*/
@@ -4708,7 +4708,7 @@ table .product-thumbnail img {
 
 .shopping-summery tbody tr img {
   border-radius: 0;
-  max-width: 80px;
+  max-width: 200px;
 }
 
 .order_review {

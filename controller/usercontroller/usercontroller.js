@@ -6,7 +6,8 @@ const asyncLookup = require("../../utils/asynclookup")
 const lookupAll = require("../../utils/lookupallCat")
 const brand = require("../../models/addproduct/brand")
 const mongoose = require("mongoose")
-const categories= require("../../models/addproduct/categories");
+const categories= require("../../models/addproduct/categories");4
+const cart = require("../../models/user/cart")
 
 
 
@@ -17,13 +18,19 @@ let user_index = async(req, res)=>{
     
         const threedays = new Date();
         threedays.setDate(threedays.getDate()-3)
+
         const product= await products.find({isActive:true})
         const ApparelCategory = await categories.find({isActive:true})
         const productDetails = await products.find({isActive:true, gender: true})
         const brandDetails = await brand.find({isActive: true})
         const fcat = await lookupAll.lookupAllCategory("categories", "category", "_id")
-       
         const data= req.session.userisAuth;
+        const userid = data?._id;
+        const userID = new mongoose.Types.ObjectId(userid)
+        const userinCart= await cart.findOne({userId:userID})
+        console.log(userinCart);
+        console.log("hey");
+
        
         const newProducts = await products.aggregate([{$match:{
             createdat: {$gte: threedays}}}])
@@ -38,10 +45,10 @@ let user_index = async(req, res)=>{
                })
             
                 
-                return res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts})    
+                return res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts, userinCart})    
             }
             const Hightolow = req.session.Highlow;
-            console.log(Hightolow)
+            
             if(Hightolow){
                 delete req.session.Highlow;
                 fcat.sort((a, b)=>{
@@ -49,8 +56,8 @@ let user_index = async(req, res)=>{
                 })
             }
 
-            console.log(lowtohigh)
-        res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts})
+            
+        res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts, userinCart})
     } catch (error) {
         console.log(error.message);
         

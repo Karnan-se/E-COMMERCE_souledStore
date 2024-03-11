@@ -47,11 +47,12 @@
                                 <thead>
                                     <tr class="main-heading">
                                         <th scope="col">Image</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Size</th>
+                                        <th scope="col">name</th>
+                                        <th scope="col">Price</th>
                                         <th scope="col">Quantity</th>
-                                        <th scope="col">Subtotal</th>
-                                        <th scope="col">Remove</th>
+                                        <th scope="col"></th>
+                                        <th scope="col">Size</th>
+                                      
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,31 +61,178 @@
                                             
                                             <% Product.items.forEach(item => { %>
 
-                                            <td class="image product-thumbnail"><img src="/temp/<%= item.product.images[0] %>" alt="#" style="width: 500px !important; height: auto;" class="largerImage"></td>
-
-                                            
+                                                <td class="image product-thumbnail">
+                                                    <div class="image-container position-relative">
+                                                        <img src="/temp/<%= item.product.images[0] %>" alt="#" class="largerImage">
+                                                        <button class="btn btn-primary delete-btn position-absolute top-100  start-50 translate-middle d-none " style="font-size: 12px; line-height: 1;" data-toggle="tooltip" title="Delete">
+                                                            <i class="fas fa-trash text-sm" style="font-size: 8px;" data-value="<%= item.product._id %>"></i> delete
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                  
                                             <td class="product-des product-name">
-                                                <h5 class="product-name"><a href="/shop-product-right"></a></h5>
+                                                <h5 class="product-name"><%= item.product.productname%><a href="/shop-product-right"></a></h5>
                                                 <p class="font-xs"><br> 
                                                 </p>
                                             </td>
+                                            
                                            
-                                            <td class="price" data-title="Price"><span>$65.00</span></td>
+                                            <td class="price" data-title="Price"><span>&#x20B9;<%= item.product.price%></span></td>
+                                            <% const quantity1 = item.quantity%>
+                                           
                                             <td class="text-center" data-title="Stock">
                                                 <div class="detail-qty border radius  m-auto">
-                                                    <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                                    <span class="qty-val">1</span>
-                                                    <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                                    <a  class="qty-down "><i class="fi-rs-angle-small-down up"></i></a>
+                                                    <span class="qty-val qnty" data-product-Id="<%= item.product._id %>"><%= item.quantity %></span>
+                                                    <a  class="qty-up"><i class="fi-rs-angle-small-up down"></i></a>
+                                     
+
                                                 </div>
+                                                <td> <input type="text" value="<%= item.product._id %>" class="d-none" data-product-Id="<%= item.product._id %>"></td>
+                                                
+
+                                                
                                             </td>
-                                            <td class="text-right" data-title="Cart">
-                                                <span>$65.00 </span>
+                                            
+                                            <td class="text-right" data-title="Cart" >
+                                                <span>
+                                                    <% console.log(item.size) %>
+                                                    <select class="qty-dropdown" id="sizeSelected">
+                                                        <option value="M" <%= item?.size == undefined ? 'selected' : '' %> disabled >selectSize</option>
+                                    
+                                                        <option value="M" <%= item?.size == "M" ? 'selected' : '' %> >M</option>
+                                                        <option value="L" <%= item?.size == "L" ? 'selected' : '' %> >L</option>
+                                                        <option value="XL" <%= item?.size == "XL" ? 'selected' : '' %> >XL</option>
+                                                        <option value="XXL" <%= item?.size == "XXl" ? 'selected' : '' %> >XXL</option> 
+                                                    </select>
+                                                </span> 
                                             </td>
-                                            <td class="action" data-title="Remove"><a href="#" class="text-muted"><i class="fi-rs-trash"></i></a></td>
-                                        
+   
+
                                         
                                     </tr>
-                                    <% })%>
+                                    <% var totalprice = item.product.price * item.quantity %>
+                                    
+                                   
+                                <% }) %>
+
+                                    
+      
+
+
+
+                                    
+                                                
+
+                                
+                                   
+                                    
+                                    
+                                    
+                 
+
+                                    <script defer>
+                                        const imageContainer = document.querySelectorAll(".image-container")
+                                        imageContainer.forEach((container)=>{
+                                            const deleteBtn = container.querySelector(".delete-btn");
+
+                                            container.addEventListener("mouseenter", function() {
+                                                deleteBtn.classList.remove("d-none");
+                                                const dataValue = deleteBtn.querySelector("i").getAttribute("data-value");
+                                                console.log(dataValue);
+                                                deleteBtn.addEventListener("click", async function(){
+
+                                                    const response = await fetch(`/deleteFromCart?itemId=${dataValue}`,{
+                                                        method: "GET",
+                                                    })
+                                                    if(!response){
+                                                        throw new Error("internal server Error")
+                                                    }
+                                                    const data= await response.json()
+                                                
+                                                    console.log(data);
+                                                    window.location.reload()
+
+                                                })
+                                            })
+                                            container.addEventListener("mouseleave", function() {
+                                            deleteBtn.classList.add("d-none")
+
+                                        })
+                                    })
+                                       
+                                       </script>
+
+                                    <script>
+                                          const upButtons = document.querySelectorAll(".qty-up");
+                                        const downButtons = document.querySelectorAll(".qty-down");
+
+                                           
+                                            upButtons.forEach(button => {
+                                        
+                                                button.addEventListener("click", async function() {
+                                                    const qtyElement = button.parentElement.querySelector(".qnty");
+                                                    let qty = parseInt(qtyElement.textContent);
+                                                    const productId = button.parentElement.querySelector(".qnty").getAttribute("data-product-Id")
+                                                    console.log(productId)
+                                                    
+                                                   
+                                                    qty += 1 && qty <10
+                                                    qtyElement.textContent = qty;
+
+                                                    const response = await fetch(`/quantityUpdate?number=${qty}&productId=${productId}`,{
+
+                                                        method:"GET",
+
+                                                    })
+                                                    if(!response){
+                                                        throw new Error("internal server Error")
+                                                    }
+                                                    const data = await response.json();
+                                                    const cartPrice = document.getElementById("cartSubtotal");
+                                                    cartPrice.textContent = data
+                                                    const cartPrice1 = document.getElementById("cartSubtotal1");
+                                                     cartPrice1.textContent = data;
+                                                    console.log(data);
+
+                                                    
+                                                });
+                                            });
+
+                                            
+                                            downButtons.forEach(button => {
+                                                button.addEventListener("click", async function() {
+                                                    const qtyElement = button.parentElement.querySelector(".qnty");
+                                                    let qty = parseInt(qtyElement.textContent);
+                                                    const productId = button.parentElement.querySelector(".qnty").getAttribute("data-product-Id")
+                                                    console.log(productId)
+
+
+
+                                                    if (qty > 1) {
+                                                        qty -= 1;
+                                                        qtyElement.textContent = qty;
+                                                    }
+                                                    const response = await fetch(`/quantityUpdate?number=${qty}&productId=${productId}`,{
+
+                                                            method:"GET",
+
+                                                     })
+                                                     if(!response){
+                                                     throw new Error("internal server Error")
+                                                     }
+                                                     const data = await response.json();
+                                                     const cartPrice = document.getElementById("cartSubtotal");
+                                                     cartPrice.textContent = data;
+                                                     const cartPrice1 = document.getElementById("cartSubtotal1");
+                                                     cartPrice1.textContent = data;
+                                                    console.log(data);
+
+
+                                                });
+                                            });
+    
+                                        </script>
                                 
                                     <tr>
                                         <td colspan="6" class="text-end">
@@ -125,7 +273,7 @@
                                     <tbody>
                                         <tr>
                                             <td class="cart_total_label">Cart Subtotal</td>
-                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">$240.00</span></td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand" id="cartSubtotal"><%= Product.totalprice%></span></td>
                                         </tr>
                                         <tr>
                                             <td class="cart_total_label">Shipping</td>
@@ -133,12 +281,12 @@
                                         </tr>
                                         <tr>
                                             <td class="cart_total_label">Total</td>
-                                            <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">$240.00</span></strong></td>
+                                            <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand" id="cartSubtotal1"><%= Product.totalprice %></span></strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="#" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+                            <a href="/checkout" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
                         </div>
                     </div>
                 </div>

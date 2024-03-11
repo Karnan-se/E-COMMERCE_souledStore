@@ -158,7 +158,7 @@
                                 <input type="text" placeholder="" class="form-control" id="product_title" name="productname" value="<%= product.productname %>">
                             </div>
                             <div class="row gx-3">
-                                <div class="col-md-4  mb-3">
+                                <div class="col-md-4  mb-3 d-none">
                                     <label for="product_sku" class="form-label">stock</label>
                                     <input type="number" placeholder="Type here" class="form-control" id="product_sku" name="stock" value="<%= product.stock %>">
                                     <div id="error_message" style="color: red;"></div>
@@ -219,7 +219,7 @@
                                       </div>
                                       <div class="col-md-4  mb-3">
                                         <label for="sizeXXL">Size XXL:</label>
-                                        <input type="number" id="sizeXXL" name="sizes[XXL]" min="0" value="<%= product.sizes.XXL?.newStock %>" class="form-control">
+                                        <input type="number" id="sizeXXL" name="sizes[XXL]" min="0" value="<%= product.sizes.XXl?.newStock %>" class="form-control">
                                       </div>
                                     <div id="error_message" style="color: red;"></div>
 
@@ -563,16 +563,7 @@
 <script>
 
     function validateForm(){
-        const stockValue = parseFloat(document.getElementById('product_sku').value)
 
-        if(stockValue <=0 ){
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Stock cannot be less than zero.',
-            });
-            return false;
-        }
         const productTitle = document.getElementById('product_title').value;
         const productColor = document.getElementById('product_color').value;
         

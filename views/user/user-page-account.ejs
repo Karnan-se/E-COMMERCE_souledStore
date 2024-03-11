@@ -174,8 +174,8 @@
                                                                     <h5 class="mb-0">Address</h5>
                                                                     <div class="form-check form-check-round">
                                                                         <input class="form-check-input" type="radio" id="addressRadio<%= i %>" name="selectedAddress" value="<%= i %>" <%= userDetails?.Address[i].status == true  ? 'checked' : '' %> onclick="updateAddressStatus(<%= i %>)">
-                                                                        <div class="product-delete-button position-absolute bottom-0 start-50 translate-middle-x mb-1  col-lg-12" id="deleteContainer<%= i %>"> 
-                                                                            <button class="btn btn-primary delete-btn d-none" style="font-size: 12px; line-height: 1; max-width: 100%" onclick="deleteAddress()" data-index="<%= userDetails?.Address[i]?._id %>" >
+                                                                        <div class="product-delete-button position-absolute bottom-0 start-50 translate-middle-50 mb-1  col-lg-12" id="deleteContainer<%= i %>"> 
+                                                                            <button class="btn btn-primary delete-btn d-none " style="font-size: 12px; line-height: 1; max-width: 100% " onclick="deleteAddress()" data-index="<%= userDetails?.Address[i]?._id %>" >
                                                                                 <i class="fas fa-trash text-sm " style="font-size: 8px;"></i> 
                                                                                 delete
                                                                             </button>
@@ -184,14 +184,43 @@
                                                                 </div>
                                                             </div>
                                                             <div class="card-body">
-                                                                <address><%= userDetails?.Address[i]?.housename %><br><%= userDetails?.Address[i]?.Street%><br> <%=  userDetails?.Address[i]?.City %> <br><%= userDetails?.Address[i]?.State %></address>
-                                                                <p> India </p>
-                                                                <a href="#" class="btn-small">Edit</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                <% } %>
-                                                <% } %>
+                                                                <address>
+                                                                    <%= userDetails?.Address[i]?.housename %><br>
+                                                                    <%= userDetails?.Address[i]?.Street %><br>
+                                                                    <%= userDetails?.Address[i]?.City %><br>
+                                                                    <%= userDetails?.Address[i]?.State %>
+                                                                </address>
+                                                                <p>India</p>
+                                                                <a class="btn-small editButton" onclick="editAddress('<%= userDetails?.Address[i]?.housename %>', '<%= userDetails?.Address[i]?.Street %>', '<%= userDetails?.Address[i]?.City %>', '<%= userDetails?.Address[i]?.State %>')">Edit</a>
+                                                                </div>
+                                                                </div>
+                                                                </div>
+                                                                
+                                                                
+                                                                <script defer>
+                                                                async function editAddress(houseName, streetName, city, state) {
+                                                                
+                                                                    const result = await Swal.fire({
+                                                                        title: "Enter Address",
+                                                                        html:
+                                                                        '<input id="houseName" class="swal2-input" placeholder="House Name" value="' + houseName + '">' +
+                                                                        '<input id="streetName" class="swal2-input" placeholder="Street Name" value="' + streetName + '">' +
+                                                                        '<input id="city" class="swal2-input" placeholder="City" value="' + city + '">' +
+                                                                        '<input id="state" class="swal2-input" placeholder="State" value="' + state + '">',
+                                                                        showCancelButton: true,
+                                                                        confirmButtonText: 'Submit',
+                                                                        cancelButtonText: 'Cancel',
+                                                                    });
+                                                                
+                                                                    // Handle the result here
+                                                                }
+                                                                
+                                                                </script>
+                                                                <% } %>
+                                                                <% } %>
+                                                                
+                                                
+
                                                 <script>
                                                     
                                                     const cardHeaders = document.querySelectorAll('.containerheader');
@@ -368,27 +397,61 @@
                                             </div>
                                             <div class="card-body">
                                                 <p>Already have an account? <a href="page-login-register.html">Log in instead!</a></p>
-                                                <form method="post" name="enq" action="/newpasswordchange"  onsubmit="return validateForm()">
+                                                <form method="post" name="enq" action="/newpasswordchange" onsubmit="return validateForm()">
                                                     <div class="row">
                                                         <div class="form-group col-md-6">
                                                             <label>YOUR NAME<span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="name" type="text" value="<%=userDetails?.name%>">
+                                                            <input id="name" class="form-control square" name="name" type="text" value="<%=userDetails?.name%>">
                                                         </div>
                                                         
                                                         <div class="form-group col-md-6">
                                                             <label>Email Address <span class="required"></span></label>
-                                                            <input required="" class="form-control square" name="email" type="email" value="<%= userDetails?.email %>">
+                                                            <input disabled class="form-control square" name="email" type="email" value="<%= userDetails?.email %>">
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        
+                                                        <!-- <div class="form-group col-md-6">
                                                             <label>Current Password <span ></span></label>
-                                                            <input required="" class="form-control square" name="password" type="password" id="currentPassword">
+                                                            <div class="input-group">
+                                                                <input required="" class="form-control square" name="password" type="password" id="currentPassword">
+                                                                <div class="input-group-append">
+                                                                    <button type="button" class="btn btn-success" id="btnChangePassword" disabled onclick="displayfields()">Change password</button>
+                                                                </div>
+                                                            </div>
+                                                        </div> -->
+                                                        
+                                                        <div class="form-group col-md-6">
+                                                            <label>Save Changes<span class=""></span></label>
+                                                            <div class="input-group">
+                                                                <button type="button" class="btn btn-success" id="btnSaveName"  onclick="SaveName()">Save Name</button>
+                                                            </div>
                                                         </div>
-                                                        <div class="form-group col-md-6 " >
-                                                            <label> <span class=" h3" ></span></label>
-                                                            <div class="input-group-append mt-1">
-                                                            <button type="button"  class="btn btn-success" id="btns" disabled onclick="displayfields()">Change password</button>
-                                                            </div>
-                                                            </div>
+                                                    </div> 
+                                                     <script>
+                                                        async function SaveName(){
+                                                           const name = document.getElementById("name").value;
+                                                           console.log(name);
+                                                           const response = await fetch(`/updateName?name=${name}`,{
+                                                            method: "GET",
+                                                           })
+                                                           if(!response) {
+                                                            throw new Error("internal Server Error")
+                                                           }
+                                                           const data= await response.json()
+                                                           console.log(data);
+
+                                                           name.textcontent=data;
+                                                           Swal.fire({
+                                                            title:"Username Saved"
+                                                           })
+                                                           
+
+                                                        }
+                                                        </script>
+                                                
+                                            
+                                                
+                                                
+                                                        
                                                             <div  class="passwordFields">
                                                                 <div class="d-none">
                                                             

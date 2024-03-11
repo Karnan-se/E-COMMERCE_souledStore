@@ -83,6 +83,14 @@ let addAddress = async(req, res)=>{
             const userEmail=req.session.userisAuth.email;
             console.log(userEmail);
             const address = req.body.address;
+
+            const user = await userdetail.findOne({email:userEmail});
+            if( user.Address.length<1){
+                const update = await userdetail.updateOne({email:userEmail},
+                    {$addToSet:{Address: {housename:address.houseName, Street : address.streetName, City :address.city,State: address.state, status:true}}})
+    
+
+            }
             
 
             const update = await userdetail.updateOne({email:userEmail},
@@ -163,6 +171,26 @@ let deleteAddress = async(req, res)=>{
         
     }
 }
+let updateName= async(req, res)=>{
+    try {
+
+        const name = req.query.name;
+        console.log(name);
+        const userId = req.session.userisAuth._id;
+        console.log(userId);
+        const userModel = await userdetail.updateOne({_id:userId},{$set:{name:name}});
+        console.log(userModel)
+        const dataset = await userdetail.findOne({_id:userId})
+        const data= dataset.name;
+        console.log(data);
+        req.session.userisAuth = dataset
+        await res.status(200).json(data)
+        
+
+    } catch (error) {
+        
+    }
+}
 
 
 
@@ -171,4 +199,5 @@ module.exports={user_page_account,
      newpasswordchange,
         addAddress,
         updateAddressStatus,
-        deleteAddress }
+        deleteAddress,
+    updateName }

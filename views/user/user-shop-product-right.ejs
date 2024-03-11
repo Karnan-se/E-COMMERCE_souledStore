@@ -223,8 +223,8 @@
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
                                                 <ins><span class="text-brand">&#8377 <%= productDetails.price%></span></ins>
-                                                <ins><span class="old-price font-md ml-15">$200.00</span></ins>
-                                                <span class="save-price  font-md color3 ml-15">25% Off</span>
+                                                <!-- <ins><span class="old-price font-md ml-15">$200.00</span></ins>
+                                                <span class="save-price  font-md color3 ml-15">25% Off</span> -->
                                             </div>
                                         </div>
                                         <div class="bt-1 border-color-1 mt-15 mb-15"></div>
@@ -254,26 +254,143 @@
                                             <strong class="mr-10">Size</strong>
                                             <ul class="list-filter size-filter font-small">
 
-                                                <li><a href="#"><%= productDetails.size%></a></li>
-                                                <!-- <li class="active"><a href="#">M</a></li>
-                                                <li><a href="#">L</a></li>
-                                                <li><a href="#">XL</a></li>
-                                                <li><a href="#">XXL</a></li> -->
+                                                <% Object.keys(productDetails.sizes).forEach(size => { %>
+                                                    <li><a href="#" data-size="<%= size %>" class="size-option"><%= size %></a></li>
+                                                <% }) %>
+                                                
                                             </ul>
                                         </div>
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                         <div class="detail-extralink">
+
+
                                             <div class="detail-qty border radius">
                                                 <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                                <span class="qty-val">1</span>
+                                                <span class="qty-val qnty"  data-product-Id="<%= productDetails._id%>" >1</span>
                                                 <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                             </div>
+
+
+
                                             <div class="product-extra-link2">
-                                                <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                                <button type="submit" class="button button-add-to-cart addtoCart" data-index="<%= productDetails._id %>">Add to cart</button>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                         
                                             </div>
                                         </div>
+                                        <script>
+                                            const upButtons = document.querySelectorAll(".qty-up");
+                                          const downButtons = document.querySelectorAll(".qty-down");
+  
+                                             
+                                              upButtons.forEach(button => {
+                                                  // const productId = button.querySelector(".d-none").value
+                                                  button.addEventListener("click", async function() {
+                                                      const qtyElement = button.parentElement.querySelector(".qnty");
+                                                      let qty = parseInt(qtyElement.textContent);
+                                                      const productId = button.parentElement.querySelector(".qnty").getAttribute("data-product-Id")
+                                                      console.log(productId)
+                                                      
+                                                     
+                                                      qty += 1 && qty <10
+                                                      qtyElement.textContent = qty;
+  
+                                                      const response = await fetch(`/quantityUpdate?number=${qty}&productId=${productId}`,{
+  
+                                                          method:"GET",
+  
+                                                      })
+                                                      if(!response){
+                                                          throw new Error("internal server Error")
+                                                      }
+                                                      const data = await response.json();
+                                                      console.log(data);
+  
+                                                      
+                                                  });
+                                              });
+  
+                                              
+                                              downButtons.forEach(button => {
+                                                  button.addEventListener("click", async function() {
+                                                      const qtyElement = button.parentElement.querySelector(".qnty");
+                                                      let qty = parseInt(qtyElement.textContent);
+                                                      const productId = button.parentElement.querySelector(".qnty").getAttribute("data-product-Id")
+                                                      console.log(productId)
+  
+  
+  
+                                                      if (qty > 1) {
+                                                          qty -= 1;
+                                                          qtyElement.textContent = qty;
+                                                      }
+                                                      const response = await fetch(`/quantityUpdate?number=${qty}&productId=${productId}`,{
+  
+                                                              method:"GET",
+  
+                                                       })
+                                                       if(!response){
+                                                       throw new Error("internal server Error")
+                                                       }
+                                                       const data = await response.json();
+                                                      console.log(data);
+  
+  
+                                                  });
+                                              });
+      
+                                          </script>
+                                          
+
+                                        <script>
+                                            var selectedSize;
+                                        document.querySelectorAll('.size-option').forEach(option => {
+                                            option.addEventListener('click', function(event) {
+                                              selectedSize = option.getAttribute('data-size');
+                                                console.log(selectedSize);
+                                            });
+                                        });
+
+                                            document.querySelectorAll(".addtoCart").forEach(button => {
+                                                button.addEventListener("click", async function() {
+                                                    const productId = this.getAttribute("data-index");
+                                        
+                                                    const response = await fetch(`/addtoCart?productDetails=${productId}&selectedSize=${selectedSize}`, {
+                                                        method: "GET", 
+                                                    });
+                                        
+                                                    if (!response.ok) {
+                                                        throw new Error("Internal Server Error");
+                                                    }
+                                        
+                                                    const data = await response.json({}); 
+                                                    console.log(data)
+                                                    if(data.data== "redirect"){
+                                                        window.location.href="/user-login"
+        
+                                                    }else if(data.data =="already-Existed"){
+
+                                                        
+                                                    }else{
+                                                        console.log(data.data);
+                                                       window.location.href ="/shop-cart"
+                                                        }
+                                                        
+                                                    
+                                                    })
+                                        
+                                                    
+                                                });
+                                            
+                                        </script>
+
+
+
+
+
+
+
+
                                         <ul class="product-meta font-xs color-grey mt-50">
                                       
                                             <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li>
@@ -290,13 +407,16 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="row related-products">
+
+                                        <% for(let i=0; i<relatedProducts.length; i++) {%>
+
                                         <div class="col-lg-3 col-md-4 col-12 col-sm-6">
                                             <div class="product-cart-wrap small hover-up">
                                                 <div class="product-img-action-wrap">
                                                     <div class="product-img product-img-zoom">
-                                                        <a href="/shop-product-right" tabindex="0">
-                                                            <img class="default-img" src="/assets/imgs/shop/product-2-1.jpg" alt="">
-                                                            <img class="hover-img" src="/assets/imgs/shop/product-2-2.jpg" alt="">
+                                                        <a href="/shop-product-right?productId=<%= relatedProducts[i]?._id %>" tabindex="0">
+                                                            <img class="default-img" src="/temp/<%=relatedProducts[i]?.images[0]%>" alt="">
+                                                            <img class="hover-img" src="/temp/<%=relatedProducts[i]?.images[1]%>" alt="">
                                                         </a>
                                                     </div>
                                                     <div class="product-action-1">
@@ -305,7 +425,7 @@
                 
                                                     </div>
                                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="hot">Hot</span>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="product-content-wrap">
@@ -315,105 +435,15 @@
                                                         </span>
                                                     </div>
                                                     <div class="product-price">
-                                                        <span>$238.85 </span>
-                                                        <span class="old-price">$245.8</span>
+                                                        <span><%= relatedProducts[i]?.price %></span>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                                            <div class="product-cart-wrap small hover-up">
-                                                <div class="product-img-action-wrap">
-                                                    <div class="product-img product-img-zoom">
-                                                        <a href="/shop-product-right" tabindex="0">
-                                                            <img class="default-img" src="/assets/imgs/shop/product-3-1.jpg" alt="">
-                                                            <img class="hover-img" src="/assets/imgs/shop/product-4-2.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <div class="product-action-1">
-                 
-                                                        <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
-                
-                                                    </div>
-                                                    <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="sale">-12%</span>
-                                                    </div>
-                                                </div>
-                                                <div class="product-content-wrap">
-                                                    <h2><a href="/shop-product-right" tabindex="0">Smart Bluetooth Speaker</a></h2>
-                                                    <div class="rating-result" title="90%">
-                                                        <span>
-                                                        </span>
-                                                    </div>
-                                                    <div class="product-price">
-                                                        <span>$138.85 </span>
-                                                        <span class="old-price">$145.8</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                                            <div class="product-cart-wrap small hover-up">
-                                                <div class="product-img-action-wrap">
-                                                    <div class="product-img product-img-zoom">
-                                                        <a href="/shop-product-right" tabindex="0">
-                                                            <img class="default-img" src="/assets/imgs/shop/product-4-1.jpg" alt="">
-                                                            <img class="hover-img" src="/assets/imgs/shop/product-4-2.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <div class="product-action-1">
-                 
-                                                        <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
-                
-                                                    </div>
-                                                    <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="new">New</span>
-                                                    </div>
-                                                </div>
-                                                <div class="product-content-wrap">
-                                                    <h2><a href="/shop-product-right" tabindex="0">HomeSpeak 12UEA Goole</a></h2>
-                                                    <div class="rating-result" title="90%">
-                                                        <span>
-                                                        </span>
-                                                    </div>
-                                                    <div class="product-price">
-                                                        <span>$738.85 </span>
-                                                        <span class="old-price">$1245.8</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                                            <div class="product-cart-wrap small hover-up mb-0">
-                                                <div class="product-img-action-wrap">
-                                                    <div class="product-img product-img-zoom">
-                                                        <a href="/shop-product-right" tabindex="0">
-                                                            <img class="default-img" src="/assets/imgs/shop/product-5-1.jpg" alt="">
-                                                            <img class="hover-img" src="/assets/imgs/shop/product-3-2.jpg" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <div class="product-action-1">
-                 
-                                                        <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
-                
-                                                    </div>
-                                                    <div class="product-badges product-badges-position product-badges-mrg">
-                                                        <span class="hot">Hot</span>
-                                                    </div>
-                                                </div>
-                                                <div class="product-content-wrap">
-                                                    <h2><a href="/shop-product-right" tabindex="0">Dadua Camera 4K 2022EF</a></h2>
-                                                    <div class="rating-result" title="90%">
-                                                        <span>
-                                                        </span>
-                                                    </div>
-                                                    <div class="product-price">
-                                                        <span>$89.8 </span>
-                                                        <span class="old-price">$98.8</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <%}%>
+
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -427,17 +457,9 @@
                         </div>
                     </div>
                     <div class="col-lg-3 primary-sidebar sticky-sidebar">
-                        <div class="widget-category mb-30">
-                            <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
-                            <ul class="categories">
-                                <%  for(let i=0; i<uniqueBrandNames.length; i++) {%>
-                                <li><a href="/shop-grid-right"><%= uniqueBrandNames[i]?.name %></a></li>
-                                <% }%>
-                                
-                            </ul>
-                        </div>
+                       
                         <!-- Fillter By Price -->
-                        <div class="sidebar-widget price_range range mb-30">
+                        <!-- <div class="sidebar-widget price_range range mb-30">
                             <div class="widget-header position-relative mb-20 pb-10">
                                 <h5 class="widget-title mb-10">Fill by price</h5>
                                 <div class="bt-1 border-color-1"></div>
@@ -479,7 +501,7 @@
                                 </div>
                             </div>
                             <a href="/shop-grid-right" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i> Fillter</a>
-                        </div>
+                        </div> -->
                         <!-- Product sidebar Widget -->
                         <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                             <div class="widget-header position-relative mb-20 pb-10">

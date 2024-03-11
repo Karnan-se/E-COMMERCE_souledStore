@@ -16,36 +16,15 @@ let shop_product_right = async(req, res)=>{
         console.log(brandId);
 
         const fcat =  await asyncLookup.karnan("brands","brand","_id",brandId)
-        console.log(fcat[0]?.newcat[0] ?? null)
         const brandDetail = fcat[0]?.newcat[0] ?? null;
-
-        const AllBrandName = await lookupAllCategory("brands","brand","_id")
-    
-        const brandNames = []
-        for(let i= 0; i<AllBrandName.length; i++){
-           brandNames.push(AllBrandName[i]?.newcat[0]?? null)
-
-        }
-        brandNames.forEach((files)=>{
-           console.log(files)
-        })
-        const dummy ={}
-        const uniqueBrandNames = brandNames.filter((item, index, array) => {
-            if(item === null){
-                return false ;
-
-            }
-
-            if(!dummy[item]){
-                dummy[item] = true;
-                return  true;
-            }
-            return false;
-        });
+        console.log(brandDetail);
+        const brandid = brandDetail._id;
+        console.log(brandid);
+        const relatedProducts = await product.find({brand:brandid});
+        console.log(relatedProducts);
         
         
-
-        res.render("user/user-shop-product-right.ejs",{productDetails,brandDetail,uniqueBrandNames})
+        res.render("user/user-shop-product-right.ejs",{productDetails,brandDetail, relatedProducts})
 
         
     } catch (error) {

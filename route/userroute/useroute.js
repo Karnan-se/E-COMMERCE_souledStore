@@ -7,6 +7,7 @@ const auth = require("../../middlewares/multer/userSession")
 const MyAccount = require("../../controller/usercontroller/user-account")
 const wishlist = require("../../controller/usercontroller/shopwishlist")
 const shopCart = require("../../controller/usercontroller/shop-cart")
+const checkout = require("../../controller/usercontroller/checkout")
 
 userrouter.use(express.static("public"));
 
@@ -33,15 +34,23 @@ userrouter.post("/newpasswordchange",MyAccount.newpasswordchange)
 userrouter.post("/addAddress", MyAccount.addAddress)
 userrouter.get("/updateAddressStatus",MyAccount.updateAddressStatus)
 userrouter.get("/deleteAddress",MyAccount.deleteAddress)
+userrouter.get("/updateName",MyAccount.updateName)
 
 
 userrouter.get("/shop-product-right",productController.shop_product_right)
 
 userrouter.get("/shop-cart",shopCart.shop_cart )
 userrouter.get("/addtoCart",shopCart.addtoCart )
+userrouter.get("/deleteFromCart",shopCart.DeleteItem )
+userrouter.get("/quantityUpdate",shopCart.quantityUpdate )
+userrouter.get("/updatePriceToCart",shopCart.updatePriceToCart)
+
+
+userrouter.get("/checkout",checkout.checkout)
 
 
 userrouter.get("/shop-wishlist",wishlist.shopWishlist)
+
 
 
 

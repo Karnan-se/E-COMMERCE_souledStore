@@ -166,8 +166,8 @@ let addproduct = async(req, res)=>{
         "sizes.S.newStock":size_s,
         "sizes.M.newStock":size_m,
         "sizes.L.newStock":size_l,
-        "sizes.XL.newStock":size_xl,
-        "sizes.XXL.newStock":size_xxl,
+        "sizes.Xl.newStock":size_xl,
+        "sizes.XXl.newStock":size_xxl,
 
 
     })

@@ -185,7 +185,9 @@
                                                     <span class="old-price">&#x20b9 245.8</span>
                                                 </div>
                                                 <div class="product-action-1 show">
-                                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="/addtoCart?productDetails=<%= product[i]._id %>"><i class="fi-rs-shopping-bag-add addtoCart" data-index="<%= product[i]._id %>"></i></a>
+                                     
+                                                    <a aria-label="Add To Cart" class="action-btn hover-up fi-rs-shopping-bag-add addtoCart" data-index="<%= product[i]._id %>"></i></a>
+
 
                                                 </div>
                                             </div>
@@ -195,10 +197,41 @@
                                     <% } %>
                                 </div>
                                 <script>
+                                    document.querySelectorAll(".addtoCart").forEach(button => {
+                                        button.addEventListener("click", async function() {
+                                            const productId = this.getAttribute("data-index");
+                                
+                                            const response = await fetch(`/addtoCart?productDetails=${productId}`, {
+                                                method: "GET", 
+                                            });
+                                
+                                            if (!response.ok) {
+                                                throw new Error("Internal Server Error");
+                                            }
+                                
+                                            const data = await response.json({}); 
+                                            console.log(data)
+                                            if(data.data== "redirect"){
+                                                window.location.href="/user-login"
 
+                                            }else if(data.data =="already-Existed"){
+                                                window.location.href="/shop-cart"
+                                            }else{
+                                                const cartCounts = data.data.items.length;
+                                                console.log(cartCounts);
+                                                window.location.reload();
+                                                const cartcountEvent =  new CustomEvent("cartCountUpdated", {detail: {count:cartCounts}})
+                                                window.dispatchEvent(cartcountEvent)
+                                                }
+                                                
+                                            
+                                            })
+                                
+                                            
+                                        });
                                     
-
-                                    </script>
+                                </script>
+                                
 
 
                                 <script>

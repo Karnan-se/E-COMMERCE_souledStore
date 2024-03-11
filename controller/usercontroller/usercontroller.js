@@ -19,11 +19,14 @@ let user_index = async(req, res)=>{
         const threedays = new Date();
         threedays.setDate(threedays.getDate()-3)
 
-        const product= await products.find({isActive:true})
+       //categories here
         const ApparelCategory = await categories.find({isActive:true})
         const productDetails = await products.find({isActive:true, gender: true})
         const brandDetails = await brand.find({isActive: true})
+
+        // here is the product 
         const fcat = await lookupAll.lookupAllCategory("categories", "category", "_id")
+        
         const data= req.session.userisAuth;
         const userid = data?._id;
         const userID = new mongoose.Types.ObjectId(userid)

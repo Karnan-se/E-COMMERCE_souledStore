@@ -1,12 +1,48 @@
-        const fcat =  await products.aggregate([
-            {
-                $match:{_id:productId}},
+                                                                <script>
+                                                        async function SaveName(){
+                                                           const name = document.getElementById("name").value;
+                                                           console.log(name);
+                                                           const response = await fetch(`/updateName?name=${name}`,{
+                                                            method: "GET",
+                                                           })
+                                                           if(!response) {
+                                                            throw new Error("internal Server Error")
+                                                           }
+                                                           const data= await response.json()
+                                                           console.log(data);
 
-               {$lookup: {
-                    from: "categories",
-                    localField: "category",
-                    foreignField: "_id",
-                    as:"newcat"
-                }
-            }
-        ])
+                                                           name.textcontent=data;
+                                                           Swal.fire({
+                                                            title:"Username Saved"
+                                                           })
+                                                           
+                                                        </script>
+
+                                                        }
+
+
+<script defer>
+                                                                async function editAddress(houseName, streetName, city, state) {
+                                                                
+                                                                    const result = await Swal.fire({
+                                                                        title: "Enter Address",
+                                                                        html:
+                                                                        '<input id="houseName" class="swal2-input" placeholder="House Name" value="' + houseName + '">' +
+                                                                        '<input id="streetName" class="swal2-input" placeholder="Street Name" value="' + streetName + '">' +
+                                                                        '<input id="city" class="swal2-input" placeholder="City" value="' + city + '">' +
+                                                                        '<input id="state" class="swal2-input" placeholder="State" value="' + state + '">',
+                                                                        showCancelButton: true,
+                                                                        confirmButtonText: 'Submit',
+                                                                        cancelButtonText: 'Cancel',
+                                                                    });
+                                                                
+                                                                    // Handle the result here
+                                                                }
+                                                                
+                                                                </script>
+                                                                <% } %>
+                                                                <% } %>
+                                                                
+                                                
+
+                                                

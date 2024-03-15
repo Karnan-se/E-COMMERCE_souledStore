@@ -35,6 +35,7 @@ userrouter.post("/addAddress", MyAccount.addAddress)
 userrouter.get("/updateAddressStatus",MyAccount.updateAddressStatus)
 userrouter.get("/deleteAddress",MyAccount.deleteAddress)
 userrouter.get("/updateName",MyAccount.updateName)
+userrouter.get("/editAddressfields",MyAccount.editAddressfields)
 
 
 userrouter.get("/shop-product-right",productController.shop_product_right)

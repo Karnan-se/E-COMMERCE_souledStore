@@ -24,6 +24,23 @@
 
     <% } %>
 
+    <% if(typeof(categoryError) !== "undefined") {%>
+
+        <script>
+            Swal.fire({
+          title: "Error",
+          text: "Category already Exists",
+          icon: "error",
+          confirmButtonText: "OK"
+      });
+      </script>
+
+
+
+
+        <%}%>
+
+
 
 
 <body>
@@ -409,7 +426,7 @@
                                     </thead>
                                     <tbody>
                                         
-                                            <% for(var i=0;i<newcategories.length;i++) {%>
+                                            <% for(let i=0;i<newcategories.length;i++) {%>
                                                 <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
@@ -427,7 +444,7 @@
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item block" href="/blockproduct?userId=<%= newcategories[i]._id %>"><%= newcategories[i].isActive==true? "block":"Activate" %></a>
                                                         <input type="text" value="<%= newcategories[i]._id %>" id="userid<%= i%>" hidden>
-                                                        <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
+                                                        <a class="dropdown-item editCategoryButton" data-index="<%= i%>" >Edit info</a>
                                                         
                                                         <a class="dropdown-item text-danger delete" data-userid="<%= newcategories[i]._id %>" href="#">Delete</a>
                                 
@@ -449,27 +466,40 @@
                                                     button.addEventListener("click",async function () {
                                                         const dataIndex = button.getAttribute("data-index");
                                                         const editableCell = document.querySelector(`.editable-cell${dataIndex}`);
+                                                        
                                          
                                                         
                                                         
                                                         if (editableCell) {
+                                                            const currentValue = editableCell.textContent;
+                                                            console.log(`currentvalue${currentValue}`)
                                                             const inputField = document.createElement("input");
                                                             inputField.type = "text";
-                                                            inputField.value = editableCell.textContent.trim();
+                                                            inputField.value = currentValue; 
 
-
-                                                            
-                                            
                                                             editableCell.innerHTML = inputField.outerHTML;
+                                                            inputField.innerHTML=currentValue;
                                                             
+                                                          
                                             
                                                             const newInputField = editableCell.querySelector("input");
                                                             if (newInputField) {
                                                                 newInputField.focus();
+                                                                newInputField.value = currentValue;
+                                                                newInputField.className="form-control"
+                                                                newInputField.style.border="1px solid black";
+
+                                                                newInputField.addEventListener("blur", function(){
+                                                                    newInputField.remove()
+                                                                   const newTDElement =  document.createElement("td");
+                                                                   newTDElement.textContent=currentValue;
+                                                                   editableCell.appendChild(newTDElement)
+
+                                                                })
+
+
                                                                 const userId =document.getElementById(`userid${dataIndex}`).value;
                                                                 console.log(userId);
-                                                                
-                                                                
                                                                 
 
                                                                 newInputField.addEventListener("keydown", function(event) {
@@ -491,13 +521,7 @@
                                             });
                                             </script>
 
-
-
-
-
-                                            
-
-                                             <% for(var i=0;i<lic.length;i++) {%>
+                                          <% for(let j=0;j<lic.length;j++) {%>
                                                 <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
@@ -505,18 +529,18 @@
                                                 </div>
                                             </td>
                                             <td></td>
-                                            <td class="editable-cell<%= i %>"><b> <%= lic[i].categoryname %></b></td>
-                                            <td><span><%= lic[i].categoryname=true? "licensed caterctors" :"nill" %></span></td>                                       
-                                            <td><span class="badge rounded-pill <%= lic[i].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= lic[i].isActive==true?"Active" : "blocked"%></span></td>
+                                            <td class="editable-cell<%= j+newcategories.length %>"><b> <%= lic[j].categoryname %></b></td>
+                                            <td><span><%= lic[j].categoryname=true? "licensed caterctors" :"nill" %></span></td>                                       
+                                            <td><span class="badge rounded-pill <%= lic[j].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= j %>"><%= lic[j].isActive==true?"Active" : "blocked"%></span></td>
                                             <td>1</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
                                                     <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item block" href="/blockproduct?userId=<%= lic[i]._id %>"><%= lic[i].isActive==true? "block":"Activate" %></a>
-                                                        <input type="text" value="<%= lic[i]._id %>" id="userid<%= i%>" hidden>
-                                                        <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
-                                                        <a class="dropdown-item text-danger delete" data-userid="<%= lic[i]._id %>" href="#">Delete</a>
+                                                        <a class="dropdown-item block" href="/blockproduct?userId=<%= lic[j]._id %>"><%= lic[j].isActive==true? "block":"Activate" %></a>
+                                                        <input type="text" value="<%= lic[j]._id %>" id="userid<%= j+newcategories.length%>" hidden>
+                                                        <a class="dropdown-item editCategoryButton" data-index="<%=j +newcategories.length %>" >Edit info</a>
+                                                        <a class="dropdown-item text-danger delete" data-userid="<%= lic[j]._id %>" href="#">Delete</a>
                                                 
                                                     </div>
                                                 </div> <!-- dropdown //end -->
@@ -524,7 +548,7 @@
                                         </tr>
                                         <%} %>
 
-                                        <% for(var i=0;i<brand.length;i++) {%>
+                                        <% for(let i=0;i<brand.length;i++) {%>
                                             <tr>
                                         <td class="text-center">
                                             <div class="form-check">
@@ -532,7 +556,7 @@
                                             </div>
                                         </td>
                                         <td></td>
-                                        <td class="editable-cell<%= i %>"><b> <%= brand[i].name %></b></td>
+                                        <td class="editable-cell<%= i+lic.length+newcategories.length %>"><b> <%= brand[i].name %></b></td>
                                         <td><span><%= brand[i].name=true? "branded category":"new cat" %></span></td>                                       
                                         <td><span class="badge rounded-pill <%= brand[i].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= brand[i].isActive==true?"Active" : "blocked"%></span></td>
                                         <td>1</td>
@@ -541,8 +565,8 @@
                                                 <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item block" href="/blockproduct?userId=<%= brand[i]._id %>"><%= brand[i].isActive==true? "block":"Activate" %></a>
-                                                    <input type="text" value="<%= brand[i]._id %>" id="userid<%= i%>" hidden>
-                                                    <a class="dropdown-item editCategoryButton" data-index="<%= i %>" >Edit info</a>
+                                                    <input type="text" value="<%= brand[i]._id %>" id="userid<%= i+lic.length+newcategories.length%>" hidden>
+                                                    <a class="dropdown-item editCategoryButton" data-index="<%= i+lic.length+newcategories.length%>" >Edit info</a>
                                                     <a class="dropdown-item" onclick="addImage(`<%= brand[i]._id %>`)">add Image</a>
                                                     <a class="dropdown-item text-danger delete" data-userid="<%= brand[i]._id %>" href="#">Delete</a>
                                                 </div>

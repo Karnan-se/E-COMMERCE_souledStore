@@ -41,12 +41,6 @@ router.get("/page-settings-1",auth.isLogin, adminController.page_settings_1);
 router.get("/page-settings-2",auth.isLogin, adminController.page_settings_2);
 router.get("/page-blank",auth.isLogin, adminController.page_blank);
 
-router.get("/forgot-password", adminpatchcontroller.forgot_password)
-
-
-router.post("/resetpassword",adminpatchcontroller.resetpassword)
-router.get("/resetpassword/:token/:id",adminpatchcontroller.patchpassword)
-router.post("/updatepassword",adminpatchcontroller.updatepassword)
 
 
 router.get("/admin-user-page", auth.isLogin,adminusercontroller.admin_user_page);
@@ -82,6 +76,14 @@ router.post("/updateproduct",upload.array("images", 3),productlist.updateprouct)
 router.post("/edit-info-image",upload.array("image"),categories.edit_info_image)
 
 // router.post("/page-account-register",adminPostcontroller.page_account_register);
+router.get("/forgot-password", adminpatchcontroller.forgot_password)
+router.get("/resetpassword", adminpatchcontroller.resetpassword)
+router.get("/PasswordChange/:token/:id",adminpatchcontroller.newPasswordChange)
+
+
+// // router.post("/resetpassword",adminpatchcontroller.resetpassword)
+
+// router.post("/updatepassword",adminpatchcontroller.updatepassword)
 
 
 

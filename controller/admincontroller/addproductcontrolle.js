@@ -191,23 +191,54 @@ let addproduct = async(req, res)=>{
 let updatecategory = async (req, res)=>{
 
 try {
-    const {categoryId,categoryName }= req.query;
+    const {categoryId }= req.query;
+    let categoryName =req.query.categoryName
     console.log(categoryId,categoryName)
 
     const newcatergories = await categories.find({_id:categoryId})
     const newlicense = await licensedcategories.find({_id:categoryId})
     const newbrands =await brands.find({_id:categoryId})
+    let cate =categoryName 
+    const existingCategory = await categories.findOne({categoryname:{$regex: new RegExp('^' +cate+ '$', 'i') } });
 
     if(newcatergories.length > 0){
-
+        console.log(existingCategory);
+        if(existingCategory){
+            console.log("category exists");
+             await res.status(200).json({message: "alreadyexist"});
+           return req.session.categoryExist =true;
+        }else{
         const update= await categories.updateOne({_id:categoryId},{$set:{categoryname:categoryName}})
         console.log("newcategories");
-    }else if(newlicense.length > 0){
-        const update= await licensedcategories.updateOne({_id:categoryId},{$set:{categoryname:categoryName}})
 
-        console.log("new license");
+        }
+
+
+    }else if(newlicense.length > 0){
+        const existingCategory = await licensedcategories.findOne({categoryname:{$regex: new RegExp('^' +cate+ '$', 'i') } });
+        if(existingCategory){
+            console.log("category exists");
+            return await res.status(200).json({message:"alreadyexist"})
+          
         
+        }else{
+            const update= await licensedcategories.updateOne({_id:categoryId},{$set:{categoryname:categoryName}})
+
+            console.log("new license");
+            
+
+        }
+       
     }else if(newbrands.length > 0){
+        const existingCategory = await brands.findOne({name:{$regex: new RegExp('^' +cate+ '$', 'i')}});
+
+        if(existingCategory){
+            console.log("category exists");
+             await res.status(200).json({message:"alreadyexist"})
+           return req.session.categoryExist =true;
+            
+
+        }
         const update= await brands.updateOne({_id:categoryId},{$set:{name:categoryName}})
 
         console.log("newbrands");

@@ -101,8 +101,9 @@ let addAddress = async(req, res)=>{
             
             console.log(address)
             console.log(address.houseName)
-        
-       
+
+      const userInfo = await userdetail.findOne({email:userEmail})  
+       req.session.userisAuth=userInfo
         const data = "data"
 
         await res.status(200).json({data})
@@ -188,6 +189,44 @@ let updateName= async(req, res)=>{
         
 
     } catch (error) {
+        console.log(error.message);
+        
+    }
+
+}
+
+let editAddressfields = async(req, res)=>{
+    try {
+       const AddressData= req.query.AddressData;
+       const Address = JSON.parse(AddressData);
+       console.log(Address.id);
+      
+       const userId = req.session.userisAuth._id;
+       console.log(userId);
+       const updateResult = await userdetail.updateOne(
+   
+        { _id: userId, "Address._id": Address.id },
+
+        {
+            $set: {
+                "Address.$.housename": Address.houseName,
+                "Address.$.Street": Address.streetName,
+                "Address.$.City": Address.cityName,
+                "Address.$.State": Address.state,
+               
+            }
+        }
+    );
+    const user = await userdetail.findOne({_id:userId})
+    console.log(updateResult)
+    req.session.userisAuth=user;
+   await res.status(200).json({data:"hey"})
+   
+
+       
+        
+    } catch (error) {
+        console.log(error.message)
         
     }
 }
@@ -200,4 +239,4 @@ module.exports={user_page_account,
         addAddress,
         updateAddressStatus,
         deleteAddress,
-    updateName }
+    updateName,  editAddressfields }

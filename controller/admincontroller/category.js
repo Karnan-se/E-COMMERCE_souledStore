@@ -11,11 +11,19 @@ let page_categories = async(req, res)=>{
         const newbrands = await brands.find()
         let message = req.session.error;
         let warning = req.session.warning;
+        let categoryExist =req.session.categoryExist
         
 
         if(message){
             delete req.session.error;
             res.render("admin/page-categories.ejs",{newcategories,brand:newbrands,lic:newlicense,message})
+
+            if(categoryExist){
+                delete req.session.categoryExist;
+                const categoryError ="exist"
+                res.render("admin/page-categories.ejs",{newcategories,brand:newbrands,lic:newlicense, categoryError})
+
+            }
            
 
         }else{

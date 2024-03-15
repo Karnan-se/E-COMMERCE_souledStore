@@ -65,7 +65,7 @@
                                                     <div class="image-container position-relative">
                                                         <img src="/temp/<%= item.product.images[0] %>" alt="#" class="largerImage">
                                                         <button class="btn btn-primary delete-btn position-absolute top-100  start-50 translate-middle d-none " style="font-size: 12px; line-height: 1;" data-toggle="tooltip" title="Delete">
-                                                            <i class="fas fa-trash text-sm" style="font-size: 8px;" data-value="<%= item.product._id %>"></i> delete
+                                                            <i class="fas fa-trash text-sm" style="font-size: 8px;" data-value="<%= item.product._id %>" data-size="<%= item.size %>"></i> delete
                                                         </button>
                                                     </div>
                                                 </td>
@@ -98,11 +98,12 @@
                                                 <span>
                                                     <% console.log(item.size) %>
                                                     <select class="qty-dropdown" id="sizeSelected">
-                                                        <option value="" <%= item?.size == undefined ? 'selected' : '' %> disabled >selectSize</option>
+                                                        <option value="Null" <%= item?.size == undefined ? 'selected' : '' %> disabled >selectSize</option>
+                                                        <option value="S" <%= item?.size == "S" ? 'selected' : '' %> >S</option>
                                     
                                                         <option value="M" <%= item?.size == "M" ? 'selected' : '' %> >M</option>
                                                         <option value="L" <%= item?.size == "L" ? 'selected' : '' %> >L</option>
-                                                        <option value="XL" <%= item?.size == "XL" ? 'selected' : '' %> >XL</option>
+                                                        <option value="XL" <%= item?.size == "Xl" ? 'selected' : '' %> >XL</option>
                                                         <option value="XXL" <%= item?.size == "XXl" ? 'selected' : '' %> >XXL</option> 
                                                     </select>
                                                 </span> 
@@ -116,21 +117,6 @@
                                    
                                 <% }) %>
 
-                                    
-      
-
-
-
-                                    
-                                                
-
-                                
-                                   
-                                    
-                                    
-                                    
-                 
-
                                     <script defer>
                                         const imageContainer = document.querySelectorAll(".image-container")
                                         imageContainer.forEach((container)=>{
@@ -139,10 +125,13 @@
                                             container.addEventListener("mouseenter", function() {
                                                 deleteBtn.classList.remove("d-none");
                                                 const dataValue = deleteBtn.querySelector("i").getAttribute("data-value");
+                                                const dataSize = deleteBtn.querySelector("i").getAttribute("data-size");
                                                 console.log(dataValue);
+                                                console.log(dataSize);
+                                                console.log("this is the size");
                                                 deleteBtn.addEventListener("click", async function(){
 
-                                                    const response = await fetch(`/deleteFromCart?itemId=${dataValue}`,{
+                                                    const response = await fetch(`/deleteFromCart?itemId=${dataValue}&size=${dataSize}`,{
                                                         method: "GET",
                                                     })
                                                     if(!response){

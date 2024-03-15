@@ -111,13 +111,16 @@ let addtoCart = async(req, res)=>{
 let DeleteItem = async(req, res)=>{
 
     const productId= req.query.itemId;
+    const size = req.query.size;
+    console.log(`size ${size}`)
     console.log(productId);
     const userDetails = req.session.userisAuth._id
     console.log(`userId, ${userDetails}`)
     const DeleteItem = await cart.updateOne(
         { userId: userDetails },
-        { $pull: { items:{product:productId}} }
+        { $pull: { items:{product:productId, size: size}} }
     );
+    
 
 
     

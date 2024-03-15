@@ -27,12 +27,10 @@ let shop_cart=async(req,res)=>{
             var updatePrice= await cart.updateOne({_id:productsInCart._id, "items._id" : itemId},{$set:{"items.$.price":Localprice}})
             const totalPrice = await cart.updateOne({userId:userDetails},{$set:{totalprice:fullTotal}} )
 
-            console.log(updatePrice)
+            
         }
-        console.log(fullTotal)
         
-
-       await res.render("user/user-shop-cart.ejs",{Product:productsInCart})
+    await res.render("user/user-shop-cart.ejs",{Product:productsInCart})
 
     } catch (error) {
         console.log(error.message)
@@ -45,8 +43,10 @@ let addtoCart = async(req, res)=>{
         const userId = req?.session?.userisAuth?._id;
         let productId = req.query.productDetails;   
         let userIncart = await cart.findOne({userId:userId}) 
+        
+        // || !userIncart it was below
     
-        if(!userId || !userIncart){
+        if(!userId ){
             const data = "redirect";
            return await res.status(200).json({data})
         
@@ -62,7 +62,22 @@ let addtoCart = async(req, res)=>{
             console.log(updateToCart);
             console.log("userExsited so cart updated");
             const data = await cart.findOne({userId:userId}).populate("items.product");
-            console.log(data);
+            let allprice =0;
+
+            for(item of data.items){
+                const itemId = item._id;
+                const quantity = item.quantity;
+                const price = item.product.price;
+
+                const Localprice =quantity*price;
+                allprice += Localprice;
+
+                var updatePrice= await cart.updateOne({_id:data._id, "items._id" : itemId},{$set:{"items.$.price":price}})
+                const totalPrice = await cart.updateOne({userId:userId},{$set:{totalprice:allprice}} )
+                await res.status(200).json({data})
+            }
+            
+            
             await res.status(200).json({data})
             }else{
                 
@@ -111,15 +126,23 @@ let addtoCart = async(req, res)=>{
 let DeleteItem = async(req, res)=>{
 
     const productId= req.query.itemId;
-    const size = req.query.size;
+    const size = req?.query?.size;
     console.log(`size ${size}`)
     console.log(productId);
     const userDetails = req.session.userisAuth._id
     console.log(`userId, ${userDetails}`)
+
+    if(size){
     const DeleteItem = await cart.updateOne(
         { userId: userDetails },
         { $pull: { items:{product:productId, size: size}} }
     );
+    }else{
+    const DeleteItem = await cart.updateOne(
+        { userId: userDetails },
+        { $pull: { items:{product:productId}} }
+    )
+    }
     
 
 

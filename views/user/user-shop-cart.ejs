@@ -98,7 +98,7 @@
                                                 <span>
                                                     <% console.log(item.size) %>
                                                     <select class="qty-dropdown" id="sizeSelected">
-                                                        <option value="M" <%= item?.size == undefined ? 'selected' : '' %> disabled >selectSize</option>
+                                                        <option value="" <%= item?.size == undefined ? 'selected' : '' %> disabled >selectSize</option>
                                     
                                                         <option value="M" <%= item?.size == "M" ? 'selected' : '' %> >M</option>
                                                         <option value="L" <%= item?.size == "L" ? 'selected' : '' %> >L</option>
@@ -148,9 +148,15 @@
                                                     if(!response){
                                                         throw new Error("internal server Error")
                                                     }
-                                                    const data= await response.json()
+                                                    const data = await response.json()
                                                 
                                                     console.log(data);
+                                                    const cartPrice = document.getElementById("cartSubtotal");
+                                                    cartPrice.textContent = data.data
+                                                    const cartPrice1 = document.getElementById("cartSubtotal1");
+                                                     cartPrice1.textContent = data.data;
+                                                    console.log(data);
+
                                                     window.location.reload()
 
                                                 })

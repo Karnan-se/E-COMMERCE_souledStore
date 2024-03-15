@@ -25,6 +25,7 @@ let shop_cart=async(req,res)=>{
             fullTotal += Localprice;
 
             var updatePrice= await cart.updateOne({_id:productsInCart._id, "items._id" : itemId},{$set:{"items.$.price":Localprice}})
+            const totalPrice = await cart.updateOne({userId:userDetails},{$set:{totalprice:fullTotal}} )
 
             console.log(updatePrice)
         }
@@ -41,38 +42,22 @@ let shop_cart=async(req,res)=>{
 let addtoCart = async(req, res)=>{
     try {
 
-        const userDetails = req.session.userisAuth;
-        console.log(userDetails);
-
-
-        if(!userDetails){
+        const userId = req?.session?.userisAuth?._id;
+        let productId = req.query.productDetails;   
+        let userIncart = await cart.findOne({userId:userId}) 
+    
+        if(!userId || !userIncart){
             const data = "redirect";
            return await res.status(200).json({data})
-        }
         
-        const userId = userDetails?._id;
-        console.log(userId);
-        let productId = req.query.productDetails;
-        let productid = new mongoose.Types.ObjectId(productId)
-        console.log(productid);
-
-        if(userId){
-            var userID= new mongoose.Types.ObjectId(userId)
         }
-        
-      let userIncart = await cart.findOne({userId:userID})
-      
+       
+        else if(userIncart){
+            const size = req?.query?.selectedSize;
+            const exist= userIncart.items.find(items => items.product == productId && items.size == size)
 
-        if(!userDetails){
-            const data = "redirect";
-           return await res.status(200).json({data})
-
-        }else if(userIncart){
-            const exist= userIncart.items.find(items => items.product == productId)
-            
-            if(!exist){
-                
-                const size = req.query.selectedSize;
+            if(!exist){    
+            const size = req?.query?.selectedSize;
             const updateToCart = await cart.updateOne({userId:userId},{$addToSet:{items:{product: productId, size:size}}})
             console.log(updateToCart);
             console.log("userExsited so cart updated");
@@ -89,25 +74,25 @@ let addtoCart = async(req, res)=>{
 
         }else{
         
-        // console.log(productid) THIIS PART IS NOT WORKIMNG EVEN I HAVE TO
 
-        const size = req.query.selectedSize;
-        console.log(size);
+
+        const size = req?.query?.selectedSize;
+        
         if(size){
             console.log(size);
             const userCart = new cart({
                 userId: userId,
                 items: [
-                 {product:productid,size:size}],
+                 {product:productId,size:size}],
              })
              console.log(userCart);
-             userCart.save()
+             await userCart.save()
              res.redirect("/");
         }else{
         const userCart = new cart({
            userId: userId,
            items: [
-            {product:productid }],
+            {product:productId }],
         })
       
         userCart.save()
@@ -120,6 +105,9 @@ let addtoCart = async(req, res)=>{
         
     }
 }
+
+
+
 let DeleteItem = async(req, res)=>{
 
     const productId= req.query.itemId;
@@ -130,10 +118,25 @@ let DeleteItem = async(req, res)=>{
         { userId: userDetails },
         { $pull: { items:{product:productId}} }
     );
-    
-    const data = await cart.findOne({userId:userDetails})
 
-    await res.status(200).json(data);
+
+    
+    const data = await cart.findOne({userId:userDetails}).populate("items.product")
+        let whileprice =0
+    for(item of data.items){
+        const itemId = item._id;
+        const quantity = item.quantity;
+        const price = item.product.price;
+
+        const Localprice = quantity*price;
+         whileprice += Localprice;
+         console.log(whileprice);
+    }
+    const totalPrice = await cart.updateOne({userId:userDetails},{$set:{totalprice:whileprice}} )
+
+
+
+    await res.status(200).json({data:whileprice});
 
 }
 

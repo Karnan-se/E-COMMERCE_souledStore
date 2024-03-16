@@ -97,14 +97,14 @@
                                             <td class="text-right" data-title="Cart" >
                                                 <span>
                                                     <% console.log(item.size) %>
-                                                    <select class="qty-dropdown" id="sizeSelected">
+                                                    <select class="qty-dropdown size-dropdown" id="sizeSelected" onchange="updateSize(this)">
                                                         <option value="Null" <%= item?.size == undefined ? 'selected' : '' %> disabled >selectSize</option>
-                                                        <option value="S" <%= item?.size == "S" ? 'selected' : '' %> >S</option>
+                                                        <option  data-index="<%= item.product._id%>" value="S" <%= item?.size == "S" ? 'selected' : '' %> >S</option>
                                     
-                                                        <option value="M" <%= item?.size == "M" ? 'selected' : '' %> >M</option>
-                                                        <option value="L" <%= item?.size == "L" ? 'selected' : '' %> >L</option>
-                                                        <option value="XL" <%= item?.size == "Xl" ? 'selected' : '' %> >XL</option>
-                                                        <option value="XXL" <%= item?.size == "XXl" ? 'selected' : '' %> >XXL</option> 
+                                                        <option  data-index="<%= item.product._id%>" value="M" <%= item?.size == "M" ? 'selected' : '' %> >M</option>
+                                                        <option  data-index="<%= item.product._id%>" value="L" <%= item?.size == "L" ? 'selected' : '' %> >L</option>
+                                                        <option  data-index="<%= item.product._id%>" value="Xl" <%= item?.size == "Xl" ? 'selected' : '' %> >XL</option>
+                                                        <option  data-index="<%= item.product._id%>" value="XXl" <%= item?.size == "XXl" ? 'selected' : '' %> >XXL</option> 
                                                     </select>
                                                 </span> 
                                             </td>
@@ -112,10 +112,39 @@
 
                                         
                                     </tr>
+
                                     <% var totalprice = item.product.price * item.quantity %>
                                     
                                    
                                 <% }) %>
+                                <script>
+                                    async function updateSize(select){
+                                        const selectedSize = select.value;
+
+                                        const selectedOption = select.options[select.selectedIndex];
+                                        const productId = selectedOption.getAttribute("data-index");
+                                        console.log("Product ID:", productId);
+                                        console.log(productId)
+                                        console.log(selectedSize);
+                                        const addtocart = "hey"
+
+                                    
+
+                                        const response =await fetch(`/addtoCart?productDetails=${productId}&selectedSize=${selectedSize}&PageSettings=${addtocart}`,{
+                                            method:"GET",
+                                        })
+                                        if(!response){
+                                            throw new Error("Internal Server Error")
+                                        }
+                                        const datas = await response.json({})
+                                        console.log(datas.data)
+
+                                        window.location.reload()
+                                        
+                                    }
+
+
+                                    </script>
 
                                     <script defer>
                                         const imageContainer = document.querySelectorAll(".image-container")
@@ -281,12 +310,41 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="/checkout" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+                            <a onclick="checkout()" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+                            <Script>
+                                async function checkout(){
+                                    const allItemsHaveSize = Array.from(document.querySelectorAll('.size-dropdown')).every((select) => select.value !== 'Null');
+
+                                    if (!allItemsHaveSize) {
+                                         Swal.fire({
+                                             icon: 'error',
+                                             title: 'Oops...',
+                                             text: 'Please select a size for all items The Items'
+                                         });
+                                          } else {
+                                            try {
+                                                const response =await fetch("/checkout",{
+                                                    method:"GET",
+                                                })
+                                                if(!response){
+                                                    throw new Error("internal Server Error")
+                                                }
+                                                const data  = await response.json({})
+                                                console.log(data)
+                                                
+                                            } catch (error) {
+                                                
+                                            }
+
+                                                 
+                                                   }
+                                            }
+                            </script>
         
     </main>
     <footer class="main">

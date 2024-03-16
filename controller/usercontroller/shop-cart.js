@@ -37,6 +37,8 @@ let shop_cart=async(req,res)=>{
     }
 }
 
+// here I have to optimise for the thing came here without selecting the size
+
 let addtoCart = async(req, res)=>{
     try {
 
@@ -58,6 +60,7 @@ let addtoCart = async(req, res)=>{
 
             if(!exist){    
             const size = req?.query?.selectedSize;
+
             const updateToCart = await cart.updateOne({userId:userId},{$addToSet:{items:{product: productId, size:size}}})
             console.log(updateToCart);
             console.log("userExsited so cart updated");
@@ -71,14 +74,17 @@ let addtoCart = async(req, res)=>{
 
                 const Localprice =quantity*price;
                 allprice += Localprice;
+                console.log(`${allprice} this is total price`)
 
-                var updatePrice= await cart.updateOne({_id:data._id, "items._id" : itemId},{$set:{"items.$.price":price}})
-                const totalPrice = await cart.updateOne({userId:userId},{$set:{totalprice:allprice}} )
-                await res.status(200).json({data})
+                var updatePrice= await cart.updateOne({_id:data._id, "items._id" : itemId},{$set:{"items.$.price":Localprice}})
+               
+            
             }
-            
-            
-            await res.status(200).json({data})
+            const totalPrice = await cart.updateOne({userId:userId},{$set:{totalprice:allprice}} )
+            console.log(allprice);
+            return  res.status(200).json({data})
+
+
             }else{
                 
                 console.log("product alreadyexisted")
@@ -140,7 +146,7 @@ let DeleteItem = async(req, res)=>{
     }else{
     const DeleteItem = await cart.updateOne(
         { userId: userDetails },
-        { $pull: { items:{product:productId}} }
+        { $pull: { items:{product:productId, size: null}} }
     )
     }
     
@@ -220,10 +226,6 @@ let updatePriceToCart = async(req, res)=>{
         
     }
 }
-
-
-
-
 
 
 module.exports={

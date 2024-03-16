@@ -47,6 +47,7 @@ userrouter.get("/quantityUpdate",shopCart.quantityUpdate )
 userrouter.get("/updatePriceToCart",shopCart.updatePriceToCart)
 
 
+
 userrouter.get("/checkout",checkout.checkout)
 
 

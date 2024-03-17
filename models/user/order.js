@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
-        const Product=require('./productModel')
-        const User=require('./user_model')
+   
 
         const order = new mongoose.Schema({
+            orderID:{
+                type:String,
+                required:false,
+            },
             userId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
@@ -11,29 +14,38 @@ const mongoose = require('mongoose');
             date: {
                 type: Date,
                 default: new Date(),
-                required: true
+                required: false,
             },
             totalAmount: {
                 type: Number,
                 required: true
             },
             paymentMethod: {
-                type: String
+                type: String,
+                required:false,
             },
             products: [{
-                product: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'product',
-                    required: true
-                },
-                price: {
-                    type: Number,
-                    required: true
-                },
-                quantity: {
-                    type: Number,
-                    required: true
-                }
+                product:{
+                    type:  mongoose.Schema.Types.ObjectId,
+                    ref: "addproduct",
+                    required: true,
+                   },
+                   size:{
+                    type: String,
+                    required: false,
+                   },
+                   quantity:{
+                    type:Number,
+                    default:1,
+                    required:false,
+                
+                   },
+                   price:{
+                    type:Number,
+                    default:0,
+                    required:false,
+                   },
+
             }],
             addresstoDeliver:{
                 username:String,
@@ -42,6 +54,7 @@ const mongoose = require('mongoose');
                 state:String,
                 district:String,
                 city:String,
+                
                 
 
             },
@@ -57,6 +70,11 @@ const mongoose = require('mongoose');
                 type:Number,
                 default:0,
             },
+            isOrderPlaced:{
+                type:Boolean,
+                default:false,
+                required:false,
+            }
         });
 
 

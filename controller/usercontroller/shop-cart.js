@@ -13,6 +13,7 @@ let shop_cart=async(req,res)=>{
             return res.redirect("/user-login")
         }
        var fullTotal = 0
+       let arrayProduct=[]
         const productsInCart = await cart.findOne({userId:userDetails}).populate("items.product") 
         for (const item of productsInCart.items) {
             const itemId = item._id;
@@ -21,6 +22,7 @@ let shop_cart=async(req,res)=>{
 
            const Localprice = quantity*price;
             console.log(Localprice)
+            arrayProduct.push(itemId);
         
             fullTotal += Localprice;
 
@@ -29,6 +31,8 @@ let shop_cart=async(req,res)=>{
 
             
         }
+        // here I have optimise by deleting repeating id in product
+    
         
     await res.render("user/user-shop-cart.ejs",{Product:productsInCart})
 
@@ -37,7 +41,7 @@ let shop_cart=async(req,res)=>{
     }
 }
 
-// here I have to optimise for the thing came here without selecting the size
+
 
 let addtoCart = async(req, res)=>{
     try {
@@ -76,10 +80,15 @@ let addtoCart = async(req, res)=>{
                 allprice += Localprice;
                 console.log(`${allprice} this is total price`)
 
+           
+
+                
+
                 var updatePrice= await cart.updateOne({_id:data._id, "items._id" : itemId},{$set:{"items.$.price":Localprice}})
                
             
             }
+           
             const totalPrice = await cart.updateOne({userId:userId},{$set:{totalprice:allprice}} )
             console.log(allprice);
             return  res.status(200).json({data})

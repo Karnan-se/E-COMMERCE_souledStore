@@ -49,6 +49,7 @@ userrouter.get("/updatePriceToCart",shopCart.updatePriceToCart)
 
 
 userrouter.get("/checkout",checkout.checkout)
+userrouter.post("/welcomePage",checkout.welcomePage)
 
 
 userrouter.get("/shop-wishlist",wishlist.shopWishlist)

@@ -327,23 +327,11 @@
                                              text: 'Please select a size for all items The Items'
                                          });
                                           } else {
-                                            try {
-                                                const response =await fetch("/checkout",{
-                                                    method:"GET",
-                                                })
-                                                if(!response){
-                                                    throw new Error("internal Server Error")
-                                                }
-                                                const data  = await response.json({})
-                                                console.log(data)
-                                                
-                                            } catch (error) {
-                                                
-                                            }
 
-                                                 
-                                                   }
+                                            window.location.href="/checkout"
+                                           
                                             }
+                                        }
                             </script>
         
     </main>

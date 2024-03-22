@@ -98,7 +98,96 @@
                         <div class="mb-25">
                             <h4>Billing Details</h4>
                         </div>
-             <form method="post" action="/welcomePage">
+             <form method="post" action="/welcomePage"  onsubmit="return validateForm()">
+                <% if (typeof userDetails?.Address === "undefined" || userDetails?.Address === null || userDetails?.Address.length < 0) { %>
+
+                    <div class="col-lg-12">
+                        <div class="card mb-0 mb-lg-0 containerheader">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Add Address</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- <address><br>
+        Sarasota, <br>FL 34249 USA <br>Phone: 1.941.227.4444</address> -->
+                                <!-- <p>Sarasota</p> -->
+                                <div
+                                    class="align-items-center text-center ">
+                                    <span
+                                        class="fa fa-plus-circle f5 text-center p-4 mb-2"
+                                        style="cursor: pointer; font-size: 100px;"
+                                        onclick="addAddress()"></span>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                <% } %>
+                <script>
+                    async function addAddress() {
+                        const result = await Swal.fire({
+                            title: "Enter  Address",
+                            html:
+                                '<input id="houseName" class="swal2-input" placeholder="House Name">' +
+                                '<input id="streetName" class="swal2-input" placeholder="Street Name">' +
+                                '<input id="city" class="swal2-input" placeholder="City">' +
+                                '<input id="state" class="swal2-input" placeholder="State">',
+                            showCancelButton: true,
+                            confirmButtonText: 'Submit',
+                            cancelButtonText: 'Cancel',
+
+
+                            preConfirm: () => {
+                                return {
+                                    houseName: document.getElementById('houseName').value,
+                                    streetName: document.getElementById('streetName').value,
+                                    city: document.getElementById('city').value,
+                                    state: document.getElementById('state').value
+                                }
+                            }
+
+
+                        })
+
+                        if (result.isConfirmed) {
+                            const address = result.value;
+                            console.log(address)
+                            console.log(address.city)
+
+
+                            try {
+
+
+                                const response = await fetch(`/addAddress`, {
+                                    method: "POST",
+                                    headers: {
+
+                                        "content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({ address })
+                                })
+
+                                if (!response) {
+                                    throw new Error("internal server Error")
+                                }
+                                const data = await response.json({})
+                                window.location.reload();
+
+                            } catch (error) {
+
+                            }
+
+
+                        }
+                    }
+
+
+
+                </script>
+                
                             <% if(typeof userDetails?.Address !== "undefined") {%>
 
                                 <% for(let i=0; i<userDetails?.Address.length; i++) {%>
@@ -278,6 +367,22 @@
                                         </div>
                                                             </div>
                      </form>
+                     <script>
+                        function validateForm(){
+                            var selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+                            if (!selectedAddress) {
+                                Swal.fire({
+                                    icon:"warning",
+                                    title:"please select the address"
+                                })
+                                return false; 
+                            }
+                            return true; 
+
+                        }
+
+                        
+                        </script>
                         </div>
                     </div>
                 </div>

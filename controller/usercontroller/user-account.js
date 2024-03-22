@@ -91,7 +91,8 @@ let addAddress = async(req, res)=>{
             if( user.Address.length<1){
                 const update = await userdetail.updateOne({email:userEmail},
                     {$addToSet:{Address: {housename:address.houseName, Street : address.streetName, City :address.city,State: address.state, status:true}}})
-    
+
+                   return await res.status(200).json({update})
 
             }
             
@@ -99,7 +100,7 @@ let addAddress = async(req, res)=>{
             const update = await userdetail.updateOne({email:userEmail},
                 {$addToSet:{Address: {housename:address.houseName, Street : address.streetName, City :address.city,State: address.state}}})
 
-            // const update = await userdetail.updateOne({email: userEmail}, {$addToSet:{Address:address}});
+            
             console.log(update)
             
             console.log(address)

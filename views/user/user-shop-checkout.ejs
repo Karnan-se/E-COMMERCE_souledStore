@@ -178,7 +178,7 @@
                                            
                                             <td class=" image-container position-relative image product-thumbnail"><img src="/temp/<%= item.product.images[0]%>" alt="#">
                                             
-                                            <button class="btn btn-primary delete-btn position-absolute top-100  start-50 translate-middle d-none " style="font-size: 12px; line-height: 1;" data-toggle="tooltip" title="Delete">
+                                            <button type="button" class="btn btn-primary delete-btn position-absolute top-100  start-50 translate-middle d-none " style="font-size: 12px; line-height: 1;" data-toggle="tooltip" title="Delete">
                                                 <i class="fas fa-trash text-sm" style="font-size: 8px;" data-value="<%= item.product._id %>" data-size="<%= item.size %>"></i> delete
                                             </button>
                                             </td>
@@ -215,14 +215,7 @@
                                                         throw new Error("internal server Error")
                                                     }
                                                     const data = await response.json()
-                                                
                                                     console.log(data);
-                                                    const cartPrice = document.getElementById("cartSubtotal");
-                                                    cartPrice.textContent = data.data
-                                                    const cartPrice1 = document.getElementById("cartSubtotal1");
-                                                     cartPrice1.textContent = data.data;
-                                                    console.log(data);
-
                                                     window.location.reload()
 
                                                 })

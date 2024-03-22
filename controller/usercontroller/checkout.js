@@ -55,10 +55,10 @@ const cartDetail = await cart.findOne({userId:userId})
         addresstoDeliver:{
             username:userDetail.name,
             phonenumber:userDetail.mobile,
-            houseaddress:selectedAddress.housename,
-            state:selectedAddress.state,
-            district:selectedAddress.Street,
-            city:selectedAddress.city,
+            houseaddress:trueAddress.housename,
+            state:trueAddress.State,
+            district:trueAddress.Street,
+            city:trueAddress.City,
         }
         })
 

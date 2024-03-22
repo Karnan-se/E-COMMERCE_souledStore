@@ -7,7 +7,8 @@ const auth = require("../../middlewares/multer/userSession")
 const MyAccount = require("../../controller/usercontroller/user-account")
 const wishlist = require("../../controller/usercontroller/shopwishlist")
 const shopCart = require("../../controller/usercontroller/shop-cart")
-const checkout = require("../../controller/usercontroller/checkout")
+const checkout = require("../../controller/usercontroller/checkout");
+const rating= require("../../controller/usercontroller/ratingscontroller")
 
 userrouter.use(express.static("public"));
 
@@ -53,6 +54,10 @@ userrouter.post("/welcomePage",checkout.welcomePage)
 
 
 userrouter.get("/shop-wishlist",wishlist.shopWishlist)
+
+userrouter.post("/addratings",rating.addratings)
+userrouter.get("/ratings",rating.loadratings)
+
 
 
 

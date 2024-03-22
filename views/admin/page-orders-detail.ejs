@@ -41,9 +41,7 @@
                         <span class="text">Orders</span>
                     </a>
                     <div class="submenu">
-                        <a href="/page-orders-1">Order list 1</a>
-                        <a href="/page-orders-2">Order list 2</a>
-                        <a href="/page-orders-detail" class="active">Order detail</a>
+                        <a href="/page-orders-1">Orders</a>
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
@@ -135,18 +133,63 @@
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
                             <span>
-                                <i class="material-icons md-calendar_today"></i> <b>Wed, Aug 13, 2020, 4:34PM</b>
+                                <i class="material-icons md-calendar_today"></i> <b><%=orderDetails[0].formateDate()%></b>
                             </span> <br>
                             <small class="text-muted">Order ID: 3453012</small>
                         </div>
                         <div class="col-lg-6 col-md-6 ms-auto text-md-end">
-                            <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
-                                <option>Change status</option>
-                                <option>Awaiting payment</option>
-                                <option>Confirmed</option>
-                                <option>Shipped</option>
-                                <option>Delivered</option>
+                            <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200 orderStatus">
+                                <!-- <option>Change status</option>
+                                <option>Awaiting payment</option> -->
+                                <option value="Pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
                             </select>
+                            <script>
+                                
+                                var orderStatusValue = "<%= orderDetails[0].orderStatus %>"; 
+                                
+                                
+                                var orderStatusSelects = document.querySelectorAll('.orderStatus');
+                                orderStatusSelects.forEach(function(orderStatusSelect) {
+                                    for (var i = 0; i < orderStatusSelect.options.length; i++) {
+                                        if (orderStatusSelect.options[i].value === orderStatusValue) {
+                                            orderStatusSelect.options[i].selected = true;
+                                            break;
+                                        }
+                                    }
+                                });
+                            </script>
+                            <script>
+
+                                const selectors = document.querySelectorAll(".orderStatus");
+                                
+                                
+                                selectors.forEach(selector => {
+                                    
+                                    selector.addEventListener('change', async function() {
+                                        const selectedValue = this.value;
+                                        console.log(selectedValue);
+
+                                        const response= await fetch(`/orderStaus?selectedvalue=${selectedValue}&orderId=<%= orderDetails[0]._id%>`,{
+                                            method:"GET"
+                                        })
+                                        if(!response){
+                                            throw new Error("INTERNAL SERVER ERROR")
+                                        }
+                                        const data = await response.json({})
+                                       
+                                        window.location.reload();
+
+                                    });
+                                });
+                            </script>
+
+
+
+
+
                             <a class="btn btn-primary" href="#">Save</a>
                             <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a>
                         </div>
@@ -162,7 +205,7 @@
                                 <div class="text">
                                     <h6 class="mb-1">Customer</h6>
                                     <p class="mb-1">
-                                        John Alexander <br> <template class="__cf_email__" data-cfemail="e2838e879aa2879a838f928e87cc818d8f">[email&#160;protected]</template> <br> +998 99 22123456
+                                        <%=orderDetails[0].userId.name%> <br> <template class="__cf_email__" data-cfemail="e2838e879aa2879a838f928e87cc818d8f">[email&#160;protected]</template> <br>   <%=orderDetails[0].userId.mobile%>
                                     </p>
                                     <a href="#">View profile</a>
                                 </div>
@@ -176,7 +219,9 @@
                                 <div class="text">
                                     <h6 class="mb-1">Order info</h6>
                                     <p class="mb-1">
-                                        Shipping: Fargo express <br> Pay method: card <br> Status: new
+                                          Shipping: Fargo express <br>
+                                          Pay method: <%=orderDetails[0].paymentMethod %> <br>
+                                          Status: new
                                     </p>
                                     <a href="#">Download info</a>
                                 </div>
@@ -190,13 +235,22 @@
                                 <div class="text">
                                     <h6 class="mb-1">Deliver to</h6>
                                     <p class="mb-1">
-                                        City: Tashkent, Uzbekistan <br>Block A, House 123, Floor 2 <br> Po Box 10000
+                                        City: <%=orderDetails[0].addresstoDeliver.houseaddress%> <br> <%=orderDetails[0].addresstoDeliver.city%> <br>  <%=orderDetails[0].addresstoDeliver.state%> <br>  <%=orderDetails[0].addresstoDeliver.district%>
                                     </p>
                                     <a href="#">View profile</a>
                                 </div>
                             </article>
                         </div> <!-- col// -->
                     </div> <!-- row // -->
+
+
+
+
+
+
+                 
+
+
                     <div class="row">
                         <div class="col-lg-7">
                             <div class="table-responsive">
@@ -210,79 +264,46 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <% orderDetails[0].products.forEach((items)=>{%> 
+                                       
                                         <tr>
                                             <td>
                                                 <a class="itemside" href="#">
                                                     <div class="left">
                                                         <img src="assets/imgs/items/1.jpg" width="40" height="40" class="img-xs" alt="Item">
                                                     </div>
-                                                    <div class="info"> T-shirt blue, XXL size </div>
+                                                    
+                                                    <div class="info"> <%=items.product.productname%>, XXL size </div>
                                                 </a>
                                             </td>
-                                            <td> $44.25 </td>
-                                            <td> 2 </td>
-                                            <td class="text-end"> $99.50 </td>
+                                            <td> &#8377; <%= items.product.price%> </td>
+                                            <td> <%=items.quantity%></td>
+                                            <td class="text-end"> &#8377;<%= items.price%> </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <a class="itemside" href="#">
-                                                    <div class="left">
-                                                        <img src="assets/imgs/items/2.jpg" width="40" height="40" class="img-xs" alt="Item">
-                                                    </div>
-                                                    <div class="info"> Winter jacket for men </div>
-                                                </a>
-                                            </td>
-                                            <td> $7.50 </td>
-                                            <td> 2 </td>
-                                            <td class="text-end"> $15.00 </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <a class="itemside" href="#">
-                                                    <div class="left">
-                                                        <img src="assets/imgs/items/3.jpg" width="40" height="40" class="img-xs" alt="Item">
-                                                    </div>
-                                                    <div class="info"> Jeans wear for men </div>
-                                                </a>
-                                            </td>
-                                            <td> $43.50 </td>
-                                            <td> 2 </td>
-                                            <td class="text-end"> $102.04 </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <a class="itemside" href="#">
-                                                    <div class="left">
-                                                        <img src="assets/imgs/items/4.jpg" width="40" height="40" class="img-xs" alt="Item">
-                                                    </div>
-                                                    <div class="info"> Product name color and size </div>
-                                                </a>
-                                            </td>
-                                            <td> $99.00 </td>
-                                            <td> 3 </td>
-                                            <td class="text-end"> $297.00 </td>
-                                        </tr>
+                                        <% })%>
+
                                         <tr>
                                             <td colspan="4">
                                                 <article class="float-end">
                                                     <dl class="dlist">
                                                         <dt>Subtotal:</dt>
-                                                        <dd>$973.35</dd>
+                                                        <dd>&#8377;<%= orderDetails[0].totalAmount%></dd>
                                                     </dl>
                                                     <dl class="dlist">
                                                         <dt>Shipping cost:</dt>
-                                                        <dd>$10.00</dd>
+                                                        <dd>&#8377; 0</dd>
                                                     </dl>
                                                     <dl class="dlist">
                                                         <dt>Grand total:</dt>
-                                                        <dd> <b class="h5">$983.00</b> </dd>
+                                                        <dd> <b class="h5">&#8377; <%= orderDetails[0].totalAmount %></b> </dd>
                                                     </dl>
                                                     <dl class="dlist">
                                                         <dt class="text-muted">Status:</dt>
                                                         <dd>
-                                                            <span class="badge rounded-pill alert-success text-success">Payment done</span>
+                                                            <span class="badge rounded-pill alert-success text-success"><%= orderDetails[0].orderStatus%></span>
                                                         </dd>
                                                     </dl>
+                                                    
                                                 </article>
                                             </td>
                                         </tr>

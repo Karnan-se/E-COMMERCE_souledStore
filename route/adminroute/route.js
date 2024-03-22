@@ -11,6 +11,7 @@ const upload = require("../../middlewares/multer/multer")
 const categories = require("../../controller/admincontroller/category")
 const admin = require("../../models/admin/admin");
 const auth = require('../../middlewares/multer/adminSession')
+const orderController = require("../../controller/admincontroller/ordercontroller")
 
 router.get("/admin-login",auth.isLogout, loginController.adminLogin);
 router.get("/admindashboard", auth.isLogin, adminController.admindashboard)
@@ -23,9 +24,6 @@ router.get("/logout", auth.isLogin, adminController.logout,)
 router.get("/page-products-grid",auth.isLogin, adminController.page_products_grid);
 router.get("/page-products-grid-2", auth.isLogin, adminController.page_products_grid_2);
 
-router.get("/page-orders-1", auth.isLogin, adminController.page_orders_1);
-router.get("/page-orders-2",auth.isLogin, adminController.page_orders_2);
-router.get("/page-orders-detail",auth.isLogin, adminController.page_orders_detail);
 
 router.get("/page-form-product-1",auth.isLogin, adminController.page_form_product_1);
 router.get("/page-form-product-2",auth.isLogin, adminController.page_form_product_2);
@@ -84,6 +82,12 @@ router.get("/PasswordChange/:token/:id",adminpatchcontroller.newPasswordChange)
 // // router.post("/resetpassword",adminpatchcontroller.resetpassword)
 
 // router.post("/updatepassword",adminpatchcontroller.updatepassword)
+
+
+router.get("/page-orders-1", auth.isLogin, orderController.orderadmin);
+router.get("/page-orders-2",auth.isLogin, adminController.page_orders_2);
+router.get("/page-orders-detail",auth.isLogin, orderController.orders_detail);
+router.get("/orderStaus",auth.isLogin, orderController.orderStaus)
 
 
 

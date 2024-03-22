@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:11:15 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <title>Evara - eCommerce HTML Template</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
+    
+</head>
+
+<body>
+
+    <%- include("./partials/header")%>
+        </div>
+        </div>
+        </div>
+        <main class="main">
+            <div class="page-header breadcrumb-wrap">
+                <div class="container">
+                    <div class="breadcrumb">
+                        <a href="index.html" rel="nofollow">Home</a>
+                        <span></span> Shop
+                        <span></span> Compare
+                    </div>
+                </div>
+            </div>
+            <section class="mt-50 mb-50 ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="table-responsive">
+                                <table class="table text-center ">
+                                    <tbody>
+                                        <tr class="pr_image">
+                                            <td class="text-muted font-md fw-500 ">Preview</td>
+                                            <% orderDetails.products.forEach((items)=> { %>
+                                            <td class="row_img"><img src="/temp/<%=items.product.images[0]%>" alt="compare-img" class="img-fluid"></td>
+                                        <%})%>
+                                        </tr>
+                                        <tr class="pr_title">
+                                            <td class="text-muted font-md fw-600">Name</td>
+                                            <td class="product_name">
+                                                <h5><a href="shop-product-full.html">J.Crew Mercantile Women's Short</a></h5>
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr class="pr_price">
+                                            <td class="text-muted font-md fw-600">Ratings</td>
+                                            <td class="product_price">
+                                                <div class="stars ">
+
+                                                    <% for (let i = 0; i < 5; i++) { %>
+        
+                                                        <i class="fa-solid fa-star col-1 <%= (productRatings?.rating && i < productRatings.rating[0]?.hisRatings) ? 'active' : '' %>" data-value="<%= i + 1 %>" data-size="<%= orderDetails.products[0].size %>" data-product="<%= orderDetails.products[0].product._id%>"  data-orderId="<%= orderDetails._id %>" ></i>                             
+                                                    <% } %>
+                                                </div>
+
+
+                                            </td>
+                                           
+                                           
+                                        </tr>
+                                        <tr class="pr_price">
+                                            <td class="text-muted font-md fw-600">Price</td>
+                                            <td class="product_price"><span class="price">$45.00</span></td>
+                                           
+                                           
+                                        </tr>
+                            
+                                       
+                                        <tr class="pr_size">
+                                            <td class="text-muted font-md fw-600">Size selected</td>
+                                            <td class="row_size">
+                                                <ul class="list-filter size-filter mt-15 font-small">
+                                                    <li><a href="#">S</a></li>
+                                                </ul>
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr class="pr_stock">
+                                            <td class="text-muted font-md fw-600">Stock status</td>
+                                            <td class="row_stock"><span>In Stock</span></td>
+                                           
+                                        </tr>
+                                        <tr class="pr_weight">
+                                            <td class="text-muted font-md fw-600">Weight</td>
+                                            <td class="row_weight">320 gram</td>
+                                            
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- <div class="col-6 ratings">
+                            <div class="rating-feedback">
+                                <div class="rating-stars">
+                                    <div class="rating-box ">
+                                    
+                                        <div class="stars ">
+
+                                          
+
+                                                                          
+                                            
+                                        </div>
+                                      </div>
+                                </div>
+                                <div class="feedback">Feedback: </div>
+                            </div>
+                            
+                            </div> -->
+                    </div>
+                </div>
+            </section>
+
+
+            <style>
+                .rating-box{
+                    cursor: pointer;
+                    outline: none;
+                    text-decoration: none;
+                }
+                
+                .stars i {
+                color: #b8b0b0;
+                font-size: 15px;
+                cursor: pointer;
+                transition: color 0.2s ease;
+                    
+               
+                }
+                .stars i.active {
+                color: #ff9c1a;
+                }
+                .stars i:focus {
+                outline: none;
+                }
+    </style>
+
+
+
+    <script>
+const stars = document.querySelectorAll(".stars i");
+stars.forEach((star, index) => {
+star.addEventListener("click",async  function() {
+    const value = this.getAttribute("data-value");
+    const size = this.getAttribute("data-size")
+    const productId = this.getAttribute("data-product") 
+    const orderID =this.getAttribute("data-orderId")  
+    stars.forEach((s, i) => {
+        s.classList.remove("active");
+
+        if(i<= index) {
+            s.classList.add("active")
+        }
+
+    });
+    console.log(`Ratings`,"size","productId",  value,size, productId)
+    const response = await fetch(`/addratings`,{
+        method:"POST",
+        headers:{
+            
+            "content-type": "application/json",
+    
+        },
+        body: JSON.stringify({
+            value:value,
+            size: size,
+            productId: productId,
+            orderID: orderID,
+        })
+        
+   
+    })
+    if(!response){
+        throw new Error("internal server Error")
+    }
+    const data= await response.json()
+    console.log(data);
+   
+    
+});
+});
+
+</script>
+
+
+
+        </main>
+        <footer class="main">
+            <section class="newsletter p-30 text-white wow fadeIn animated">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7 mb-md-3 mb-lg-0">
+                            <div class="row align-items-center">
+                                <div class="col flex-horizontal-center">
+                                    <img class="icon-email" src="/assets/imgs/theme/icons/icon-email.svg" alt="">
+                                    <h4 class="font-size-20 mb-0 ml-3">Sign up to Newsletter</h4>
+                                </div>
+                                <div class="col my-4 my-md-0 des">
+                                    <h5 class="font-size-15 ml-4 mb-0">...and receive <strong>$25 coupon for first shopping.</strong></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <!-- Subscribe Form -->
+                            <form class="form-subcriber d-flex wow fadeIn animated">
+                                <input type="email" class="form-control bg-white font-small" placeholder="Enter your email">
+                                <button class="btn bg-dark text-white" type="submit">Subscribe</button>
+                            </form>
+                            <!-- End Subscribe Form -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section-padding footer-mid">
+                <div class="container pt-15 pb-20">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="widget-about font-md mb-md-5 mb-lg-0">
+                                <div class="logo logo-width-1 wow fadeIn animated">
+                                    <a href="index.html"><img src="https://www.thesouledstore.com/static/img/newlogo.8dcc6cc.png" alt="logo"></a>
+                                </div>
+                                <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
+                                <p class="wow fadeIn animated">
+                                    <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
+                                </p>
+                                <p class="wow fadeIn animated">
+                                    <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
+                                </p>
+                                <p class="wow fadeIn animated">
+                                    <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
+                                </p>
+                                <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
+                                <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
+                                    <a href="#"><img src="/assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                    <a href="#"><img src="/assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                    <a href="#"><img src="/assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                    <a href="#"><img src="/assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                    <a href="#"><img src="/assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3">
+                            <h5 class="widget-title wow fadeIn animated">About</h5>
+                            <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Delivery Information</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Terms &amp; Conditions</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="#">Support Center</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-2  col-md-3">
+                            <h5 class="widget-title wow fadeIn animated">My Account</h5>
+                            <ul class="footer-list wow fadeIn animated">
+                                <li><a href="#">Sign In</a></li>
+                                <li><a href="#">View Cart</a></li>
+                                <li><a href="#">My Wishlist</a></li>
+                                <li><a href="#">Track My Order</a></li>
+                                <li><a href="#">Help</a></li>
+                                <li><a href="#">Order</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5 class="widget-title wow fadeIn animated">Install App</h5>
+                            <div class="row">
+                                <div class="col-md-8 col-lg-12">
+                                    <p class="wow fadeIn animated">From App Store or Google Play</p>
+                                    <div class="download-app wow fadeIn animated">
+                                        <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="/assets/imgs/theme/app-store.jpg" alt=""></a>
+                                        <a href="#" class="hover-up"><img src="/assets/imgs/theme/google-play.jpg" alt=""></a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
+                                    <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
+                                    <img class="wow fadeIn animated" src="/assets/imgs/theme/payment-method.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="container pb-20 wow fadeIn animated">
+                <div class="row">
+                    <div class="col-12 mb-20">
+                        <div class="footer-bottom"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="text-lg-end text-start font-sm text-muted mb-0">
+                            Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights reserved
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Preloader Start -->
+        <div id="preloader-active">
+            <div class="preloader d-flex align-items-center justify-content-center">
+                <div class="preloader-inner position-relative">
+                    <div class="text-center">
+                        <h5 class="mb-5">Now Loading</h5>
+                        <div class="loader">
+                            <div class="bar bar1"></div>
+                            <div class="bar bar2"></div>
+                            <div class="bar bar3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Vendor JS-->
+        <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+        <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
+        <script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+        <script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
+        <script src="/assets/js/plugins/slick.js"></script>
+        <script src="/assets/js/plugins/jquery.syotimer.min.js"></script>
+        <script src="/assets/js/plugins/wow.js"></script>
+        <script src="/assets/js/plugins/jquery-ui.js"></script>
+        <script src="/assets/js/plugins/perfect-scrollbar.js"></script>
+        <script src="/assets/js/plugins/magnific-popup.js"></script>
+        <script src="/assets/js/plugins/select2.min.js"></script>
+        <script src="/assets/js/plugins/waypoints.js"></script>
+        <script src="/assets/js/plugins/counterup.js"></script>
+        <script src="/assets/js/plugins/jquery.countdown.min.js"></script>
+        <script src="/assets/js/plugins/images-loaded.js"></script>
+        <script src="/assets/js/plugins/isotope.js"></script>
+        <script src="/assets/js/plugins/scrollup.js"></script>
+        <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
+        <!-- Template  JS -->
+        <script src="/assets/js/maind134.js?v=3.4"></script>
+        <script src="/assets/js/shopd134.js?v=3.4"></script>
+    </body>
+    
+    
+    <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend//shop-compare by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:05 GMT -->
+    </html>

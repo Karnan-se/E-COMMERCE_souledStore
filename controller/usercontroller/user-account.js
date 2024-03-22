@@ -1,18 +1,21 @@
 const { yearsToQuarters } = require("date-fns");
 const userdetail = require("../../models/user/userdetails");
+const orders = require("../../models/user/order")
+const rating = require("../../models/user/ratings")
 const bcrypt = require("bcrypt")
 
 let user_page_account = async(req, res)=>{
     try {
         const userDetails = req.session.userisAuth;
-       
+        const order = await orders.find({userId:userDetails}).populate("products.product");
+        const ratings = await rating.find({userId:userDetails._id});
         
         if(req.session.passwordUpdated){
             delete req.session.passwordUpdated;
             const message="passwordUpdated";
-            return res.render("user/user-page-account.ejs",{userDetails,message})
+            return res.render("user/user-page-account.ejs",{userDetails,message,order, ratings})
         }
-       return res.render("user/user-page-account.ejs",{userDetails})
+       return res.render("user/user-page-account.ejs",{userDetails, order, ratings})
 
 
         

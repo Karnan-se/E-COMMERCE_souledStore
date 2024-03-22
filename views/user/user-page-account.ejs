@@ -18,6 +18,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
+    
 </head>
 
 <body>
@@ -113,56 +114,276 @@
                                                 </div>
                                                 <div class="tab-pane fade" id="orders" role="tabpanel"
                                                     aria-labelledby="orders-tab">
+                                                    <% order.forEach((items) => { %> 
                                                     <div class="card">
-                                                        <div class="card-header">
-                                                            <h5 class="mb-0">Your Orders</h5>
+                                                        <div class="card-header order d-flex justify-content-between">
+                                                            <div>
+                                                                <h5 class="mb-0">Your Orders</h5>
+                                                            </div>
+                                                            <div>
+                                                                <a class="mb-0 invoice">#invoice</a>
+                                                            </div>
                                                         </div>
+                                                        
                                                         <div class="card-body">
                                                             <div class="table-responsive">
-                                                                <table class="table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Order</th>
-                                                                            <th>Date</th>
-                                                                            <th>Status</th>
-                                                                            <th>Total</th>
-                                                                            <th>Actions</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>#1357</td>
-                                                                            <td>March 45, 2020</td>
-                                                                            <td>Processing</td>
-                                                                            <td>$125.00 for 2 item</td>
-                                                                            <td><a href="#"
-                                                                                    class="btn-small d-block">View</a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>#2468</td>
-                                                                            <td>June 29, 2020</td>
-                                                                            <td>Completed</td>
-                                                                            <td>$364.00 for 5 item</td>
-                                                                            <td><a href="#"
-                                                                                    class="btn-small d-block">View</a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>#2366</td>
-                                                                            <td>August 02, 2020</td>
-                                                                            <td>Completed</td>
-                                                                            <td>$280.00 for 3 item</td>
-                                                                            <td><a href="#"
-                                                                                    class="btn-small d-block">View</a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
+                                                                    <% items.products.forEach((item) => { %>
+                                                                       
+                                                                        
+                                                                        <div class="product-info">
+                                                                            <div class="row">
+                                                                                <div class="col-md-2">
+                                                                                    <div class="d-flex h-100">
+                                                                                        <div class="object-fit img-fluid h-100">
+                                                                                            <img src="/temp/<%= item.product.images[0] %>" alt="Product Image">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="d-flex flex-column">
+                                                                                        <div class="product-details">
+                                                                                            <div class="product-name"> <%= item.product.productname %></div>
+                                                                                            <div class="product-size">Size: <%= item.size %></div>
+                                                                                            <div class="product-quantity">Quantity: <%= item.quantity %></div>
+                                                                                            <div class="exchange-details">Status: <%= items.orderStatus %></div> <!-- Changed from items.orderStatus -->
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-4">
+                                                                                    <div class="d-flex align-items-center flex-column">
+                                                                                        <div class="d-flex flex-column p-5 text-md-end"> &#x20b9; <%= item.price %></div>
+                                                                                        
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <div class="">
+                                                                            <div class="action-buttons">
+                                                                                <button class="track-button btn" data-bs-target="#orderDetailsModal"  data-bs-toggle="modal">Track</button>
+                                                                                <button class="return-exchange-button btn">  <%= items.deliveredDate == null ? "Cancel" : "Return or Exchange" %>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="rating-feedback d-flex justify-content-between">
+                                                                                <div class="rating-stars">
+                                                                                    <div class="rating-box">
+                                                                                    
+                                                                                        <div class="stars">
+
+                                                                                              <a href="/ratings?orderid=<%=items._id%>&productId=<%=item.product._id %>&itemSize=<%= item.size %>"> <p class="text-white"  >Rate This Product</p></a>
+                                                                                               
+                                                                                         
+                                                                                        </div>
+                                                                                      </div>
+                                                                                </div>
+                                                                                <div class="feedback">Feedback: </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    <% }) %>
+                                                            
+                                                                    <hr>
+                                                                    <div class="total d-flex  justify-content-end" style="font-size: 24px; font-weight: bold; width: 100%;">
+                                                                        Total Price: &#x20b9;  <%= items.totalAmount %>
+                                                                    </div>
+                                                                    <style>
+                                                                        .rating-box{
+                                                                            cursor: pointer;
+                                                                            outline: none;
+                                                                            text-decoration: none;
+                                                                        }
+                                                                        
+                                                                        .stars i {
+                                                                        color: #ffffff;
+                                                                        font-size: 15px;
+                                                                        cursor: pointer;
+                                                                        transition: color 0.2s ease;
+                                                                            
+                                                                       
+                                                                        }
+                                                                        .stars i.active {
+                                                                        color: #ff9c1a;
+                                                                        }
+                                                                        .stars i:focus {
+                                                                        outline: none;
+                                                                        }
+                                                            </style>
+                                                          
+                                                           
+     
                                                             </div>
                                                         </div>
                                                     </div>
+                                                     <style>
+                                                         .table-responsive {
+                                                         overflow-x: hidden;
+                                                         overflow-y: hidden;
+                                                         
+                                                    }
+
+                                                     .card {
+                                                         background-color: rgb(80, 72, 72);
+                                                         color: white;
+                                                         border-bottom: 2px solid  black;
+                                                         border-right: 1px solid black;
+                                                         box-shadow: 10px;
+                                                     }
+                                                     .order{
+                                                         background-color: #488978;
+                                                     }
+                                                      </style>
+
+
+                                                    <div class="mt-3 mb-3 bg-dark ">
+                                                        <div class="bg-dark"></div>
+                                                        <!-- Content goes here -->
+                                                    </div>
+                                                    
+                                                    <% }) %>
+                                                    <br>
+                                                    <script>
+                                                     const stars = document.querySelectorAll(".stars i");
+                                                    stars.forEach((star, index) => {
+                                                        star.addEventListener("click",async  function() {
+                                                            const value = this.getAttribute("data-value");
+                                                            const size = this.getAttribute("data-size")
+                                                            const productId = this.getAttribute("data-product") 
+                                                            const orderID =this.getAttribute("data-orderId")  
+                                                            stars.forEach((s, i) => {
+                                                                s.classList.remove("active");
+
+                                                                if(i<= index) {
+                                                                    s.classList.add("active")
+                                                                }
+
+                                                            });
+                                                            console.log(`Ratings`,"size","productId",  value,size, productId)
+                                                            const response = await fetch(`/addratings`,{
+                                                                method:"POST",
+                                                                headers:{
+                                                                    
+                                                                    "content-type": "application/json",
+                                                            
+                                                                },
+                                                                body: JSON.stringify({
+                                                                    value:value,
+                                                                    size: size,
+                                                                    productId: productId,
+                                                                    orderID: orderID,
+                                                                })
+                                                                
+                                                           
+                                                            })
+                                                            if(!response){
+                                                                throw new Error("internal server Error")
+                                                            }
+                                                            const data= await response.json()
+                                                            console.log(data);
+                                                           
+                                                            
+                                                        });
+                                                    });
+
+                                                 </script>
+
+                                                    <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+                                                      <div class="modal-dialog modal-dialog-centered modal-xl">
+                                                        <div class="modal-content">
+                                                          <div class="modal-header">
+                                                            <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                          </div>
+                                                          <div class="modal-body">
+                                                            <div class="col">
+                                                              <div class="card card-stepper" style="border-radius: 10px;">
+                                                                <div class="card-body p-4">
+                                                    
+                                                                  <div class="d-flex justify-content-between align-items-center">
+                                                                    <div class="d-flex flex-column">
+                                                                      <span class="lead fw-normal">Your order has been delivered</span>
+                                                                      <span class="text-muted small">by DHFL on 21 Jan, 2020</span>
+                                                                    </div>
+                                                                  </div>
+                                                                  <hr class="my-4">
+                                                    
+                                                                  <div class="d-flex flex-row justify-content-between align-items-center align-content-center">
+                                                                    <span class="dot"></span>
+                                                                    <hr class="flex-fill track-line"><span class="dot"></span>
+                                                                    
+                                                                    <hr class="flex-fill track-line"><span class="dot"></span>
+                                                                    <hr class="flex-fill track-line"><span class="d-flex justify-content-center align-items-center big-dot dot">
+                                                                      <i class="fa fa-check text-white"></i></span>
+                                                                  </div>
+                                                    
+                                                                  <div class="d-flex flex-row justify-content-between align-items-center">
+                                                                    <div class="d-flex flex-column align-items-start"><span>15 Mar</span><span>Order placed</span>
+                                                                    </div>
+                                                                  
+                                                                    <div class="d-flex flex-column justify-content-center align-items-center"><span>15
+                                                                        Mar</span><span>Order Dispatched</span></div>
+                                                                    <div class="d-flex flex-column align-items-center"><span>15 Mar</span><span>Out for
+                                                                        delivery</span></div>
+                                                                    <div class="d-flex flex-column align-items-end"><span>15 Mar</span><span>Delivered</span></div>
+                                                                  </div>
+                                                    
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <style>
+                                                        .track-line {
+                                                                height: 2px !important;
+                                                                background-color: #488978;
+                                                                opacity: 1;
+                                                                }
+
+                                                                .dot {
+                                                                height: 10px;
+                                                                width: 10px;
+                                                                margin-left: 3px;
+                                                                margin-right: 3px;
+                                                                margin-top: 0px;
+                                                                background-color: #488978;
+                                                                border-radius: 50%;
+                                                                display: inline-block
+                                                                }
+
+                                                                .big-dot {
+                                                                height: 25px;
+                                                                width: 25px;
+                                                                margin-left: 0px;
+                                                                margin-right: 0px;
+                                                                margin-top: 0px;
+                                                                background-color: #488978;
+                                                                border-radius: 50%;
+                                                                display: inline-block;
+                                                                }
+
+                                                                .big-dot i {
+                                                                font-size: 12px;
+                                                                }
+
+                                                                .card-stepper {
+                                                                z-index: 0
+                                                                }
+                                                        </style>
+                                                         
+
+
+
+
+
+
+
+
+
+
                                                 </div>
+
+
+                                                
                                                 <div class="tab-pane fade" id="track-orders" role="tabpanel"
                                                     aria-labelledby="track-orders-tab">
                                                     <div class="card">

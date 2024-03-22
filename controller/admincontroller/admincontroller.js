@@ -28,15 +28,7 @@ let page_products_grid_2 = async(req, res)=>{
     }
 }
 
-let page_orders_1 = async(req, res)=>{
-    try {
-        res.render("admin/page-orders-1.ejs")
-        
-    } catch (error) {
-        
-    }
-    
-}
+
 
 let page_orders_2 = async(req, res)=>{
     try {
@@ -47,14 +39,7 @@ let page_orders_2 = async(req, res)=>{
         
     }
 }
-let page_orders_detail = async(req, res)=>{
-    try {
-        res.render("admin/page-orders-detail.ejs")
-    } catch (error) {
-        console.log(error);
-        
-    }
-}
+
 let page_sellers_cards = async(req, res)=>{
     try {
         res.render("admin/page-sellers-cards.ejs")
@@ -216,9 +201,9 @@ module.exports={
     admindashboard, 
     page_products_grid,
     page_products_grid_2,
-    page_orders_1,
+   
     page_orders_2,
-    page_orders_detail,
+   
     page_sellers_cards,
     page_seller_detail,
     page_form_product_1,

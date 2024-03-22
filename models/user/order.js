@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {format} = require('date-fns')
    
 
         const order = new mongoose.Schema({
@@ -8,7 +9,7 @@ const mongoose = require('mongoose');
             },
             userId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
+                ref: 'user',
                 required: true
             },
             date: {
@@ -76,6 +77,11 @@ const mongoose = require('mongoose');
                 required:false,
             }
         });
+
+
+        order.methods.formateDate = function () {
+            return format(this.date, 'dd-MM-yyyy')
+        }
 
 
         module.exports = mongoose.model('Order',order);

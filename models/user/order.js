@@ -71,8 +71,14 @@ const {format} = require('date-fns')
                 type:Number,
                 default:0,
             },
+            paymentStatus:{
+                type:String,
+                default:"pending",
+                required:false,
+
+            },
             isOrderPlaced:{
-                type:Boolean,
+                type:String,
                 default:false,
                 required:false,
             }
@@ -82,6 +88,11 @@ const {format} = require('date-fns')
         order.methods.formateDate = function () {
             return format(this.date, 'dd-MM-yyyy')
         }
+        order.pre("save", function(next){
+            const randomNum = Math.floor(100000 +Math.random()* 90000)
+            this.orderID=`ORD${randomNum}`;
+            next()
+        })
 
 
         module.exports = mongoose.model('Order',order);

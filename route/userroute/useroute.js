@@ -9,6 +9,7 @@ const wishlist = require("../../controller/usercontroller/shopwishlist")
 const shopCart = require("../../controller/usercontroller/shop-cart")
 const checkout = require("../../controller/usercontroller/checkout");
 const rating= require("../../controller/usercontroller/ratingscontroller")
+const walletController = require("../../controller/usercontroller/wallet")
 
 userrouter.use(express.static("public"));
 
@@ -50,6 +51,7 @@ userrouter.get("/updatePriceToCart",shopCart.updatePriceToCart)
 
 
 userrouter.get("/checkout",checkout.checkout)
+userrouter.get("/paymentStatus",checkout.paymentStatus)
 userrouter.post("/welcomePage",checkout.welcomePage)
 
 
@@ -57,11 +59,8 @@ userrouter.get("/shop-wishlist",wishlist.shopWishlist)
 
 userrouter.post("/addratings",rating.addratings)
 userrouter.get("/ratings",rating.loadratings)
-
-
-
-
-
+userrouter.get("/wallet",walletController.walletPage)
+userrouter.get("/addtoWallet",walletController.addToWallet)
 
 
 

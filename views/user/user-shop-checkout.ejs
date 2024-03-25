@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>Evara - eCommerce HTML Template</title>
@@ -21,32 +22,36 @@
 
 <body>
     <%-include("./partials/header")%>
-</div>
-</div>
-</div>
+        </div>
+        </div>
+        </div>
 
-    
-    <main class="main">
-        <div class="page-header breadcrumb-wrap">
-            <div class="container">
-                <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
-                    <span></span> Shop
-                    <span></span> Checkout
+
+        <main class="main">
+            <div class="page-header breadcrumb-wrap">
+                <div class="container">
+                    <div class="breadcrumb">
+                        <a href="index.html" rel="nofollow">Home</a>
+                        <span></span> Shop
+                        <span></span> Checkout
+                    </div>
                 </div>
             </div>
-        </div>
-        <section class="mt-50 mb-50">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 mb-sm-15">
-                        <div class="toggle_info">
-                            <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an account?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to login</a></span>
-                        </div>
-                        <div class="panel-collapse collapse login_form" id="loginform">
-                            <div class="panel-body">
-                                <p class="mb-30 font-sm">If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing &amp; Shipping section.</p>
-                                
+            <section class="mt-50 mb-50">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 mb-sm-15">
+                            <div class="toggle_info">
+                                <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an
+                                        account?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed"
+                                        aria-expanded="false">Click here to login</a></span>
+                            </div>
+                            <div class="panel-collapse collapse login_form" id="loginform">
+                                <div class="panel-body">
+                                    <p class="mb-30 font-sm">If you have shopped with us before, please enter your
+                                        details below. If you are a new customer, please proceed to the Billing &amp;
+                                        Shipping section.</p>
+
                                     <div class="form-group">
                                         <input type="text" name="email" placeholder="Username Or Email">
                                     </div>
@@ -56,8 +61,10 @@
                                     <div class="login_footer form-group">
                                         <div class="chek-form">
                                             <div class="custome-checkbox">
-                                                <input class="form-check-input" type="checkbox" name="checkbox" id="remember" value="">
-                                                <label class="form-check-label" for="remember"><span>Remember me</span></label>
+                                                <input class="form-check-input" type="checkbox" name="checkbox"
+                                                    id="remember" value="">
+                                                <label class="form-check-label" for="remember"><span>Remember
+                                                        me</span></label>
                                             </div>
                                         </div>
                                         <a href="#">Forgot password?</a>
@@ -65,18 +72,20 @@
                                     <div class="form-group">
                                         <button class="btn btn-md" name="login">Log in</button>
                                     </div>
-                               
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="toggle_info">
-                            <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
-                        </div>
-                        <div class="panel-collapse collapse coupon_form " id="coupon">
-                            <div class="panel-body">
-                                <!-- <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p> -->
-                                <!-- <form method="post">
+                        <div class="col-lg-6">
+                            <div class="toggle_info">
+                                <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
+                                        href="#coupon" data-bs-toggle="collapse" class="collapsed"
+                                        aria-expanded="false">Click here to enter your code</a></span>
+                            </div>
+                            <div class="panel-collapse collapse coupon_form " id="coupon">
+                                <div class="panel-body">
+                                    <!-- <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p> -->
+                                    <!-- <form method="post">
                                     <div class="form-group">
                                         <input type="text" placeholder="Enter Coupon Code...">
                                     </div>
@@ -84,458 +93,569 @@
                                         <button class="btn  btn-md" name="login">Apply Coupon</button>
                                     </div>
                                 </form> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="divider mt-50 mb-50"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-25">
-                            <h4>Billing Details</h4>
-                        </div>
-             <form method="post" action="/welcomePage"  onsubmit="return validateForm()">
-                <% if (typeof userDetails?.Address === "undefined" || userDetails?.Address === null || userDetails?.Address.length < 0) { %>
-
-                    <div class="col-lg-12">
-                        <div class="card mb-0 mb-lg-0 containerheader">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0">Add Address</h5>
-                            </div>
-                            <div class="card-body">
-                                <!-- <address><br>
-        Sarasota, <br>FL 34249 USA <br>Phone: 1.941.227.4444</address> -->
-                                <!-- <p>Sarasota</p> -->
-                                <div
-                                    class="align-items-center text-center ">
-                                    <span
-                                        class="fa fa-plus-circle f5 text-center p-4 mb-2"
-                                        style="cursor: pointer; font-size: 100px;"
-                                        onclick="addAddress()"></span>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="divider mt-50 mb-50"></div>
+                        </div>
                     </div>
-                    
-                <% } %>
-                <script>
-                    async function addAddress() {
-                        const result = await Swal.fire({
-                            title: "Enter  Address",
-                            html:
-                                '<input id="houseName" class="swal2-input" placeholder="House Name">' +
-                                '<input id="streetName" class="swal2-input" placeholder="Street Name">' +
-                                '<input id="city" class="swal2-input" placeholder="City">' +
-                                '<input id="state" class="swal2-input" placeholder="State">',
-                            showCancelButton: true,
-                            confirmButtonText: 'Submit',
-                            cancelButtonText: 'Cancel',
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-25">
+                                <h4>Billing Details</h4>
+                            </div>
+                            <form method="post" action="/welcomePage">
+                                <% if (typeof userDetails?.Address==="undefined" || userDetails?.Address===null ||
+                                    userDetails?.Address.length < 0) { %>
 
-
-                            preConfirm: () => {
-                                return {
-                                    houseName: document.getElementById('houseName').value,
-                                    streetName: document.getElementById('streetName').value,
-                                    city: document.getElementById('city').value,
-                                    state: document.getElementById('state').value
-                                }
-                            }
-
-
-                        })
-
-                        if (result.isConfirmed) {
-                            const address = result.value;
-                            console.log(address)
-                            console.log(address.city)
-
-
-                            try {
-
-
-                                const response = await fetch(`/addAddress`, {
-                                    method: "POST",
-                                    headers: {
-
-                                        "content-Type": "application/json"
-                                    },
-                                    body: JSON.stringify({ address })
-                                })
-
-                                if (!response) {
-                                    throw new Error("internal server Error")
-                                }
-                                const data = await response.json({})
-                                window.location.reload();
-
-                            } catch (error) {
-
-                            }
-
-
-                        }
-                    }
-
-
-
-                </script>
-                
-                            <% if(typeof userDetails?.Address !== "undefined") {%>
-
-                                <% for(let i=0; i<userDetails?.Address.length; i++) {%>
                                     <div class="col-lg-12">
                                         <div class="card mb-0 mb-lg-0 containerheader">
-                                            <div class="card-header">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <h5 class="mb-0">Address</h5>
-                                                    <div class="form-check form-check-round">
-                                                        <input class="form-check-input" type="radio" id="addressRadio<%= i %>" name="selectedAddress" value="<%= i %>" <%= userDetails?.Address[i].status == true  ? 'checked' : '' %> onclick="updateAddressStatus(<%= i %>)">
-                                                        <!-- <div class="product-delete-button position-absolute bottom-0 start-50 translate-middle-x mb-1  col-lg-12" id="deleteContainer<%= i %>"> 
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5 class="mb-0">Add Address</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <!-- <address><br>
+        Sarasota, <br>FL 34249 USA <br>Phone: 1.941.227.4444</address> -->
+                                                    <!-- <p>Sarasota</p> -->
+                                                    <div class="align-items-center text-center ">
+                                                        <span class="fa fa-plus-circle f5 text-center p-4 mb-2"
+                                                            style="cursor: pointer; font-size: 100px;"
+                                                            onclick="addAddress()"></span>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <% } %>
+                                        <script>
+                                            async function addAddress() {
+                                                const result = await Swal.fire({
+                                                    title: "Enter  Address",
+                                                    html:
+                                                        '<input id="houseName" class="swal2-input" placeholder="House Name">' +
+                                                        '<input id="streetName" class="swal2-input" placeholder="Street Name">' +
+                                                        '<input id="city" class="swal2-input" placeholder="City">' +
+                                                        '<input id="state" class="swal2-input" placeholder="State">',
+                                                    showCancelButton: true,
+                                                    confirmButtonText: 'Submit',
+                                                    cancelButtonText: 'Cancel',
+
+
+                                                    preConfirm: () => {
+                                                        return {
+                                                            houseName: document.getElementById('houseName').value,
+                                                            streetName: document.getElementById('streetName').value,
+                                                            city: document.getElementById('city').value,
+                                                            state: document.getElementById('state').value
+                                                        }
+                                                    }
+
+
+                                                })
+
+                                                if (result.isConfirmed) {
+                                                    const address = result.value;
+                                                    console.log(address)
+                                                    console.log(address.city)
+
+
+                                                    try {
+
+
+                                                        const response = await fetch(`/addAddress`, {
+                                                            method: "POST",
+                                                            headers: {
+
+                                                                "content-Type": "application/json"
+                                                            },
+                                                            body: JSON.stringify({ address })
+                                                        })
+
+                                                        if (!response) {
+                                                            throw new Error("internal server Error")
+                                                        }
+                                                        const data = await response.json({})
+                                                        window.location.reload();
+
+                                                    } catch (error) {
+
+                                                    }
+
+
+                                                }
+                                            }
+
+
+
+                                        </script>
+
+                                        <% if(typeof userDetails?.Address !=="undefined" ) {%>
+
+                                            <% for(let i=0; i<userDetails?.Address.length; i++) {%>
+                                                <div class="col-lg-12">
+                                                    <div class="card mb-0 mb-lg-0 containerheader">
+                                                        <div class="card-header">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <h5 class="mb-0">Address</h5>
+                                                                <div class="form-check form-check-round">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        id="addressRadio<%= i %>" name="selectedAddress"
+                                                                        value="<%= i %>"
+                                                                        <%=userDetails?.Address[i].status==true
+                                                                        ? 'checked' : '' %>
+                                                                    onclick="updateAddressStatus(<%= i %>)">
+                                                                        <!-- <div class="product-delete-button position-absolute bottom-0 start-50 translate-middle-x mb-1  col-lg-12" id="deleteContainer<%= i %>"> 
                                                             <button class="btn btn-primary delete-btn d-none" style="font-size: 12px; line-height: 1; max-width: 100%" onclick="deleteAddress()" data-index="<%= userDetails?.Address[i]?._id %>" >
                                                                 <i class="fas fa-trash text-sm " style="font-size: 8px;"></i> 
                                                                 delete
                                                             </button>
                                                         </div> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <address>
+                                                                <%= userDetails?.Address[i]?.housename %><br>
+                                                                    <%= userDetails?.Address[i]?.Street%><br>
+                                                                        <%= userDetails?.Address[i]?.City %> <br>
+                                                                            <%= userDetails?.Address[i]?.State %>
+                                                            </address>
+                                                            <p> India </p>
+                                                            <a class="btn-small editButton"
+                                                                onclick="editAddress(event)">Edit</a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>                                              
-                                            <div class="card-body">
-                                                <address><%= userDetails?.Address[i]?.housename %><br><%= userDetails?.Address[i]?.Street%><br> <%=  userDetails?.Address[i]?.City %> <br><%= userDetails?.Address[i]?.State %></address>
-                                                <p> India </p>
-                                                <a  class="btn-small editButton" onclick="editAddress(event)">Edit</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <% } %>
-                                <% } %>
-                                <script>
-                                    async function updateAddressStatus(index) {
-                                        console.log(index);
+                                                <% } %>
+                                                    <% } %>
+                                                        <script>
+                                                            async function updateAddressStatus(index) {
+                                                                console.log(index);
 
-                                        try {
-                                            const response = await fetch(`/updateAddressStatus?index=${index}`, {
-                                                method: "GET"
-                                            });
+                                                                try {
+                                                                    const response = await fetch(`/updateAddressStatus?index=${index}`, {
+                                                                        method: "GET"
+                                                                    });
 
-                                            if (!response.ok) {
-                                                throw new Error("Internal server error");
-                                            }
+                                                                    if (!response.ok) {
+                                                                        throw new Error("Internal server error");
+                                                                    }
 
-                                            const data = await response.json();
-                                            console.log(data);
-                                            window.location.reload()
-                                        } catch (error) {
-                                            console.error(error.message); // Log any errors that occur during the fetch request
-                                        }
-                                    }
-                                </script>
-                           
-                        
-                        <script>
-                            function editAddress(event) {
-                            event.preventDefault();
-                            window.location.href = "/myAccount#address";
-                         }
-                            </script>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="order_review">
-                            <div class="mb-20">
-                                <h4>Your Orders</h4>
-                            </div>
-                            <div class="table-responsive order_table text-center">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="2">Product</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% CartDetail.items.forEach((item)=>{ %>
+                                                                    const data = await response.json();
+                                                                    console.log(data);
+                                                                    window.location.reload()
+                                                                } catch (error) {
+                                                                    console.error(error.message); // Log any errors that occur during the fetch request
+                                                                }
+                                                            }
+                                                        </script>
 
-                                            
-                                        <tr>
-                                           
-                                            <td class=" image-container position-relative image product-thumbnail"><img src="/temp/<%= item.product.images[0]%>" alt="#">
-                                            
-                                            <button type="button" class="btn btn-primary delete-btn position-absolute top-100  start-50 translate-middle d-none " style="font-size: 12px; line-height: 1;" data-toggle="tooltip" title="Delete">
-                                                <i class="fas fa-trash text-sm" style="font-size: 8px;" data-value="<%= item.product._id %>" data-size="<%= item.size %>"></i> delete
-                                            </button>
-                                            </td>
-                                            <td>
 
-                                                <h5><a href="shop-product-full.html"><%= item.product.productname %></a></h5> <span class="product-qty">x <%= item.quantity%></span>
-                                                <h5><a href="shop-product-full.html"> Size  :<%= item.size %></a></h5>
-                                            </td>
-                                            <td><%= item.price%></td>
-                                        </tr>
-                                        <%})%>
+                                                        <script>
+                                                            function editAddress(event) {
+                                                                event.preventDefault();
+                                                                window.location.href = "/myAccount#address";
+                                                            }
+                                                        </script>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="order_review">
+                                <div class="mb-20">
+                                    <h4>Your Orders</h4>
+                                </div>
+                                <div class="table-responsive order_table text-center">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">Product</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% CartDetail.items.forEach((item)=>{ %>
 
-                                    </tbody>
-                                </table>
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", function() {
-                                    const imageContainer = document.querySelectorAll(".image-container")
-                                        imageContainer.forEach((container)=>{
-                                            const deleteBtn = container.querySelector(".delete-btn");
 
-                                            container.addEventListener("mouseenter", function() {
-                                                deleteBtn.classList.remove("d-none");
-                                                const dataValue = deleteBtn.querySelector("i").getAttribute("data-value");
-                                                const dataSize = deleteBtn.querySelector("i").getAttribute("data-size");
-                                                console.log(dataValue);
-                                                console.log(dataSize);
-                                                console.log("this is the size");
-                                                deleteBtn.addEventListener("click", async function(){
+                                                <tr>
 
-                                                    const response = await fetch(`/deleteFromCart?itemId=${dataValue}&size=${dataSize}`,{
-                                                        method: "GET",
+                                                    <td
+                                                        class=" image-container position-relative image product-thumbnail">
+                                                        <img src="/temp/<%= item.product.images[0]%>" alt="#">
+
+                                                        <button type="button"
+                                                            class="btn btn-primary delete-btn position-absolute top-100  start-50 translate-middle d-none "
+                                                            style="font-size: 12px; line-height: 1;"
+                                                            data-toggle="tooltip" title="Delete">
+                                                            <i class="fas fa-trash text-sm" style="font-size: 8px;"
+                                                                data-value="<%= item.product._id %>"
+                                                                data-size="<%= item.size %>"></i> delete
+                                                        </button>
+                                                    </td>
+                                                    <td>
+
+                                                        <h5><a href="shop-product-full.html">
+                                                                <%= item.product.productname %>
+                                                            </a></h5> <span class="product-qty">x <%= item.quantity%>
+                                                                </span>
+                                                        <h5><a href="shop-product-full.html"> Size :<%= item.size %></a>
+                                                        </h5>
+                                                    </td>
+                                                    <td>
+                                                        <%= item.price%>
+                                                    </td>
+                                                </tr>
+                                                <%})%>
+
+                                        </tbody>
+                                    </table>
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const imageContainer = document.querySelectorAll(".image-container")
+                                            imageContainer.forEach((container) => {
+                                                const deleteBtn = container.querySelector(".delete-btn");
+
+                                                container.addEventListener("mouseenter", function () {
+                                                    deleteBtn.classList.remove("d-none");
+                                                    const dataValue = deleteBtn.querySelector("i").getAttribute("data-value");
+                                                    const dataSize = deleteBtn.querySelector("i").getAttribute("data-size");
+                                                    console.log(dataValue);
+                                                    console.log(dataSize);
+                                                    console.log("this is the size");
+                                                    deleteBtn.addEventListener("click", async function () {
+
+                                                        const response = await fetch(`/deleteFromCart?itemId=${dataValue}&size=${dataSize}`, {
+                                                            method: "GET",
+                                                        })
+                                                        if (!response) {
+                                                            throw new Error("internal server Error")
+                                                        }
+                                                        const data = await response.json()
+                                                        console.log(data);
+                                                        window.location.reload()
+
                                                     })
-                                                    if(!response){
-                                                        throw new Error("internal server Error")
-                                                    }
-                                                    const data = await response.json()
-                                                    console.log(data);
-                                                    window.location.reload()
+                                                })
+                                                container.addEventListener("mouseleave", function () {
+                                                    deleteBtn.classList.add("d-none")
 
                                                 })
                                             })
-                                            container.addEventListener("mouseleave", function() {
-                                            deleteBtn.classList.add("d-none")
 
                                         })
-                                    })
-
-                                })
 
                                     </script>
 
-                            </div>
-                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
-                            <div class="payment_method">
-                                <div class="mb-25">
-                                    <h5>Payment</h5>
                                 </div>
-                                <div class="payment_option">
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="" value="Direct Bank Transfer">
-                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Direct Bank Transfer</label>
-                                        <div class="form-group collapse in" id="bankTranfer">
-                                            <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>
-                                        </div>
+                                <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                <div class="payment_method">
+                                    <div class="mb-25">
+                                        <h5>Payment</h5>
                                     </div>
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios6" checked="" value="Cash on delivery">
-                                        <label class="form-check-label" for="exampleRadios6" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Cash on Delivery</label>
-                                        <div class="form-group collapse in" id="CashDelivery">
-                                            <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>
+                                    <div class="payment_option">
+                                        <div class="custome-radio">
+                                            <input class="form-check-input" required="" type="radio"
+                                                name="payment_option" id="exampleRadios3" checked=""
+                                                value="Direct Bank Transfer">
+                                            <label class="form-check-label" for="exampleRadios3"
+                                                data-bs-toggle="collapse" data-target="#bankTranfer"
+                                                aria-controls="bankTranfer">Direct Bank Transfer</label>
+                                            <div class="form-group collapse in" id="bankTranfer">
+                                                <p class="text-muted mt-5">There are many variations of passages of
+                                                    Lorem Ipsum available, but the majority have suffered alteration.
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- <div class="custome-radio">
+                                        <div class="custome-radio">
+                                            <input class="form-check-input" required="" type="radio"
+                                                name="payment_option" id="exampleRadios6" checked=""
+                                                value="Cash on delivery">
+                                            <label class="form-check-label" for="exampleRadios6"
+                                                data-bs-toggle="collapse" data-target="#bankTranfer"
+                                                aria-controls="bankTranfer">Cash on Delivery</label>
+                                            <div class="form-group collapse in" id="CashDelivery">
+                                                <p class="text-muted mt-5">There are many variations of passages of
+                                                    Lorem Ipsum available, but the majority have suffered alteration.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="custome-radio">
                                         <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="" value="Paypal">
                                         <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Check Payment</label>
                                         <div class="form-group collapse in" id="checkPayment">
                                             <p class="text-muted mt-5">Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
                                         </div>
                                     </div> -->
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" checked="" value="Paypal">
-                                        <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Paypal</label>
-                                        <div class="form-group collapse in" id="paypal">
-                                            <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
+                                        <div class="custome-radio">
+                                            <input class="form-check-input" required="" type="radio"
+                                                name="payment_option" id="exampleRadios5" checked="" value="RazorPay">
+                                            <label class="form-check-label" for="exampleRadios5"
+                                                data-bs-toggle="collapse" data-target="#paypal"
+                                                aria-controls="paypal">RazorPay</label>
+                                            <div class="form-group collapse in" id="paypal">
+                                                <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit
+                                                    card if you don't have a PayPal account.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <a class="btn btn-fill-out btn-block mt-30 f-flex-end w-100 text-white bg-dark rounded col-6"
+                                            value="<%= CartDetail.totalprice %>" name="totalprice">
+                                            <%= CartDetail.totalprice %>
+                                        </a>
+                                    </div>
+                                    <div>
+
+                                        <button type="button" id="placeholderButton" class="btn btn-fill-out btn-block mt-30 f-flex-end "
+                                            onclick="validateForm()">PLACE ORDER </button>
+
+                                    </div>
+                                </div>
+                                </form>
+                                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                                <script>
+                                    async function validateForm() {
+    console.log("function clicked")
+    var selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+    if (!selectedAddress) {
+        Swal.fire({
+            icon: "warning",
+            title: "please select the address"
+        })
+        return false;
+    }
+    console.log("address Selected");
+    var paymentMethod = document.querySelector('input[name="payment_option"]:checked');
+    console.log('paymentMethod.value=========', paymentMethod.value);
+    if (paymentMethod.value == "RazorPay") {
+        console.log("razor is working")
+
+        const response = await fetch("/welcomePage", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                paymentMethod: paymentMethod.value,
+                selectedAddress: selectedAddress.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => { 
+            var options = {
+                "key": "rzp_test_ihsNz6lracNIu3", 
+                "amount": data.order.amount, 
+                "currency": "INR",
+                "name": "Karnen Corp",
+                "description": "Test Transaction",
+                "image": "https://example.com/your_logo",
+                "order_id": data.order.order_id, 
+                "handler": async (responseHandler) => {
+
+                    
+                    
+                    const responseStatus = await fetch(`/paymentStatus?status=${'PaymentRecieved'}&orderId=${data.trueorderId}`, {
+                        method: "GET",
+                    });
+                    if (!responseStatus) {
+                        throw new Error("Internal server Error");
+                    }
+                    const orderRespone = await responseStatus.json();
+                    console.log(orderRespone.data);
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.on('payment.failed', async (responseFailed) => {
+                const responseStatus = await fetch(`/paymentStatus?status=${'PaymentFailed'}&orderId=${data.trueorderId}`, {
+                    method: "GET",
+                });
+                if (!responseStatus) {
+                    throw new Error("Internal server Error");
+                }
+                const paymentFailed = await responseStatus.json();
+                console.log(paymentFailed);
+            });
+            rzp1.open();
+        });
+    }   
+    return true;
+}
+
+
+
+                                </script>
                             </div>
-                                                    <div class="d-flex justify-content-between">
-                                        <div >
-                            <a class="btn btn-fill-out btn-block mt-30 f-flex-end w-100 text-white bg-dark rounded col-6" value="<%= CartDetail.totalprice %>" name="totalprice"> <%= CartDetail.totalprice %></a>
-                                                </div>
-                                        <div>
-
-                            <button type="submit" class="btn btn-fill-out btn-block mt-30 f-flex-end ">PLACE ORDER </button>
-
-                                        </div>
-                                                            </div>
-                     </form>
-                     <script>
-                        function validateForm(){
-                            var selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
-                            if (!selectedAddress) {
-                                Swal.fire({
-                                    icon:"warning",
-                                    title:"please select the address"
-                                })
-                                return false; 
-                            }
-                            return true; 
-
-                        }
-
-                        
-                        </script>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
-    <footer class="main">
-        <section class="newsletter p-30 text-white wow fadeIn animated">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-7 mb-md-3 mb-lg-0">
-                        <div class="row align-items-center">
-                            <div class="col flex-horizontal-center">
-                                <img class="icon-email" src="/assets/imgs/theme/icons/icon-email.svg" alt="">
-                                <h4 class="font-size-20 mb-0 ml-3">Sign up to Newsletter</h4>
-                            </div>
-                            <div class="col my-4 my-md-0 des">
-                                <h5 class="font-size-15 ml-4 mb-0">...and receive <strong>$25 coupon for first shopping.</strong></h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-5">
-                        <!-- Subscribe Form -->
-                       
-                        <!-- End Subscribe Form -->
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="section-padding footer-mid">
-            <div class="container pt-15 pb-20">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="widget-about font-md mb-md-5 mb-lg-0">
-                            <div class="logo logo-width-1 wow fadeIn animated">
-                                <a href="index.html"><img src="https://www.thesouledstore.com/static/img/newlogo.8dcc6cc.png" alt="logo"></a>
-                            </div>
-                            <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
-                            <p class="wow fadeIn animated">
-                                <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
-                            </p>
-                            <p class="wow fadeIn animated">
-                                <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
-                            </p>
-                            <p class="wow fadeIn animated">
-                                <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
-                            </p>
-                            <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
-                            <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
-                                <a href="#"><img src="/assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
-                                <a href="#"><img src="/assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
-                                <a href="#"><img src="/assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
-                                <a href="#"><img src="/assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
-                                <a href="#"><img src="/assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3">
-                        <h5 class="widget-title wow fadeIn animated">About</h5>
-                        <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Delivery Information</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms &amp; Conditions</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Support Center</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-2  col-md-3">
-                        <h5 class="widget-title wow fadeIn animated">My Account</h5>
-                        <ul class="footer-list wow fadeIn animated">
-                            <li><a href="#">Sign In</a></li>
-                            <li><a href="#">View Cart</a></li>
-                            <li><a href="#">My Wishlist</a></li>
-                            <li><a href="#">Track My Order</a></li>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">Order</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4">
-                        <h5 class="widget-title wow fadeIn animated">Install App</h5>
-                        <div class="row">
-                            <div class="col-md-8 col-lg-12">
-                                <p class="wow fadeIn animated">From App Store or Google Play</p>
-                                <div class="download-app wow fadeIn animated">
-                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="/assets/imgs/theme/app-store.jpg" alt=""></a>
-                                    <a href="#" class="hover-up"><img src="/assets/imgs/theme/google-play.jpg" alt=""></a>
+            </section>
+        </main>
+        <footer class="main">
+            <section class="newsletter p-30 text-white wow fadeIn animated">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7 mb-md-3 mb-lg-0">
+                            <div class="row align-items-center">
+                                <div class="col flex-horizontal-center">
+                                    <img class="icon-email" src="/assets/imgs/theme/icons/icon-email.svg" alt="">
+                                    <h4 class="font-size-20 mb-0 ml-3">Sign up to Newsletter</h4>
+                                </div>
+                                <div class="col my-4 my-md-0 des">
+                                    <h5 class="font-size-15 ml-4 mb-0">...and receive <strong>$25 coupon for first
+                                            shopping.</strong></h5>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
-                                <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
-                                <img class="wow fadeIn animated" src="/assets/imgs/theme/payment-method.png" alt="">
+                        </div>
+                        <div class="col-lg-5">
+                            <!-- Subscribe Form -->
+
+                            <!-- End Subscribe Form -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section-padding footer-mid">
+                <div class="container pt-15 pb-20">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="widget-about font-md mb-md-5 mb-lg-0">
+                                <div class="logo logo-width-1 wow fadeIn animated">
+                                    <a href="index.html"><img
+                                            src="https://www.thesouledstore.com/static/img/newlogo.8dcc6cc.png"
+                                            alt="logo"></a>
+                                </div>
+                                <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
+                                <p class="wow fadeIn animated">
+                                    <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
+                                </p>
+                                <p class="wow fadeIn animated">
+                                    <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
+                                </p>
+                                <p class="wow fadeIn animated">
+                                    <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
+                                </p>
+                                <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
+                                <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
+                                    <a href="#"><img src="/assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                    <a href="#"><img src="/assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                    <a href="#"><img src="/assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                    <a href="#"><img src="/assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                    <a href="#"><img src="/assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3">
+                            <h5 class="widget-title wow fadeIn animated">About</h5>
+                            <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Delivery Information</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Terms &amp; Conditions</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="#">Support Center</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-2  col-md-3">
+                            <h5 class="widget-title wow fadeIn animated">My Account</h5>
+                            <ul class="footer-list wow fadeIn animated">
+                                <li><a href="#">Sign In</a></li>
+                                <li><a href="#">View Cart</a></li>
+                                <li><a href="#">My Wishlist</a></li>
+                                <li><a href="#">Track My Order</a></li>
+                                <li><a href="#">Help</a></li>
+                                <li><a href="#">Order</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5 class="widget-title wow fadeIn animated">Install App</h5>
+                            <div class="row">
+                                <div class="col-md-8 col-lg-12">
+                                    <p class="wow fadeIn animated">From App Store or Google Play</p>
+                                    <div class="download-app wow fadeIn animated">
+                                        <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active"
+                                                src="/assets/imgs/theme/app-store.jpg" alt=""></a>
+                                        <a href="#" class="hover-up"><img src="/assets/imgs/theme/google-play.jpg"
+                                                alt=""></a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
+                                    <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
+                                    <img class="wow fadeIn animated" src="/assets/imgs/theme/payment-method.png" alt="">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </section>
+            <div class="container pb-20 wow fadeIn animated">
+                <div class="row">
+                    <div class="col-12 mb-20">
+                        <div class="footer-bottom"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong
+                                class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="text-lg-end text-start font-sm text-muted mb-0">
+                            Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights
+                            reserved
+                        </p>
+                    </div>
+                </div>
             </div>
-        </section>
-        <div class="container pb-20 wow fadeIn animated">
-            <div class="row">
-                <div class="col-12 mb-20">
-                    <div class="footer-bottom"></div>
-                </div>
-                <div class="col-lg-6">
-                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
-                </div>
-                <div class="col-lg-6">
-                    <p class="text-lg-end text-start font-sm text-muted mb-0">
-                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights reserved
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Preloader Start -->
-    <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="text-center">
-                    <h5 class="mb-5">Now Loading</h5>
-                    <div class="loader">
-                        <div class="bar bar1"></div>
-                        <div class="bar bar2"></div>
-                        <div class="bar bar3"></div>
+        </footer>
+        <!-- Preloader Start -->
+        <div id="preloader-active">
+            <div class="preloader d-flex align-items-center justify-content-center">
+                <div class="preloader-inner position-relative">
+                    <div class="text-center">
+                        <h5 class="mb-5">Now Loading</h5>
+                        <div class="loader">
+                            <div class="bar bar1"></div>
+                            <div class="bar bar2"></div>
+                            <div class="bar bar3"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Vendor JS-->
-    <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
-    <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
-    <script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
-    <script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
-    <script src="/assets/js/plugins/slick.js"></script>
-    <script src="/assets/js/plugins/jquery.syotimer.min.js"></script>
-    <script src="/assets/js/plugins/wow.js"></script>
-    <script src="/assets/js/plugins/jquery-ui.js"></script>
-    <script src="/assets/js/plugins/perfect-scrollbar.js"></script>
-    <script src="/assets/js/plugins/magnific-popup.js"></script>
-    <script src="/assets/js/plugins/select2.min.js"></script>
-    <script src="/assets/js/plugins/waypoints.js"></script>
-    <script src="/assets/js/plugins/counterup.js"></script>
-    <script src="/assets/js/plugins/jquery.countdown.min.js"></script>
-    <script src="/assets/js/plugins/images-loaded.js"></script>
-    <script src="/assets/js/plugins/isotope.js"></script>
-    <script src="/assets/js/plugins/scrollup.js"></script>
-    <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
-    <!-- Template  JS -->
-    <script src="/assets/js/maind134.js?v=3.4"></script>
-    <script src="/assets/js/shopd134.js?v=3.4"></script>
+        <!-- Vendor JS-->
+        <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+        <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
+        <script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+        <script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
+        <script src="/assets/js/plugins/slick.js"></script>
+        <script src="/assets/js/plugins/jquery.syotimer.min.js"></script>
+        <script src="/assets/js/plugins/wow.js"></script>
+        <script src="/assets/js/plugins/jquery-ui.js"></script>
+        <script src="/assets/js/plugins/perfect-scrollbar.js"></script>
+        <script src="/assets/js/plugins/magnific-popup.js"></script>
+        <script src="/assets/js/plugins/select2.min.js"></script>
+        <script src="/assets/js/plugins/waypoints.js"></script>
+        <script src="/assets/js/plugins/counterup.js"></script>
+        <script src="/assets/js/plugins/jquery.countdown.min.js"></script>
+        <script src="/assets/js/plugins/images-loaded.js"></script>
+        <script src="/assets/js/plugins/isotope.js"></script>
+        <script src="/assets/js/plugins/scrollup.js"></script>
+        <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
+        <!-- Template  JS -->
+        <script src="/assets/js/maind134.js?v=3.4"></script>
+        <script src="/assets/js/shopd134.js?v=3.4"></script>
 </body>
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
+
 </html>

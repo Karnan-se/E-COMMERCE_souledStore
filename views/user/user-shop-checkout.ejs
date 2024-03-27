@@ -362,11 +362,11 @@
                                         <div class="custome-radio">
                                             <input class="form-check-input" required="" type="radio"
                                                 name="payment_option" id="exampleRadios3" checked=""
-                                                value="Direct Bank Transfer">
+                                                value="Wallet">
                                             <label class="form-check-label" for="exampleRadios3"
-                                                data-bs-toggle="collapse" data-target="#bankTranfer"
-                                                aria-controls="bankTranfer">Direct Bank Transfer</label>
-                                            <div class="form-group collapse in" id="bankTranfer">
+                                                data-bs-toggle="collapse" data-target="#wallet"
+                                                aria-controls="wallet">Wallet</label>
+                                            <div class="form-group collapse in" id="wallet">
                                                 <p class="text-muted mt-5">There are many variations of passages of
                                                     Lorem Ipsum available, but the majority have suffered alteration.
                                                 </p>
@@ -408,7 +408,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <a class="btn btn-fill-out btn-block mt-30 f-flex-end w-100 text-white bg-dark rounded col-6"
-                                            value="<%= CartDetail.totalprice %>" name="totalprice">
+                                            value="<%= CartDetail.totalprice %>" name="totalprice" id="totalprice">
                                             <%= CartDetail.totalprice %>
                                         </a>
                                     </div>
@@ -420,81 +420,175 @@
                                     </div>
                                 </div>
                                 </form>
+
+
+
+                              
+<!-- jQuery CDN -->
+
+
+                                <!-- Modal -->
+                  
+
+
+
                                 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
                                 <script>
-                                    async function validateForm() {
-    console.log("function clicked")
-    var selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
-    if (!selectedAddress) {
-        Swal.fire({
-            icon: "warning",
-            title: "please select the address"
-        })
-        return false;
-    }
-    console.log("address Selected");
-    var paymentMethod = document.querySelector('input[name="payment_option"]:checked');
-    console.log('paymentMethod.value=========', paymentMethod.value);
-    if (paymentMethod.value == "RazorPay") {
-        console.log("razor is working")
-
-        const response = await fetch("/welcomePage", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                paymentMethod: paymentMethod.value,
-                selectedAddress: selectedAddress.value
-            })
-        })
-        .then(response => response.json())
-        .then(data => { 
-            var options = {
-                "key": "rzp_test_ihsNz6lracNIu3", 
-                "amount": data.order.amount, 
-                "currency": "INR",
-                "name": "Karnen Corp",
-                "description": "Test Transaction",
-                "image": "https://example.com/your_logo",
-                "order_id": data.order.order_id, 
-                "handler": async (responseHandler) => {
-
-                    
-                    
-                    const responseStatus = await fetch(`/paymentStatus?status=${'PaymentRecieved'}&orderId=${data.trueorderId}`, {
-                        method: "GET",
-                    });
-                    if (!responseStatus) {
-                        throw new Error("Internal server Error");
-                    }
-                    const orderRespone = await responseStatus.json();
-                    console.log(orderRespone.data);
-                },
-                "theme": {
-                    "color": "#3399cc"
-                }
-            };
-            var rzp1 = new Razorpay(options);
-            rzp1.on('payment.failed', async (responseFailed) => {
-                const responseStatus = await fetch(`/paymentStatus?status=${'PaymentFailed'}&orderId=${data.trueorderId}`, {
-                    method: "GET",
-                });
-                if (!responseStatus) {
-                    throw new Error("Internal server Error");
-                }
-                const paymentFailed = await responseStatus.json();
-                console.log(paymentFailed);
-            });
-            rzp1.open();
-        });
-    }   
-    return true;
-}
-
-
-
+                                async function validateForm() {
+                                    console.log("function clicked");
+                                    var selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+                                    if (!selectedAddress) {
+                                        Swal.fire({
+                                            icon: "warning",
+                                            title: "Please select the address"
+                                        });
+                                        return false;
+                                    }
+                                    console.log("address Selected");
+                                    var paymentMethod = document.querySelector('input[name="payment_option"]:checked');
+                                    console.log('paymentMethod.value=========', paymentMethod.value);
+                                    if (paymentMethod.value == "RazorPay") {
+                                        console.log("razor is working");
+                                
+                                        const response = await fetch("/welcomePage", {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json"
+                                            },
+                                            body: JSON.stringify({
+                                                paymentMethod: paymentMethod.value,
+                                                selectedAddress: selectedAddress.value
+                                            })
+                                        });
+                                        if (!response) {
+                                            throw new Error("Internal Server Error");
+                                        }
+                                        const data = await response.json();
+                                        console.log(data);
+                                
+                                        var options = {
+                                            "key": "rzp_test_ihsNz6lracNIu3",
+                                            "amount": data.order.amount,
+                                            "currency": "INR",
+                                            "name": "Karnen Corp",
+                                            "description": "Test Transaction",
+                                            "image": "https://example.com/your_logo",
+                                            "order_id": data.order.order_id,
+                                            "handler": async (responseHandler) => {
+                                                const responseStatus = await fetch(`/paymentStatus?status=${'PaymentRecieved'}&orderId=${data.trueorderId}`, {
+                                                    method: "GET",
+                                                });
+                                                if (!responseStatus) {
+                                                    throw new Error("Internal server Error");
+                                                }
+                                                const orderRespone = await responseStatus.json();
+                                                console.log(orderRespone.data);
+                                            },
+                                            "theme": {
+                                                "color": "#3399cc"
+                                            }
+                                        };
+                                        var rzp1 = new Razorpay(options);
+                                        rzp1.on('payment.failed', async (responseFailed) => {
+                                            const responseStatus = await fetch(`/paymentStatus?status=${'PaymentFailed'}&orderId=${data.trueorderId}`, {
+                                                method: "GET",
+                                            });
+                                            if (!responseStatus) {
+                                                throw new Error("Internal server Error");
+                                            }
+                                            const paymentFailed = await responseStatus.json();
+                                            console.log(paymentFailed);
+                                        });
+                                        rzp1.open();
+                                    }
+                                
+                                    if (paymentMethod.value == "Wallet") {
+                                        const response = await fetch("/welcomePage", {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json"
+                                            },
+                                            body: JSON.stringify({
+                                                paymentMethod: paymentMethod.value,
+                                                selectedAddress: selectedAddress.value
+                                            })
+                                        });
+                                        if (!response) {
+                                            throw new Error("Internal Server Error");
+                                        }
+                                        const data = await response.json();
+                                        console.log(data.data);
+                                        if (data.data == "success") {
+                                            console.log("fetch is working");
+                                            Swal.fire({
+                                                icon: 'info',
+                                                title: 'Wallet Balance',
+                                                html: `
+                                                    <div style="text-align: left;">
+                                                        <div style="margin-bottom: 10px;">
+                                                            <i class="fas fa-wallet" style="color: #007bff; font-size: 24px; margin-right: 10px;"></i>
+                                                            <span style="font-weight: bold; font-size: 18px;">Wallet Balance\t: </span> &#8377;\t${data.wallet.TotalAmount}
+                                                        </div>
+                                                        <hr style="margin-top: 0; margin-bottom: 10px;">
+                                                        <div style="margin-bottom: 10px;">
+                                                            <i class="fas fa-dollar-sign" style="color: #28a745; font-size: 24px; margin-right: 10px;"></i>
+                                                            <span style="font-weight: bold; font-size: 18px;">Purchase Amount\t:  </span> &#8377;\t${data.TotalPrice}
+                                                        </div><br>
+                                                        <hr style="margin-top: 10px; margin-bottom: 10px;">
+                                                        <div>
+                                                            <i class="fas fa-hand-holding-usd" style="color: #007bff; font-size: 24px; margin-right: 10px;"></i>
+                                                            <span style="font-weight: bold; font-size: 18px;">Wallet Balance \t: </span> &#8377;\t${data.walletBalance}
+                                                        </div>
+                                                    </div>
+                                                `,
+                                                showCloseButton: true,
+                                                showConfirmButton: true,
+                                                showCancelButton: true,
+                                            }).then(async (result) => {
+                                                if (result.dismiss === Swal.DismissReason.cancel) {
+                                                    console.log("walletPaymentCancelled");
+                                                    const responseStatus = await fetch(`/WalletPaymentCancelled?status=${'revert'}&orderId=${data.trueorderId}&price=${data.TotalPrice}`, {
+                                                        method: "GET",
+                                                    });
+                                                    if (!responseStatus) {
+                                                        throw new Error("Internal server Error");
+                                                    }
+                                                    const cancelled = await responseStatus.json();
+                                                    if (cancelled.status == "walletCancelled") {
+                                                        console.log("wallet Payment reverted");
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: 'Payment Cancelled',
+                                                            text: 'Your payment has been cancelled.',
+                                                            showConfirmButton: false,
+                                                            timer: 2000,
+                                                            didOpen: () => {
+                                                                Swal.showLoading();
+                                                            }
+                                                        });
+                                                    }
+                                
+                                                }
+                                
+                                                if (result.isConfirmed) {
+                                                    console.log("clicked okay")
+                                                    const responseStatus = await fetch(`/paymentStatus?status=${'PaymentRecieved'}&orderId=${data.trueorderId}`, {
+                                                        method: "GET",
+                                                    });
+                                                    if (!responseStatus) {
+                                                        throw new Error("Internal server Error");
+                                                    }
+                                                    const paymentFailed = await responseStatus.json();
+                                                    console.log(paymentFailed);
+                                                }
+                                
+                                            });
+                                        }
+                                    }
+                                    return true;
+                                }
                                 </script>
+                                
                             </div>
                         </div>
                     </div>

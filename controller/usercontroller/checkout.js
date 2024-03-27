@@ -5,6 +5,7 @@ const cart = require("../../models/user/cart");
 const order = require("../../models/user/order");
 const addproduct= require("../../models/addproduct/addproduct")
 const instance= require("../../utils/razorpay")
+const walletSchema = require("../../models/user/wallets")
 
 
 
@@ -42,7 +43,7 @@ let welcomePage =async(req, res)=>{
         console.log(userId);
 
         const trueAddress =userDetail.Address[selectedAddress];
-        console.log(trueAddress)
+        
 
 
         
@@ -71,21 +72,14 @@ const cartDetail = await cart.findOne({userId:userId})
         })
 
         const saveOrder = await  newOrder.save()
-        const trueorderId = saveOrder._id;
+        var trueorderId = saveOrder._id;
         console.log(trueorderId);
 
     //   const DeletefromCart = await cart.deleteOne({userId:userId,items:productinCart})
     //   console.log("cart is empty now");
     //   console.log(DeletefromCart);
 
-    for(items of productinCart){
-        const quantity=items.quantity;
-        const size = items.size;
-        const product =items.product;
-
-        const quantityupdated=await addproduct.updateOne({_id:product, [`sizes.${size}`]:{$exists:true}},{$inc:{[`sizes.${size}.newStock`]:-quantity}})
-        console.log(quantityupdated)
-    }
+    
     if(paymentMethod=="RazorPay"){
         var options = {
             amount: TotalPrice*100,  
@@ -99,31 +93,84 @@ const cartDetail = await cart.findOne({userId:userId})
             console.log("err==================:",err);
             return res.status(200).json({order,trueorderId})
           });
-    }        
+    }
+
+
+
+
+    if(paymentMethod == "Wallet"){
+        const checkWalletbalance =await walletSchema.findOne({userId:userId})
+        const walletBalance=checkWalletbalance.TotalAmount - TotalPrice;
+        if(walletBalance>0){
+            const walletUpdate= await walletSchema.updateOne({userId:userId},{$inc:{TotalAmount:-TotalPrice}})
+            console.log("worked upto here")
+           
+           return await res.status(200).json({data:"success", wallet: checkWalletbalance, walletBalance, TotalPrice,trueorderId})
+        }else{
+            const deleteOrder = await OrderDetails.deleteOne({_id:trueorderId})
+            console.log("orderDeleeted");
+            console.log(deleteOrder);
+            return await res.status(200).json({data:"failed"})
+        }  
+       
+    }      
     } catch (error) {
         console.log(error.message)
         
     }
 }
+
 const paymentStatus = async(req, res)=>{
     try {
       
         const Status = req.query.status;
         const orderId = req.query.orderId;
-        console.log(Status);
-        console.log(orderId);
         const userId = req.session.userisAuth._id;
-        console.log(userId);
-
         const updatePaymentStatus = await OrderDetails.updateOne({_id:orderId},{$set:{paymentStatus:Status}})
-        console.log(updatePaymentStatus)
-        await res.status(200).json({data:"paymentStatus UPDated"})
 
-       
+        // stockMangement
+        if(updatePaymentStatus && updatePaymentStatus=="PaymentRecieved"){
+
+        const cartDetail = await cart.findOne({userId:userId})
+        const productinCart = cartDetail.items.map((item)=>{
+            return item
+        })
+            for(items of productinCart){
+                const quantity=items.quantity;
+                const size = items.size;
+                const product =items.product;
         
-        
+                const quantityupdated=await addproduct.updateOne({_id:product, [`sizes.${size}`]:{$exists:true}},{$inc:{[`sizes.${size}.newStock`]:-quantity}})
+                console.log(quantityupdated)
+            }
+
+        }
+        await res.status(200).json({data:"paymentStatus UPDated"})
+   
     } catch (error) {
         console.log(error.message);
+        
+    }
+}
+let WalletPaymentCancelled= async(req, res)=>{
+    try {
+
+        const orderId = req.query.orderId;
+        const TotalPrice= req.query.price;
+        const userId = req.session.userisAuth._id;
+        console.log(`orderId ${orderId}`);
+        // console.log(price);
+
+        const revertWallet = await walletSchema.updateOne({userId:userId},{$inc:{TotalAmount:TotalPrice}})
+        const deleteOrder = await OrderDetails.deleteOne({_id:orderId})
+
+        console.log(revertWallet)
+
+        console.log("walllet  Balane reverted")
+        await res.status(200).json({status:"walletCancelled"});
+        
+    } catch (error) {
+        console.log(error.message)
         
     }
 }
@@ -133,6 +180,7 @@ const paymentStatus = async(req, res)=>{
 module.exports ={
     checkout,
     welcomePage,
-    paymentStatus
+    paymentStatus,
+    WalletPaymentCancelled,
 
 }

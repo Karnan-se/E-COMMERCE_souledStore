@@ -944,7 +944,7 @@
 
                                                 <div class="tab-pane fade" id="Wallet-tab" role="tabpanel" aria-labelledby="Wallet-tab-link">
                                                     <div class="card bg-light border">  <div class="card-body d-flex justify-content-between">  
-                                                        <p class="card-text mt-3">Wallet Balance: <span id="wallet-balance">0.00</span></p> 
+                                                        <p class="card-text mt-3">Wallet Balance:  &#8377; <%= WalletDetail.TotalAmount %> <span id="wallet-balance"></span></p> 
                                                         <div class="d-flex">  
                                                       <input type="number" class="form-control" id="walletinput" placeholder="Enter Amount"> 
                                                         <button type="button" class="btn btn-primary small" id="walletButton">Add Funds</button> 
@@ -962,14 +962,12 @@
 
                                                                                 <script>
                                                                                     document.addEventListener("DOMContentLoaded", function() {
-                                                                                        const wallet = document.getElementById("walletinput");
-                                                                                        
+                                                                                        var wallet = document.getElementById("walletinput");
                                                                                         const walletButton = document.getElementById("walletButton");
                                                                                 
                                                                                         wallet.addEventListener("input", function() {
                                                                                             if (parseFloat(wallet.value) <= 0) {
                                                                                                 wallet.style.borderColor = "red";
-                                                                                                
                                                                                             } else {
                                                                                                 wallet.style.borderColor = ""; 
                                                                                                 walletButton.disabled = false;
@@ -977,68 +975,79 @@
                                                                                         });
                                                                                 
                                                                                         walletButton.addEventListener("click", function(){
-                                                                                            if(wallet.value <=0) {
+                                                                                            if (wallet.value <= 0) {
                                                                                                 Swal.fire({
                                                                                                     icon: "error",
-                                                                                                    title: "invalid Entry"
+                                                                                                    title: "Invalid Entry"
                                                                                                 });
-                                                                                            }else{
-                                                                                            Swal.fire({
-                                                                                                title: 'Select Payment Method',
-                                                                                                 html: `
-                                                                                                    <div class="form-check form-check-inline custom-radio">
-                                                                                                        <input class="form-check-input" type="radio" id="radioOption1" name="radioOptions" value="Razorpay" checked >
-                                                                                                        <label class="form-check-label" for="radioOption1">Razor Pay</label>
-                                                                                                    </div>
-                                                                                                    <div class="form-check form-check-inline custom-radio">
-                                                                                                        <input class="form-check-input" type="radio" id="radioOption2" name="radioOptions" value="paypal">
-                                                                                                        <label class="form-check-label" for="radioOption2">PAY PAL</label>
-                                                                                                    </div>
-                                                                                                `,
-                                                                                                showCancelButton: true,
-                                                                                                confirmButtonText: 'Submit',
-                                                                                                showLoaderOnConfirm: true,
-                                                                                                preConfirm:async () => {
-                                                                                                    const selectedOption = document.querySelector('input[name="radioOptions"]:checked');
-                                                                                                    // if (selectedOption.value =="Razorpay") {
-                                                                                                    //     const responseStatus = await fetch(`/addtoWallet?walletAmount=${wallet.value}`,{
-                                                                                                    //         method:"GET",
+                                                                                            } else {
+                                                                                                Swal.fire({
+                                                                                                    title: 'Select Payment Method',
+                                                                                                    html: `
+                                                                                                        <div class="form-check form-check-inline custom-radio">
+                                                                                                            <input class="form-check-input" type="radio" id="radioOption1" name="radioOptions" value="Razorpay" checked >
+                                                                                                            <label class="form-check-label" for="radioOption1">Razor Pay</label>
+                                                                                                        </div>
+                                                                                                        <div class="form-check form-check-inline custom-radio">
+                                                                                                            <input class="form-check-input" type="radio" id="radioOption2" name="radioOptions" value="paypal">
+                                                                                                            <label class="form-check-label" for="radioOption2">PAY PAL</label>
+                                                                                                        </div>
+                                                                                                    `,
+                                                                                                    showCancelButton: true,
+                                                                                                    confirmButtonText: 'Submit',
+                                                                                                    showLoaderOnConfirm: true,
+                                                                                                    preConfirm: async () => {
+                                                                                                        const selectedOption = document.querySelector('input[name="radioOptions"]:checked');
+                                                                                                        if (selectedOption.value == "Razorpay") {
+                                                                                                            const responseStatus = await fetch(`/addtoWallet?walletAmount=${wallet.value}`,{
+                                                                                                                method:"GET"
+                                                                                                            });
+                                                                                                            if (!responseStatus.ok) {
+                                                                                                                throw new Error("Internal Server Error");
+                                                                                                            }
+                                                                                                            const data = await responseStatus.json();
+                                                                                                            console.log(data.order);
+                                                                                                            var options = {
+                                                                                                                "key": "rzp_test_ihsNz6lracNIu3", 
+                                                                                                                "amount": data.order.amount, 
+                                                                                                                "currency": "INR",
+                                                                                                                "name": "Karnan Corp",
+                                                                                                                "description": "Test Transaction",
+                                                                                                                "image": "https://example.com/your_logo",
+                                                                                                                "order_id": data.order.order_id, 
+                                                                                                                "handler": async (responseHandler) => {
+                                                                                                                    const responseStatus = await fetch(`/addAmounttoWallet?amount=${data.order.amount}`,{
+                                                                                                                        method:"GET"
 
-                                                                                                    //     })
-                                                                                                    //     if(!response){
-                                                                                                    //         throw new Error("Internal Server Error")
-                                                                                                    //     }
-                                                                                                    //     const data = responseStatus.json({});
-                                                                                                    //     var options = {
-                                                                                                    //     "key": "rzp_test_ihsNz6lracNIu3", 
-                                                                                                    //     "amount": data.order.amount, 
-                                                                                                    //     "currency": "INR",
-                                                                                                    //     "name": "Karnan Corp",
-                                                                                                    //     "description": "Test Transaction",
-                                                                                                    //     "image": "https://example.com/your_logo",
-                                                                                                    //     "order_id": data.order.order_id, 
-                                                                                                    //     "handler": async (responseHandler) => {
-                                                                                                         
-                                                                                                    //     },
-                                                                                                    //     "theme": {
-                                                                                                    //         "color": "#3399cc"
-                                                                                                    //     }
-                                                                                                    // };
-                                                                                                    // var rzp1 = new Razorpay(options);
+                                                                                                                    })
+                                                                                                                    if(!responseStatus){
+                                                                                                                        throw new Error("Internal Server Error")
+                                                                                                                    }
 
-                                                                                                        
+                                                                                                                    setTimeout(()=>{
+                                                                                                                        window.location.reload()
+                                                                                                                    }, 3000)
 
 
-                                                                                                        
-                                                                                                        console.log('Selected Option:', selectedOption.value);
+                                                                                                                },
+                                                                                                                "theme": {
+                                                                                                                    "color": "#3399cc"
+                                                                                                                }
+                                                                                                            };
+                                                                                                            var rzp1 = new Razorpay(options);
+                                                                                                            rzp1.on('payment.failed', async (responseFailed) => {
+                                                                                                                
+                                                                                                            });
+                                                                                                            rzp1.open();
+                                                                                                        }   
+                                                                                                        return true;
                                                                                                     }
-                                                                                                
+                                                                                                });
                                                                                             }
                                                                                         });
-                                                                                            }
-                                                                                        })
-                                                                                    })
+                                                                                    });
                                                                                 </script>
+                                                                                
                                                                                 
 
                                                 <section class="content-main">
@@ -1056,9 +1065,7 @@
                                                                 <div class="col-lg-12">
                                                                     <header class="border-bottom mb-4 pb-4">
                                                                         <div class="row">
-                                                                            <div class="col-lg-5 col-6 me-auto">
-                                                                                <input type="text" placeholder="Search..." class="form-control">
-                                                                            </div>
+                                                                            
 
                                                                         </div>
                                                                     </header> <!-- card-header end// -->
@@ -1081,160 +1088,6 @@
                                                                                         <div class="icontext">
                                                                                             <img class="icon border" src="assets/imgs/card-brands/1.png" alt="Payment">
                                                                                             <span class="text text-muted">Amex</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#134768</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/2.png" alt="Payment">
-                                                                                            <span class="text text-muted">Master card</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#134768</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/3.png" alt="Payment">
-                                                                                            <span class="text text-muted">Paypal</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#134768</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/4.png" alt="Payment">
-                                                                                            <span class="text text-muted">Visa</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#887780</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/4.png" alt="Payment">
-                                                                                            <span class="text text-muted">Visa</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#344556</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/4.png" alt="Payment">
-                                                                                            <span class="text text-muted">Visa</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#134768</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/2.png" alt="Payment">
-                                                                                            <span class="text text-muted">Master card</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#134768</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/2.png" alt="Payment">
-                                                                                            <span class="text text-muted">Master card</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#998784</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/3.png" alt="Payment">
-                                                                                            <span class="text text-muted">Paypal</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#556667</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/3.png" alt="Payment">
-                                                                                            <span class="text text-muted">Paypal</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#098989</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/3.png" alt="Payment">
-                                                                                            <span class="text text-muted">Paypal</span>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>16.12.2020, 14:21</td>
-                                                                                    <td class="text-end">
-                                                                                        <a href="#" class="btn btn-sm btn-light font-sm rounded">Details</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><b>#134768</b></td>
-                                                                                    <td>$294.00</td>
-                                                                                    <td>
-                                                                                        <div class="icontext">
-                                                                                            <img class="icon border" src="assets/imgs/card-brands/4.png" alt="Payment">
-                                                                                            <span class="text text-muted">Visa</span>
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>16.12.2020, 14:21</td>

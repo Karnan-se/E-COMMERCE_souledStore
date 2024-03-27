@@ -3,19 +3,23 @@ const userdetail = require("../../models/user/userdetails");
 const orders = require("../../models/user/order")
 const rating = require("../../models/user/ratings")
 const bcrypt = require("bcrypt")
+const Wallet = require("../../models/user/wallets")
 
 let user_page_account = async(req, res)=>{
     try {
         const userDetails = req.session.userisAuth;
         const order = await orders.find({userId:userDetails}).populate("products.product");
         const ratings = await rating.find({userId:userDetails._id});
+        const WalletDetail = await Wallet.findOne({userId:userDetails._id})
         
         if(req.session.passwordUpdated){
             delete req.session.passwordUpdated;
             const message="passwordUpdated";
-            return res.render("user/user-page-account.ejs",{userDetails,message,order, ratings})
+            console.log(WalletDetail)
+            return res.render("user/user-page-account.ejs",{userDetails,message,order, ratings, WalletDetail})
         }
-       return res.render("user/user-page-account.ejs",{userDetails, order, ratings})
+        console.log(WalletDetail)
+       return res.render("user/user-page-account.ejs",{userDetails, order, ratings, WalletDetail})
 
 
         

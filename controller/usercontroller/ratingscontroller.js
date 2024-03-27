@@ -11,7 +11,7 @@ try {
     console.log(size, value, productId);
     const userId = req.session.userisAuth._id;
     console.log(userId)
-    const ratingpresent = await ratings.findOne({userId:userId, "rating.productId":productId, "rating.size":size})
+    const ratingpresent = await ratings.findOne({userId:userId, orderId:orderID, "rating.productId":productId, "rating.size":size})
 
     if(ratingpresent){
         const updaterating = await ratings.updateOne(

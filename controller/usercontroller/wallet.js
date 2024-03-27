@@ -1,5 +1,9 @@
 const WalletSchema = require("../../models/user/wallets")
 const instance = require("../../utils/razorpay");
+
+
+
+
 let walletPage = async(req, res)=>{
     try {
 
@@ -22,22 +26,12 @@ let addToWallet = async(req, res)=>{
                 receipt: "order_rcptid_11",   
     
               };
-              instance.orders.create(options, function(err, order) {
+              instance.orders.create(options, async function(err, order) {
                 console.log("order:",order);
-                return res.status(200).json({order,trueorderId})
+                return await res.status(200).json({order})
               });
 
             
-
-        const walletSchem = new WalletSchema({
-            TotalAmount:walletAmount
-
-
-        })
-        await walletSchem.save()
-
-           
-        
     } catch (error) {
         console.log(error.messagge)
         
@@ -45,7 +39,47 @@ let addToWallet = async(req, res)=>{
 }
 
 
+
+let addAmounttoWallet = async(req, res)=>{
+    try {
+
+        const walletAmount = req.query.amount;
+        console.log(walletAmount);
+        const userId = req.session.userisAuth._id;
+        console.log(userId)
+
+
+        const userwallet = await WalletSchema.findOne({userId:userId})
+
+        if(!userwallet){
+            const walletSchem = new WalletSchema({
+                userId:userId,
+                TotalAmount:walletAmount/100
+            })
+           return await walletSchem.save()
+
+        }else{
+
+            const updateWalllet = await WalletSchema.updateOne(
+                { userId: userId },
+                { $inc: { TotalAmount: walletAmount/100 } }
+            );
+            console.log(updateWalllet)
+            console.log("cash updated")
+                return await res.status(200).json({data:"hey"})
+        }
+                
+        
+
+    } catch (error) {
+        console.log(error.messagge)
+        
+    }
+    
+}
+
 module.exports ={walletPage,
-    addToWallet
+    addToWallet,
+    addAmounttoWallet
 
 }

@@ -5,6 +5,8 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend//page-orders-1 by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
 <head>
 <%- include('./partials/header.ejs') %>
+
+
 </head>
 
 <body>
@@ -41,7 +43,7 @@
                         <span class="text">Orders</span>
                     </a>
                     <div class="submenu">
-                        <a href="/page-orders-1" class="active">Order list 1</a>
+                        <a href="/page-orders-1" class="active">Order list </a>
                        
                        
                     </div>
@@ -74,7 +76,7 @@
                 <form class="searchform">
                     <div class="input-group">
                         <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                       
                     </div>
                     <datalist id="search_terms">
                         <option value="Products">
@@ -165,8 +167,9 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Total</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Order Status</th>
                                     <th scope="col">Date</th>
+                                    <th scope="col">Payment Status</th>
                                     <th scope="col" class="text-end"> Action </th>
                                 </tr>
                             </thead>
@@ -185,10 +188,11 @@
                                 <tr>
                                     <td>0901</td>
                                     <td><b><%= orderDetail.userId.name %></b></td>
-                                    <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template></td>
+                                    <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3"><%= orderDetail.userId.email%></template></td>
                                     <td> &#8377;<%= orderDetail.totalAmount%></td>
                                     <td><span class="badge rounded-pill <%=orderDetail.orderStatus=="Pending"? "alert-warning" : "alert-success"%>"><%= orderDetail.orderStatus%></span></td>
                                     <td><%=orderDetail.formateDate()%></td>
+                                    <td><span class="badge rounded-pill <%=orderDetail.paymentStatus=="Pending" ||orderDetail.paymentStatus== "PaymentFailed"? "alert-danger" : "alert-success"%>"><%= orderDetail.paymentStatus%></span></td>
                                     <td class="text-end">
                                         <a href="/page-orders-detail?orderDetails=<%=orderDetail._id%>" class="btn btn-md rounded font-sm">Detail</a>
                                         <div class="dropdown">

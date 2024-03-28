@@ -167,7 +167,7 @@
                                                                         <div class="">
                                                                             <div class="action-buttons">
                                                                                 <button class="track-button btn" data-bs-target="#orderDetailsModal"  data-bs-toggle="modal">Track</button>
-                                                                                <button class="return-exchange-button btn">  <%= items.deliveredDate == null ? "Cancel" : "Return or Exchange" %>
+                                                                                <button class="return-exchange-button btn <%=items.orderStatus == "delivered"? "btn-bb-dark" : "text-white" %>" >  <%= items.orderStatus == "delivered" ? "Return" : "Cancel" %>
                                                                                 </button>
                                                                             </div>
                                                                             <div class="rating-feedback d-flex justify-content-between">
@@ -176,7 +176,10 @@
                                                                                     
                                                                                         <div class="stars">
 
-                                                                                              <a href="/ratings?orderid=<%=items._id%>&productId=<%=item.product._id %>&itemSize=<%= item.size %>"> <p class="text-black"  >Rate This Product</p></a>
+                                                                                              <a href="/ratings?orderid=<%=items._id%>&productId=<%=item.product._id %>&itemSize=<%= item.size %>"> <p class="text-black ratingButon"  >Rate This Product</p></a>
+                                                                                             
+                                                                                    
+                                                                                              
                                                                                                
                                                                                          
                                                                                         </div>
@@ -186,7 +189,7 @@
                                                                             </div>
                                                                         </div>
                                                                     <% }) %>
-                                                            
+                                                                    
                                                                     <hr>
                                                                     <div class="total d-flex  justify-content-end" style="font-size: 24px; font-weight: bold; width: 100%;">
                                                                         Total Price: &#x20b9;  <%= items.totalAmount %>
@@ -299,6 +302,8 @@
                                                     });
 
                                                  </script>
+
+                                                 <!-- track buttoon -->
 
                                                     <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
                                                       <div class="modal-dialog modal-dialog-centered modal-xl">

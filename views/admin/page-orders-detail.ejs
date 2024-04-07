@@ -138,6 +138,17 @@
                             <small class="text-muted">Order ID: 3453012</small>
                         </div>
                         <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                            <%if(orderDetails[0].paymentStatus == "PaymentFailed") {%>
+                                <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200 orderStatus d-none">
+                                    <!-- <option>Change status</option>
+                                    <option>Awaiting payment</option> -->
+                                    <option value="Pending">Pending</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                </select>
+
+                                <% }else {%>
                             <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200 orderStatus">
                                 <!-- <option>Change status</option>
                                 <option>Awaiting payment</option> -->
@@ -146,6 +157,7 @@
                                 <option value="shipped">Shipped</option>
                                 <option value="delivered">Delivered</option>
                             </select>
+                            <% }%>
                             <script>
                                 
                                 var orderStatusValue = "<%= orderDetails[0].orderStatus %>"; 

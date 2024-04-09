@@ -3,7 +3,8 @@ const userdetail = require("../../models/user/userdetails");
 const orders = require("../../models/user/order")
 const rating = require("../../models/user/ratings")
 const bcrypt = require("bcrypt")
-const Wallet = require("../../models/user/wallets")
+const Wallet = require("../../models/user/wallets");
+const order = require("../../models/user/order");
 
 let user_page_account = async(req, res)=>{
     try {
@@ -11,15 +12,16 @@ let user_page_account = async(req, res)=>{
         const order = await orders.find({userId:userDetails}).populate("products.product");
         const ratings = await rating.find({userId:userDetails._id});
         const WalletDetail = await Wallet.findOne({userId:userDetails._id})
+        const data= req.session.userisAuth;
         
         if(req.session.passwordUpdated){
             delete req.session.passwordUpdated;
             const message="passwordUpdated";
             console.log(WalletDetail)
-            return res.render("user/user-page-account.ejs",{userDetails,message,order, ratings, WalletDetail})
+            return res.render("user/user-page-account.ejs",{userDetails,message,order, ratings, WalletDetail, data})
         }
         console.log(WalletDetail)
-       return res.render("user/user-page-account.ejs",{userDetails, order, ratings, WalletDetail})
+       return res.render("user/user-page-account.ejs",{userDetails, order, ratings, WalletDetail, data})
 
 
         
@@ -238,7 +240,38 @@ let editAddressfields = async(req, res)=>{
         
     }
 }
+let cancelOrder = async(req, res)=>{
+    try {
+        const orderId = req.query.orderId;
+        const ProductId = req.query.ProductId;
+        const price = req.query.price;
+        console.log(price);
+        const orderSchema = await orders.find({_id:orderId})
+        if (orderSchema[0].products.length == 1) {
 
+                const cancelOrder = await orders.updateOne({_id:orderId},{$set:{orderStatus:"Cancelled"}})
+            }else{
+
+                
+                const pullProduct = await order.updateOne(
+                    { _id: orderId, "products._id": ProductId },
+                    { $pull: { products: { _id: ProductId } } } 
+                );
+
+                const updatePirce = await order.updateOne({_id:orderId, "products._id":ProductId},
+                      {$inc:{totalAmount:-price}})
+            
+
+                
+            }
+        
+        
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
 
 
 module.exports={user_page_account, 
@@ -247,4 +280,5 @@ module.exports={user_page_account,
         addAddress,
         updateAddressStatus,
         deleteAddress,
-    updateName,  editAddressfields }
+    updateName,  editAddressfields,
+    cancelOrder}

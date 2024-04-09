@@ -20,9 +20,10 @@ let checkout = async(req, res)=>{
         console.log(userDetail)
         const CartDetail = await CartDetails.findOne({userId:userDetail}).populate("items.product")
         const userDetails = await UserModel.findOne({_id: userDetail, "Address.status": true })
+        const data= req.session.userisAuth;
         console.log(userDetails)
         
-       return  res.render("user/user-shop-checkout.ejs",{CartDetail, userDetails})
+       return  res.render("user/user-shop-checkout.ejs",{CartDetail, userDetails, data})
         
     } catch (error) {
         console.log(error.message)
@@ -74,6 +75,14 @@ const cartDetail = await cart.findOne({userId:userId})
         const saveOrder = await  newOrder.save()
         var trueorderId = saveOrder._id;
         console.log(trueorderId);
+
+        if(paymentMethod == "Cash on delivery"){
+            
+               return await res.status(200).json({data:"welcome Page"})
+        }
+
+
+
 
     //   const DeletefromCart = await cart.deleteOne({userId:userId,items:productinCart})
     //   console.log("cart is empty now");
@@ -174,6 +183,19 @@ let WalletPaymentCancelled= async(req, res)=>{
         
     }
 }
+let thanYou = async(req, res)=>{
+    try {
+        const userId= req.session.userisAuth._id;
+        if(userId){
+        const cartdelete = await cart.deleteOne({userId:userId})
+        }
+        res.render("user/thankYou.ejs")
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
 
 
 
@@ -182,5 +204,6 @@ module.exports ={
     welcomePage,
     paymentStatus,
     WalletPaymentCancelled,
+    thanYou
 
 }

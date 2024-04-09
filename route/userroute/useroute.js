@@ -38,6 +38,7 @@ userrouter.get("/updateAddressStatus",MyAccount.updateAddressStatus)
 userrouter.get("/deleteAddress",MyAccount.deleteAddress)
 userrouter.get("/updateName",MyAccount.updateName)
 userrouter.get("/editAddressfields",MyAccount.editAddressfields)
+userrouter.get("/cancelOrder",MyAccount.cancelOrder)
 
 
 userrouter.get("/shop-product-right",productController.shop_product_right)
@@ -54,6 +55,7 @@ userrouter.get("/checkout",checkout.checkout)
 userrouter.get("/paymentStatus",checkout.paymentStatus)
 userrouter.post("/welcomePage",checkout.welcomePage)
 userrouter.get("/WalletPaymentCancelled",checkout.WalletPaymentCancelled)
+userrouter.get("/thankYou",checkout.thanYou)
 
 
 userrouter.get("/shop-wishlist",wishlist.shopWishlist)
@@ -63,6 +65,8 @@ userrouter.get("/ratings",rating.loadratings)
 userrouter.get("/wallet",walletController.walletPage)
 userrouter.get("/addtoWallet",walletController.addToWallet)
 userrouter.get("/addAmounttoWallet",walletController.addAmounttoWallet)
+
+
 
 
 

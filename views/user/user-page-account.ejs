@@ -120,6 +120,10 @@
                                                 </div>
                                                 <div class="tab-pane fade" id="orders" role="tabpanel"
                                                     aria-labelledby="orders-tab">
+
+                                                <%order.reverse() %>
+                                              
+
                                                     <% order.forEach((items) => { %> 
                                                     <div class="card">
                                                         <div class="card-header order d-flex justify-content-between">
@@ -170,21 +174,19 @@
                                                                         <br>
                                                                         <div class="">
                                                                             <div class="action-buttons">
-                                                                                <% if(items.orderStatus == "delivered" || items.paymentStatus === "PaymentFailed") {%>
-                                                                                <button class="track-button btn d-none" data-bs-target="#orderDetailsModal"  data-bs-toggle="modal">Track</button>
-                                                                                <%} else {%>'
-                                                                                <button class="track-button btn " data-bs-target="#orderDetailsModal"  data-bs-toggle="modal">Track</button>
-                                                                                <%}%>
+                                                                            
 
 
-                                                         <!-- cancel Button -->
+                                                                                <!-- cancel Button -->
                                                                                 <% if(items.paymentStatus == "PaymentFailed") {%>
                                                                                     <button type="button"  class=" btn btn-danger retryTransacion" >  <%= items.orderStatus == "delivered" ? "Return" : "Retry transaction" %>
                                                                                         <% } else {%>
-                                                                                <button class="return-exchange-button btn <%=items.orderStatus == "delivered"? "btn-bb-dark" : "text-white" %>" >  <%= items.orderStatus == "delivered" ? "Return" : "Cancel" %>
+                                                                                <button class="return-exchange-button btn cancelButton <%=items.orderStatus == "delivered"? "btn-bb-dark" : "text-white" %>" data-orderId =<%= items._id%> data-productId = <%= item._id%> data-price = <%= item.price%>>  <%= items.orderStatus == "delivered" ? "Return" : "Cancel" %>
                                                                                     <% }%>
 
                                                                                 </button>
+                                                                               
+                                                                                
                                                                             </div>
                                                                             <div class="rating-feedback d-flex justify-content-between align-items-center">
                                                                                 <div class="rating-stars">
@@ -211,14 +213,21 @@
                                                                                     </div>
                                                                                 <% } %>
                                                                                 
-                                                                                
-                                                                                  
-                                                                                
+
                                                                             </div>
                                                                         </div>
+                                                                        <hr>
                                                                     <% }) %>
                                                                     
+                                                                    
                                                                     <hr>
+                                                                    <div>
+                                                                        <% if(items.orderStatus == "delivered" || items.paymentStatus === "PaymentFailed") {%>
+                                                                            <button class="track-button btn d-none btn-warning" data-bs-target="#orderDetailsModal"  data-bs-toggle="modal">Track</button>
+                                                                            <%} else {%>'
+                                                                            <button class="track-button btn btn-warning " data-bs-target="#orderDetailsModal"  data-bs-toggle="modal">Track</button>
+                                                                            <%}%>
+                                                                        </div>
                                                                     <div class="total d-flex  justify-content-end" style="font-size: 24px; font-weight: bold; width: 100%;">
                                                                         Total Price: &#x20b9;  <%= items.totalAmount %>
                                                                     </div>
@@ -285,6 +294,42 @@
                                                     </div>
                                                     
                                                     <% }) %>
+                                                    <script>
+                                                        const cancelButton = document.querySelectorAll(".cancelButton");
+                                                        cancelButton.forEach((cancel)=>{
+                                                            cancel.addEventListener("click",async function(){
+                                                                Swal.fire({
+                                                                    icon:"warning",
+                                                                    title:"are you sure want to delete this order",
+                                                                    showCancelButton: true,
+                                                                    confirmButtonText: "Yes",
+                                                                    cancelButtonText: "Cancel"
+                                                                })
+                                                                .then(async (result) =>{
+                                                                    if(result.isConfirmed) {
+                                                                         
+                                                                const orderId = this.getAttribute("data-orderId")
+                                                                console.log(orderId);
+                                                                const price = this.getAttribute("data-price");
+                                                                const ProductId = this.getAttribute("data-productId");
+                                                                console.log(ProductId)
+                                                                const response = await fetch(`/cancelOrder?orderId=${orderId}&ProductId=${ProductId}&price=${price}`,{
+                                                                    method:"GET",
+
+                                                                })
+                                                                if(!response){
+                                                                    throw new Error("Internal Server Error")
+                                                                }
+                                                                const data  = await response.json();
+                                                                console.log(data);
+                                                            }
+                                                        })
+                                                            })
+
+                                                        })
+                                                        </script>
+
+
                                                     <br>
                                                     <script>
                                                      const stars = document.querySelectorAll(".stars i");

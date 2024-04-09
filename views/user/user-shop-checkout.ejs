@@ -447,6 +447,29 @@
                                     console.log("address Selected");
                                     var paymentMethod = document.querySelector('input[name="payment_option"]:checked');
                                     console.log('paymentMethod.value=========', paymentMethod.value);
+
+                                    if(paymentMethod.value == "Cash on delivery") {
+                                        console.log("cash on delivery choosen");
+                                        const response = await fetch ("/welcomePage", {
+                                            method : "POST",
+                                            headers : {
+                                                "Content-Type": "application/json"
+                                            },
+                                            body: JSON.stringify({
+                                                paymentMethod: paymentMethod.value,
+                                                selectedAddress: selectedAddress.value
+
+                                            })
+                                        })
+                                        if(!response) {
+                                            throw new Error("Internal Server error")
+                                        }
+                                        const data = await response.json()
+                                        console.log(data)
+                                        
+                                             return window.location.href="/thankYou"
+
+                                    }
                                     
                                     if (paymentMethod.value == "RazorPay") {
                                         console.log("razor is working");
@@ -471,7 +494,7 @@
                                             "key": "rzp_test_ihsNz6lracNIu3",
                                             "amount": data.order.amount,
                                             "currency": "INR",
-                                            "name": "Karnen Corp",
+                                            "name": "Karnan Corp",
                                             "description": "Test Transaction",
                                             "image": "https://example.com/your_logo",
                                             "order_id": data.order.order_id,
@@ -484,6 +507,7 @@
                                                 }
                                                 const orderRespone = await responseStatus.json();
                                                 console.log(orderRespone.data);
+                                                window.location.href = "/thankYou";
                                             },
                                             "theme": {
                                                 "color": "#3399cc"
@@ -519,6 +543,14 @@
                                         }
                                         const data = await response.json();
                                         console.log(data.data);
+                                        if(data.data == "failed"){
+                                            Swal.fire({
+                                                icon: "warning",
+                                                title: "Insufficient Wallet Balance",
+                                                text: "Please add funds to your wallet to complete the transaction.",
+                                                showConfirmButton: false
+                                            });
+                                        }
                                         if (data.data == "success") {
                                             console.log("fetch is working");
                                             Swal.fire({
@@ -581,6 +613,7 @@
                                                     }
                                                     const paymentFailed = await responseStatus.json();
                                                     console.log(paymentFailed);
+                                                    window.location.href = "/thankYou";
                                                 }
                                 
                                             });
@@ -615,7 +648,7 @@
                         <div class="col-lg-5">
                             <!-- Subscribe Form -->
 
-                            <!-- End Subscribe Form -->
+                            
                         </div>
                     </div>
                 </div>

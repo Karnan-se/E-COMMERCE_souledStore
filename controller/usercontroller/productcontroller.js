@@ -9,6 +9,7 @@ let shop_product_right = async(req, res)=>{
          const productId = req.query.productId;
          console.log(productId)
          const productDetails = await product.findOne({_id:productId})
+         const data= req.session.userisAuth;
          console.log(productDetails)
        
 
@@ -21,10 +22,11 @@ let shop_product_right = async(req, res)=>{
         const brandid = brandDetail._id;
         console.log(brandid);
         const relatedProducts = await product.find({brand:brandid});
+        
         console.log(relatedProducts);
         
         
-        res.render("user/user-shop-product-right.ejs",{productDetails,brandDetail, relatedProducts})
+        res.render("user/user-shop-product-right.ejs",{productDetails,brandDetail, relatedProducts, data})
 
         
     } catch (error) {

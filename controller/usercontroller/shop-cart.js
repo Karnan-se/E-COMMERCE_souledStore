@@ -8,6 +8,7 @@ const { default: mongoose } = require("mongoose")
 let shop_cart=async(req,res)=>{
     try {
        const userDetails= await req.session.userisAuth._id
+       const data= req.session.userisAuth;
        
         if(!userDetails){
             return res.redirect("/user-login")
@@ -34,7 +35,7 @@ let shop_cart=async(req,res)=>{
         // here I have optimise by deleting repeating id in product
     
         
-    await res.render("user/user-shop-cart.ejs",{Product:productsInCart})
+    await res.render("user/user-shop-cart.ejs",{Product:productsInCart, data})
 
     } catch (error) {
         console.log(error.message)

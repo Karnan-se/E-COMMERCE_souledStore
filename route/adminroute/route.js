@@ -12,6 +12,7 @@ const categories = require("../../controller/admincontroller/category")
 const admin = require("../../models/admin/admin");
 const auth = require('../../middlewares/multer/adminSession')
 const orderController = require("../../controller/admincontroller/ordercontroller")
+const coupons = require("../../controller/admincontroller/coupons")
 
 router.get("/admin-login",auth.isLogout, loginController.adminLogin);
 router.get("/admindashboard", auth.isLogin, adminController.admindashboard)
@@ -88,8 +89,12 @@ router.get("/page-orders-1", auth.isLogin, orderController.orderadmin);
 router.get("/page-orders-2",auth.isLogin, adminController.page_orders_2);
 router.get("/page-orders-detail",auth.isLogin, orderController.orders_detail);
 router.get("/orderStaus",auth.isLogin, orderController.orderStaus)
-
-
+router.get("/coupons",auth.isLogin,coupons.coupons)
+router.get("/addCoupon",auth.isLogin,coupons.addcouponspage)
+router.post("/addCoupon",auth.isLogin,coupons.addcoupons)
+router.get("/toggleList",auth.isLogin,coupons.toggleCoupon)
+router.get("/editCoupon",auth.isLogin,coupons.editCoupon)
+router.post("/editCoupon",auth.isLogin,coupons.editCouponPost)
 
 
 module.exports=router;

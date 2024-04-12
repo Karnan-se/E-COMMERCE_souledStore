@@ -5,6 +5,7 @@ const rating = require("../../models/user/ratings")
 const bcrypt = require("bcrypt")
 const Wallet = require("../../models/user/wallets");
 const order = require("../../models/user/order");
+const transaction = require("../../models/user/transaction")
 
 let user_page_account = async(req, res)=>{
     try {
@@ -17,10 +18,10 @@ let user_page_account = async(req, res)=>{
         if(req.session.passwordUpdated){
             delete req.session.passwordUpdated;
             const message="passwordUpdated";
-            console.log(WalletDetail)
+            
             return res.render("user/user-page-account.ejs",{userDetails,message,order, ratings, WalletDetail, data})
         }
-        console.log(WalletDetail)
+       
        return res.render("user/user-page-account.ejs",{userDetails, order, ratings, WalletDetail, data})
 
 
@@ -245,40 +246,98 @@ let cancelOrder = async(req, res)=>{
         const orderId = req.query.orderId;
         const ProductId = req.query.ProductId;
         const price = req.query.price;
-        console.log(price);
+        const userId = req.session.userisAuth._id
+        
         const orderSchema = await orders.find({_id:orderId})
-        if (orderSchema[0].products.length == 1) {
+         
+        const cancelProduct = await order.updateOne(
+            { _id: orderId, "products._id": ProductId, "products.isOrderCancelled": false },
+            { $set: { "products.$.isOrderCancelled": true, "products.$.isOrderReturned": true } }
+        );
 
+   
+            const newOrder = await order.find({_id:orderId})
+            const ExtractorderDetails = await Promise.all(newOrder[0].products.map(async(product)=>{
+                return product.isOrderCancelled;
+            }))
+            const allProductsCancelled = ExtractorderDetails.every(value => value === true);
+
+            if(allProductsCancelled){
                 const cancelOrder = await orders.updateOne({_id:orderId},{$set:{orderStatus:"Cancelled"}})
-            }else{
-
-                
-                const pullProduct = await order.updateOne(
-                    { _id: orderId, "products._id": ProductId },
-                    { $pull: { products: { _id: ProductId } } } 
-                );
-
-                const updatePirce = await order.updateOne({_id:orderId, "products._id":ProductId},
-                      {$inc:{totalAmount:-price}})
-            
-
-                
+                const paymentStatusrefund = await order.updateOne({_id:orderId},{$set:{paymentStatus: "refunded"}})
             }
-        
-        
+            if(orderSchema[0].paymentStatus == "PaymentRecieved"){
+
+                const returnMoney = await Wallet.updateOne({userId:userId},{$inc:{TotalAmount: price }})
+               
+               const updateWallet = await Wallet.findOne({userId:userId})
+               updateWallet.history.push({ amount: price, type: "Credit", description: "Refund"});
+            
+               await updateWallet.save()
+
+                return await res.status(200).json({data:"paymentreturned"})
+
+                }
+                await res.status(200).json({data:"OrderCancelled"})
         
     } catch (error) {
-        console.log(error.message)
-        
+        console.log(error.message) 
     }
 }
 
 
+let returnOrder = async(req, res)=>{
+    try {
+        const orderId = req.query.orderId;
+        const ProductId = req.query.ProductId;
+        const price = req.query.price;
+        const userId = req.session.userisAuth._id;
+        const orderSchema = await orders.find({_id:orderId});
+        const wallet = await Wallet.findOne({userId:userId})
+
+            const cancelProduct = await order.updateOne(
+                { _id: orderId, "products._id": ProductId, "products.isOrderReturned": false },
+                { $set: { "products.$.isOrderReturned": true } },
+            );
+         
+            const newOrder = await order.find({_id:orderId})
+            const ExtractorderDetails = await Promise.all(newOrder[0].products.map(async(product)=>{
+            return product.isOrderReturned;
+            }))
+            
+            
+            const allproductsReturned = ExtractorderDetails.every(value=> value === true)
+            
+            if(allproductsReturned){
+                const changeOrderStatus = await orders.updateOne({_id:orderId},{$set:{orderStatus:"Returned"}})
+                console.log(changeOrderStatus);
+                const paymentStatusrefund = await order.updateOne({_id:orderId},{$set:{paymentStatus: "refunded-Intiated"}})
+            } 
+            if(orderSchema[0].paymentStatus == "PaymentRecieved"){
+                const returnMoney = await Wallet.updateOne({userId:userId},{$inc:{TotalAmount: price }})
+               
+                const updateWallet = await Wallet.findOne({userId:userId})
+                updateWallet.history.push({ amount: price, type: "Credit", description: "Refund"});
+             
+                await updateWallet.save()
+                await res.status(200).json({data:"paymentreturned"})
+                }else{
+                    await res.status(200).json({data:"ORDER RETURNED"})
+
+                }
+               
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 module.exports={user_page_account, 
     currentPassword,
-     newpasswordchange,
-        addAddress,
-        updateAddressStatus,
-        deleteAddress,
-    updateName,  editAddressfields,
-    cancelOrder}
+    newpasswordchange,
+    addAddress,
+    updateAddressStatus,
+    deleteAddress,
+    updateName,
+    editAddressfields,
+    cancelOrder,
+    returnOrder}

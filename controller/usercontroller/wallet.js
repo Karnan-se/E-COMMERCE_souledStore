@@ -56,7 +56,10 @@ let addAmounttoWallet = async(req, res)=>{
                 userId:userId,
                 TotalAmount:walletAmount/100
             })
-           return await walletSchem.save()
+            userwallet.history.push({amount:walletAmount/100, type: "Credit",description:"Deposit" })
+           
+           await walletSchem.save()
+           await userwallet.save();
 
         }else{
 
@@ -64,7 +67,10 @@ let addAmounttoWallet = async(req, res)=>{
                 { userId: userId },
                 { $inc: { TotalAmount: walletAmount/100 } }
             );
-            console.log(updateWalllet)
+            userwallet.history.push({amount:parseInt(walletAmount)/100, type: "Credit",description:"Deposit" })
+            console.log(userwallet)
+
+            await userwallet.save();
             console.log("cash updated")
                 return await res.status(200).json({data:"hey"})
         }

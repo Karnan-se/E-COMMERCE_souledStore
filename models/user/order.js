@@ -46,6 +46,14 @@ const {format} = require('date-fns')
                     default:0,
                     required:false,
                    },
+                   isOrderCancelled :{
+                    type:Boolean,
+                    default:false
+                   },
+                   isOrderReturned :{
+                    type:Boolean,
+                    default:false
+                   },
 
             }],
             addresstoDeliver:{

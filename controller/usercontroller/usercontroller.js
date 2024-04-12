@@ -31,10 +31,7 @@ let user_index = async(req, res)=>{
         const userid = data?._id;
         const userID = new mongoose.Types.ObjectId(userid)
         const userinCart= await cart.findOne({userId:userID})
-        console.log(userinCart);
-        console.log("hey");
 
-       
         const newProducts = await products.aggregate([{$match:{
             createdat: {$gte: threedays}}}])
 
@@ -133,11 +130,6 @@ const shop_grid_right = async(req, res)=>{
         
         const newproduct = await products.find({category:apparelcategoryId,});
        
-        console.log(newproduct)
-        
-
-        
-        
 
         res.render("user/user-shop-grid-right.ejs",{product:newproduct, ApparelCategory})
         

@@ -138,7 +138,7 @@
                             <small class="text-muted">Order ID: 3453012</small>
                         </div>
                         <div class="col-lg-6 col-md-6 ms-auto text-md-end">
-                            <%if(orderDetails[0].paymentStatus == "PaymentFailed") {%>
+                            <%if(orderDetails[0].paymentStatus == "PaymentFailed" || orderDetails[0].orderStatus == "Cancelled" || orderDetails[0].orderStatus =="Returned") {%>
                                 <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200 orderStatus d-none">
                                     <!-- <option>Change status</option>
                                     <option>Awaiting payment</option> -->
@@ -198,11 +198,6 @@
                                 });
                             </script>
 
-
-
-
-
-                            <a class="btn btn-primary" href="#">Save</a>
                             <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a>
                         </div>
                     </div>
@@ -272,6 +267,7 @@
                                             <th width="40%">Product</th>
                                             <th width="20%">Unit Price</th>
                                             <th width="20%">Quantity</th>
+                                            <th width="20%">Order Status</th>
                                             <th width="20%" class="text-end">Total</th>
                                         </tr>
                                     </thead>
@@ -290,11 +286,23 @@
                                             </td>
                                             <td> &#8377; <%= items.product.price%> </td>
                                             <td> <%=items.quantity%></td>
+
+                                            <%if(items.isOrderCancelled == true) {%>
+                                            <td class="<%=orderDetails[0].orderStatus =="Cancelled"|| orderDetails[0].orderStatus =="Returned"? "alert-danger" : "alert-success" %>"> Cancelled</td>
+                                            <% }else if (items.isOrderReturned == true) {%>
+                                                <td class="<%=orderDetails[0].orderStatus =="Cancelled"|| orderDetails[0].orderStatus =="Returned"? "alert-danger" : "alert-success" %>">Returned</td>
+                                                <%}else {%>
+                                                    <td class="<%=orderDetails[0].orderStatus =="Cancelled"|| orderDetails[0].orderStatus =="Returned"? "alert-danger" : "alert-success" %>"><%=orderDetails[0].orderStatus%></td>
+                                                <%}%>
+
+                                            
                                             <td class="text-end"> &#8377;<%= items.price%> </td>
                                         </tr>
                                         <% })%>
+                                        
 
                                         <tr>
+                                            <td></td>
                                             <td colspan="4">
                                                 <article class="float-end">
                                                     <dl class="dlist">

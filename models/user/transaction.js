@@ -13,20 +13,24 @@ const transaction= new mongoose.Schema({
         ref:"order",
         required:false,
     },
-    modeoftransaction:{
-        type:String,
-        required:false,
-        
-    },
-    payementStatus:{
-        type:String,
-        required:false,
 
-    },
-    paymentAmount:{
-        type:String,
-        required:true,
-    }
+  
+    products:[{
+        product_id:{
+            type:mongoose.Schema.Types.ObjectId,
+            required:false,
+        },
+        productAmount:{
+          type:Number,
+          required:true,
+        },
+        payementStatus:{
+          type:String,
+          required:false,
+    
+        },
+    }],
+
 
 })
 module.exports =mongoose.model("transaction", transaction)

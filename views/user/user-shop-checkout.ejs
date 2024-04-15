@@ -18,6 +18,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
+    <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
 </head>
 
 <body>
@@ -84,15 +85,64 @@
                             </div>
                             <div class="panel-collapse collapse coupon_form " id="coupon">
                                 <div class="panel-body">
-                                    <!-- <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p> -->
-                                    <!-- <form method="post">
+                                     <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p> 
+                                
                                     <div class="form-group">
-                                        <input type="text" placeholder="Enter Coupon Code...">
+                                        <input type="text" id="couponId" placeholder="Enter Coupon Code...">
                                     </div>
                                     <div class="form-group">
-                                        <button class="btn  btn-md" name="login">Apply Coupon</button>
+                                        <button class="btn  btn-md" name="login" onclick="applyCoupon(this)" data-totalamount="<%= CartDetail.totalprice %>">Apply Coupon</button>
                                     </div>
-                                </form> -->
+                            
+                                <script>
+                                   async function applyCoupon(btnelement){
+                                        const couponCode = document.getElementById("couponId").value;
+                                        const totalAmount = btnelement.getAttribute("data-totalamount");
+                                        console.log(totalAmount)
+                                        const response = await fetch(`/applyCoupon?couponCode=${couponCode}&totalAmount=${totalAmount}`,{
+                                            method:"GET",
+                                        });
+                                        if(!response){
+                                            throw new Error("Internal server Error")
+                                        }
+                                        const data= await response.json()
+                                        console.log(data.data);
+                                        if(data.data == "oldUser"){
+                                            const Toast = Swal.mixin({
+                                         toast: true,
+                                         position: "top-end",
+                                         showConfirmButton: false,
+                                         timer: 3000,
+                                         timerProgressBar: true,
+                                         didOpen: (toast) => {
+                                             toast.onmouseenter = Swal.stopTimer;
+                                             toast.onmouseleave = Swal.resumeTimer;
+                                         }
+                                         });
+                                         Toast.fire({
+                                         icon: "warning",
+                                         title: "Coupon is already availed"
+                                         }).then(()=>window.location.reload())
+
+                                        }else if(data.data == "couponAppiled"){
+                                            const discountCoupon = document.getElementById("couponValue")
+                                            const cartSuperTotal = document.getElementById("cartSubtotal1");
+                                            discountCoupon.textContent =null;
+                                            discountCoupon.textContent = data?.discount;
+                                            cartSuperTotal.innerHTML="";
+                                            cartSuperTotal.textContent="";
+                                            cartSuperTotal.textContent = data?.priceAfterDiscount;
+                                            party.confetti(btnelement, {
+                                            count: party.variation.range(20, 40),
+                                        });
+                                        
+                                            
+                                        }else{
+                                            console.log("Logic Error")
+                                        }
+
+                                    }
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -351,6 +401,28 @@
                                     </script>
 
                                 </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="cart_total_label">Cart Subtotal</td>
+                                                <td class="cart_total_amount text-right"><span class="font-lg fw-900 text-brand align-items-center" id="cartSubtotal">₹  <%= CartDetail.totalprice%></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="cart_total_label">Shipping</td>
+                                                <td class=" text-right"> <i class="ti-gift mr-5 text-right"></i> Free Shipping</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="cart_total_label">Coupon Discount</td>
+                                                <td class=" text-right"> <i class="ti-gift mr-5 text-right text-success font-md" id="couponValue"></i></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="cart_total_label">Total</td>
+                                                <td class="cart_total_amount text-right"><strong><span class="font-xl fw-900 text-brand" id="cartSubtotal1"><%= CartDetail.totalprice%></span></strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                 <div class="payment_method">
                                     <div class="mb-25">
@@ -418,15 +490,6 @@
                                     </div>
                                 </div>
                                 </form>
-
-
-
-                              
-<!-- jQuery CDN -->
-
-
-                                <!-- Modal -->
-                  
 
 
 
@@ -622,6 +685,7 @@
                                 </script>
                                 
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -631,6 +695,7 @@
             <section class="newsletter p-30 text-white wow fadeIn animated">
                 <div class="container">
                     <div class="row align-items-center">
+                        
                         <div class="col-lg-7 mb-md-3 mb-lg-0">
                             <div class="row align-items-center">
                                 <div class="col flex-horizontal-center">

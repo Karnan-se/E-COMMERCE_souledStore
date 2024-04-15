@@ -18,6 +18,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
+    <link rel="stylesheet" href="iziToast.min.css">
+    <script src="iziToast.min.js" type="text/javascript"></script>
     
 </head>
 
@@ -192,7 +194,7 @@
 
 <!------------------------------------------------------------------------------------------------------------------------------------------------------- cancel Button -->
                                                                                 <% if(items.paymentStatus == "PaymentFailed") {%>
-                                                                                    <button type="button"  class=" btn btn-danger retryTransaction" >Retry transaction
+                                                                                    <button type="button"  class=" btn btn-danger d-none" >Retry-transaction</button>
                                                                                         <% } else if(item.isOrderCancelled == true || item.isOrderReturned == true ){%>
 
                                                                                             <button type="button" class="d-none"></button>
@@ -213,7 +215,9 @@
                                                                                             <% if(items.orderStatus == "delivered") {%>
 
                                                                                               <a href="/ratings?orderid=<%=items._id%>&productId=<%=item.product._id %>&itemSize=<%= item.size %>"> <p class="text-black ratingButon"  >Rate This Product</p></a>
-                                                                                         <% }%>
+                                                                                    
+
+                                                                                            <%}%>
                                                                                         </div>
                                                                                       </div>
                                                                                 </div>
@@ -253,8 +257,13 @@
                                                                     
                                                                     <hr>
                                                                     <div>
-                                                                        <% if(items.orderStatus == "delivered" || items.paymentStatus === "PaymentFailed" || items.orderStatus == "Cancelled" || items.orderStatus== "Returned") {%>
+                                                                        <% if(items.orderStatus == "delivered" || items.orderStatus == "Cancelled" || items.orderStatus== "Returned") {%>
                                                                             <button class="track-button btn d-none btn-warning" data-bs-target="#orderDetailsModal"  data-bs-toggle="modal">Track</button>
+                                                                            <% }else if(items.paymentStatus == "PaymentFailed"){%>
+
+                                                                                <button type="button"  class=" btn btn-danger retryTransaction "  data-amount="<%=items.totalAmount%>" data-orderId="<%=items._id%>">Retry-transaction</button>
+
+                                                                                
                                                                             <%} else {%>'
                                                                             <button class="track-button btn btn-warning " data-bs-target="#orderDetailsModal"  data-bs-toggle="modal">Track</button>
                                                                             <%}%>
@@ -323,25 +332,152 @@
                                                         <div class="bg-dark"></div>
                                                         <!-- Content goes here -->
                                                     </div>
+                                                    <template id="my-template">
+                                                        <swal-title>
+                                                          Save changes to "" before closing?
+                                                        </swal-title>
+                                                        <swal-icon type="warning" color="red"></swal-icon>
+                                                        <swal-button type="confirm">
+                                                          Confirm
+                                                        </swal-button>
+                                                        <swal-button type="cancel">
+                                                          Cancel
+                                                        </swal-button>
+                                                        <swal-param name="allowEscapeKey" value="false" />
+                                                        <swal-param
+                                                          name="customClass"
+                                                          value='{ "popup": "my-popup" }' />
+                                                        <swal-function-param
+                                                          name="didOpen"
+                                                          value="popup => console.log(popup)" />
+                                                      </template>
+                                                      <style>
+                                                        .center-icon {
+                                                            display: flex;
+                                                            justify-content: center;
+                                                            align-items: center;
+                                                        }
+                                                        </style>
+                                                      
+                                                      
                                                     
                                                     <% }) %>
+                                                    <script>
+                                                        const retryButton = document.querySelectorAll(".retryTransaction");
+                                                        retryButton.forEach((retry)=>{
+                                                            retry.addEventListener("click", async function(){
+                                                                console.log("retyTransaction");
+                                                                const totalamount = this.getAttribute("data-amount")
+                                                                const productorderId = this.getAttribute("data-orderId")
+                                                                console.log(totalamount)
+                                                                const response = await fetch(`/retryTransaction?totalPrice=${totalamount}`,{
+                                                                    method:"GET",
+                                                                })
+                                                                if(!response){
+                                                                    throw new Error("internal Server Error")
+                                                                }
+                                                                const data = await response.json();
+                                                                var options = {
+                                                                                                                "key": "rzp_test_ihsNz6lracNIu3", 
+                                                                                                                "amount": data.order.amount, 
+                                                                                                                "currency": "INR",
+                                                                                                                "name": "Karnan Corp",
+                                                                                                                "description": "Test Transaction",
+                                                                                                                "image": "https://example.com/your_logo",
+                                                                                                                "order_id": data.order.order_id, 
+                                                                                                                "handler": async (responseHandler) => {
+                                                                                                                    const responseStatus = await fetch(`/paymentStatus?status=${"PaymentRecieved"}&orderId=${productorderId}`,{
+                                                                                                                        method:"GET"
+
+                                                                                                                    })
+                                                                                                                    if(!responseStatus){
+                                                                                                                        throw new Error("Internal Server Error")
+                                                                                                                    }
+                                                                                                                    const datas= responseStatus.json()
+                                                                                                                    console.log(datas.datas)
+                                                                                                                    const Toast = Swal.mixin({
+                                                                                                                    toast: true,
+                                                                                                                    position: "top-end",
+                                                                                                                    showConfirmButton: false,
+                                                                                                                    timer: 3000,
+                                                                                                                    timerProgressBar: true,
+                                                                                                                    didOpen: (toast) => {
+                                                                                                                        toast.onmouseenter = Swal.stopTimer;
+                                                                                                                        toast.onmouseleave = Swal.resumeTimer;
+                                                                                                                    }
+                                                                                                                    });
+                                                                                                                    Toast.fire({
+                                                                                                                    icon: "success",
+                                                                                                                    title: "Order placed Successfully"
+                                                                                                                    }).then(()=>window.location.reload())
+                                                                                                                    
+                                                                                                                   
+                                                                                                                },
+                                                                                                                "theme": {
+                                                                                                                    "color": "#3399cc"
+                                                                                                                }
+                                                                                                            };
+                                                                                                            var rzp1 = new Razorpay(options);
+                                                                                                            rzp1.on('payment.failed', async (responseFailed) => {
+                                                                                                                const responseStatus = await fetch(`/paymentStatus?status=${'PaymentFailed'}&orderId=${productorderId}`, {
+                                                                                                                    method: "GET",
+                                                                                                                });
+                                                                                                                if (!responseStatus) {
+                                                                                                                    throw new Error("Internal server Error");
+                                                                                                                }
+                                                                                                                const paymentFailed = await responseStatus.json();
+                                                                                                                console.log(paymentFailed);
+
+                                                                                                                const Toast = Swal.mixin({
+                                                                                                                    toast: true,
+                                                                                                                    position: "top-end",
+                                                                                                                    showConfirmButton: false,
+                                                                                                                    timer: 3000,
+                                                                                                                    timerProgressBar: true,
+                                                                                                                    didOpen: (toast) => {
+                                                                                                                        toast.onmouseenter = Swal.stopTimer;
+                                                                                                                        toast.onmouseleave = Swal.resumeTimer;
+                                                                                                                    }
+                                                                                                                    });
+                                                                                                                    Toast.fire({
+                                                                                                                    icon: "warning",
+                                                                                                                    title: "Transaction Failed"
+                                                                                                                    }).then(()=>window.location.reload())
+                                                                                                                
+                                                                                                            });
+                                                                                                            rzp1.open();
+                                                                
+
+
+                                                            })
+                                                        })
+                                                    </script>
+
+
+
                                                     <script>
                                                         const cancelButton = document.querySelectorAll(".cancelButton");
                                                         cancelButton.forEach((cancel)=>{
                                                             cancel.addEventListener("click",async function(){
-                                                                alert(cancel.textContent)
+                                                                const buttontext = cancel.textContent.trim()
+                                                                
                                                                
                                                                 Swal.fire({
                                                                     icon:"warning",
-                                                                    title:"are you sure want to delete this order",
+                                                                    title:`Are you sure want to ${buttontext}`,
                                                                     showCancelButton: true,
                                                                     confirmButtonText: "Yes",
-                                                                    cancelButtonText: "Cancel"
+                                                                    cancelButtonText: "Cancel",
+                                                                    customClass: {
+                                                                        icon: 'd-flex justify-content-center align-items-center center-icon'
+                                                                    }
                                                                 })
                                                                 .then(async (result) =>{
                                                                     if(result.isConfirmed) {
 
                                                                 if(cancel.textContent.trim() == "Cancel") {
+                                                                    
+
                                                                 const orderId = this.getAttribute("data-orderId")
                                                                 const price = this.getAttribute("data-price");
                                                                 const ProductId = this.getAttribute("data-productId");
@@ -438,6 +574,9 @@
                                                                 })
                                                                 
                                                               }
+
+
+
                                                             }
 
                                                         }
@@ -1219,12 +1358,25 @@
                                                                                                                     if(!responseStatus){
                                                                                                                         throw new Error("Internal Server Error")
                                                                                                                     }
-
-                                                                                                                    setTimeout(()=>{
-                                                                                                                        window.location.reload()
-                                                                                                                    }, 3000)
-
-
+                                                                                                                    const datas= responseStatus.json()
+                                                                                                                    console.log(datas.datas)
+                                                                                                                    const Toast = Swal.mixin({
+                                                                                                                    toast: true,
+                                                                                                                    position: "top-end",
+                                                                                                                    showConfirmButton: false,
+                                                                                                                    timer: 3000,
+                                                                                                                    timerProgressBar: true,
+                                                                                                                    didOpen: (toast) => {
+                                                                                                                        toast.onmouseenter = Swal.stopTimer;
+                                                                                                                        toast.onmouseleave = Swal.resumeTimer;
+                                                                                                                    }
+                                                                                                                    });
+                                                                                                                    Toast.fire({
+                                                                                                                    icon: "success",
+                                                                                                                    title: "Amont credited to The Wallet"
+                                                                                                                    }).then(()=>window.location.reload())
+                                                                                                                    
+                                                                                                                   
                                                                                                                 },
                                                                                                                 "theme": {
                                                                                                                     "color": "#3399cc"
@@ -1232,6 +1384,21 @@
                                                                                                             };
                                                                                                             var rzp1 = new Razorpay(options);
                                                                                                             rzp1.on('payment.failed', async (responseFailed) => {
+                                                                                                                const Toast = Swal.mixin({
+                                                                                                                    toast: true,
+                                                                                                                    position: "top-end",
+                                                                                                                    showConfirmButton: false,
+                                                                                                                    timer: 3000,
+                                                                                                                    timerProgressBar: true,
+                                                                                                                    didOpen: (toast) => {
+                                                                                                                        toast.onmouseenter = Swal.stopTimer;
+                                                                                                                        toast.onmouseleave = Swal.resumeTimer;
+                                                                                                                    }
+                                                                                                                    });
+                                                                                                                    Toast.fire({
+                                                                                                                    icon: "warning",
+                                                                                                                    title: "Transaction Failed"
+                                                                                                                    }).then(()=>window.location.reload())
                                                                                                                 
                                                                                                             });
                                                                                                             rzp1.open();
@@ -1273,7 +1440,7 @@
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
-                                                                                
+                                                                                <%if(WalletDetail) {%>
                                                                                 <%const reversedWallet = WalletDetail.history.reverse()%>
                                                                                 <% reversedWallet.forEach((item)=> {%> 
                                                             
@@ -1295,6 +1462,7 @@
                                                                                 </tr>
 
                                                                                 <%})%>
+                                                                                <%}%>
                                                                             </tbody>
                                                                         </table>
                                                                     </div> <!-- table-responsive.// -->
@@ -1317,15 +1485,6 @@
                                                     </div>
                                                 </section>
                                                 </div>
-
-
-
-
-
-
-
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -1334,15 +1493,6 @@
                         </div>
                         </div>
                     </section>
-
-
-
-
-
-
-
-
-
 
                 </main>
                 <footer class="main">

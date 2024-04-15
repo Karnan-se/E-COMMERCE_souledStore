@@ -56,10 +56,14 @@ let addAmounttoWallet = async(req, res)=>{
                 userId:userId,
                 TotalAmount:walletAmount/100
             })
-            userwallet.history.push({amount:walletAmount/100, type: "Credit",description:"Deposit" })
+            
            
            await walletSchem.save()
-           await userwallet.save();
+           const newwallet = await WalletSchema.findOne({userId:userId})
+           newwallet.history.push({amount:walletAmount/100, type: "Credit",description:"Deposit" })
+           
+           
+           await newwallet.save()
 
         }else{
 
@@ -72,7 +76,7 @@ let addAmounttoWallet = async(req, res)=>{
 
             await userwallet.save();
             console.log("cash updated")
-                return await res.status(200).json({data:"hey"})
+                return await res.status(200).json({datas:"hey"})
         }
                 
         

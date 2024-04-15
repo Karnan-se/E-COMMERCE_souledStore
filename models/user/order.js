@@ -25,6 +25,11 @@ const {format} = require('date-fns')
                 type: String,
                 required:false,
             },
+            coupon:{
+                type:String,
+                required:false,
+                default:0,
+            },
             products: [{
                 product:{
                     type:  mongoose.Schema.Types.ObjectId,

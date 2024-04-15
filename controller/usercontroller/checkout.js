@@ -6,6 +6,8 @@ const order = require("../../models/user/order");
 const addproduct= require("../../models/addproduct/addproduct")
 const instance= require("../../utils/razorpay")
 const walletSchema = require("../../models/user/wallets")
+const Coupons= require("../../models/admin/coupons")
+
 
 
 
@@ -61,6 +63,7 @@ const cartDetail = await cart.findOne({userId:userId})
         totalAmount:TotalPrice,
         products:productinCart,
         paymentMethod:paymentMethod,
+        paymentStatus:"Cashondelivery",
         
         addresstoDeliver:{
             username:userDetail.name,
@@ -112,6 +115,10 @@ const cartDetail = await cart.findOne({userId:userId})
         const walletBalance=checkWalletbalance.TotalAmount - TotalPrice;
         if(walletBalance>0){
             const walletUpdate= await walletSchema.updateOne({userId:userId},{$inc:{TotalAmount:-TotalPrice}})
+            const transactioninWallet = await walletSchema.findOne({userId:userId})
+            transactioninWallet.history.push({amount:TotalPrice, type:"Debit", description: "Purchase"})
+            await transactioninWallet.save()
+
             console.log("worked upto here")
            
            return await res.status(200).json({data:"success", wallet: checkWalletbalance, walletBalance, TotalPrice,trueorderId})
@@ -175,7 +182,7 @@ let WalletPaymentCancelled= async(req, res)=>{
 
         console.log(revertWallet)
 
-        console.log("walllet  Balane reverted")
+        console.log("walllet  Balance reverted")
         await res.status(200).json({status:"walletCancelled"});
         
     } catch (error) {
@@ -197,6 +204,55 @@ let thanYou = async(req, res)=>{
     }
 }
 
+let applyCoupon = async(req, res)=>{
+    try {
+        const couponCode = req.query.couponCode;
+        const totalAmount = req.query.totalAmount;
+        const date = Date.now()
+        console.log(date)
+        console.log(couponCode);
+        const userId = req.session.userisAuth._id;
+        console.log(userId)
+        const findCoupons = await Coupons.findOne({coupon_code:couponCode})
+       
+        const isUserIdPresent = findCoupons.userId.includes(userId);
+       if(!isUserIdPresent){
+
+        if(date > findCoupons.expiryDate){
+            console.log("Date is Expired")
+            return res.status(200).json({data:"expired"})
+        }else{
+            if(totalAmount<findCoupons.minimumAmount){
+                console.log("Less than minimum order Amount")
+                return res.status(200).json({data:"lessthanMinimumAmount"})
+            }else{
+              const discount =  (totalAmount*findCoupons.percentage)/100;
+              if(discount>findCoupons.maximumAmount){
+                console.log("GreaterThanDiscount");
+                const priceAfterDiscount = totalAmount-findCoupons.maximumAmount;
+                return res.status(200).json({data:"couponAppiled", discount:findCoupons.maximumAmount, priceAfterDiscount});
+                
+              }else{
+                const priceAfterDiscount = totalAmount-discount;
+            
+                return res.status(200).json({data:"couponAppiled",discount:discount, priceAfterDiscount})
+              }
+            }
+        }
+      
+       }else{
+        console.log("oldUser")
+        return await res.status(200).json({data:"oldUser"})
+       }
+
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
 
 
 module.exports ={
@@ -204,6 +260,7 @@ module.exports ={
     welcomePage,
     paymentStatus,
     WalletPaymentCancelled,
-    thanYou
+    thanYou,
+    applyCoupon
 
 }

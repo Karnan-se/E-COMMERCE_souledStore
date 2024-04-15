@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt")
 const Wallet = require("../../models/user/wallets");
 const order = require("../../models/user/order");
 const transaction = require("../../models/user/transaction")
+const instance = require("../../utils/razorpay");
 
 let user_page_account = async(req, res)=>{
     try {
@@ -331,6 +332,36 @@ let returnOrder = async(req, res)=>{
         console.log(error.message)
     }
 }
+
+let retryTransaction = async(req, res)=>{
+    try {
+        const totalamount = req.query.totalPrice;
+        console.log(totalamount);
+        var options = {
+            amount: totalamount*100,  
+            currency: "INR",
+            receipt: "order_rcptid_11",   
+
+          };
+          instance.orders.create(options, async function(err, order) {
+            console.log("order:",order);
+            return await res.status(200).json({order})
+          });
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+
+
+
+
+
 module.exports={user_page_account, 
     currentPassword,
     newpasswordchange,
@@ -340,4 +371,6 @@ module.exports={user_page_account,
     updateName,
     editAddressfields,
     cancelOrder,
-    returnOrder}
+    returnOrder,
+    retryTransaction
+}

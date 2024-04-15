@@ -1,103 +1,80 @@
-                                                                                <div class="rating-feedback">
-                                                                                <div class="rating-stars">
-                                                                                    <div class="rating-box">
-                                                                                    
-                                                                                        <div class="stars">
+ <script>
+                                                                    const retryButton = document.querySelectorAll(".retryTransaction");
+                                                                    retryButton.forEach((retry) => {
+                                                                        retry.addEventListener("click", async function () {
+                                                                            console.log("retyTransaction");
+                                                                            const totalamount = this.getAttribute("data-amount")
+                                                                            console.log(totalamount)
+                                                                            const response = await fetch(`/retryTransaction?totalPrice=${totalamount}`, {
+                                                                                method: "GET",
+                                                                            })
+                                                                            if (!response) {
+                                                                                throw new Error("internal Server Error")
+                                                                            }
+                                                                            const data = await response.json();
+                                                                            var options = {
+                                                                                "key": "rzp_test_ihsNz6lracNIu3",
+                                                                                "amount": data.order.amount,
+                                                                                "currency": "INR",
+                                                                                "name": "Karnan Corp",
+                                                                                "description": "Test Transaction",
+                                                                                "image": "https://example.com/your_logo",
+                                                                                "order_id": data.order.order_id,
+                                                                                "handler": async (responseHandler) => {
+                                                                                    const response = await fetch(`/addAmounttoWallet?amount=${data.order.amount}`, {
+                                                                                        method: "GET"
 
-                                                                                            <% for (let i = 0; i < 5; i++) { %>
-                                                                                                <% let goldenStars = 0; %>
-                                                                                                <% ratings.forEach(rating => { %>
-                                                                                                    <% rating.rating.forEach(rate => { %>
-                                                                                                        <% if ((item.product._id.toString() === rate.productId.toString()) && (rate.size == item.size)) { %>
-                                                                                                            <% goldenStars = rate.hisRatings; %>
-                                                                                                            <%= console.log("rating matched"); %>
-                                                                                                            <%= console.log(goldenStars); %>
-                                                                                                        <% } %>
-                                                                                                        <% }); %>
-                                                                                                        <% }); %>
-                                                                                               
-                                                                                                <i class="fa-solid fa-star <%= i < goldenStars == item.product._id.toString() ? 'active' : '' %>" data-value="<%= i + 1 %>" data-size="<%= item.size %>" data-product="<%= item.product._id %>" data-orderId="<%= items._id %>"></i>
-                                                                                               
-                                                                                            <% } %>
-                                                                                        </div>
-                                                                                      </div>
-                                                                                </div>
-                                                                                <div class="feedback">Feedback: </div>
-                                                                            </div>
-
-
-                                                                            <style>
-                                                                        .rating-box{
-                                                                            cursor: pointer;
-                                                                            outline: none;
-                                                                            text-decoration: none;
-                                                                        }
-                                                                        
-                                                                        .stars i {
-                                                                        color: #ffffff;
-                                                                        font-size: 15px;
-                                                                        cursor: pointer;
-                                                                        transition: color 0.2s ease;
-                                                                            
-                                                                       
-                                                                        }
-                                                                        .stars i.active {
-                                                                        color: #ff9c1a;
-                                                                        }
-                                                                        .stars i:focus {
-                                                                        outline: none;
-                                                                        }
-                                                            </style>
+                                                                                    })
+                                                                                    if (!response) {
+                                                                                        throw new Error("Internal Server Error")
+                                                                                    }
+                                                                                    const datas = response.json()
+                                                                                    console.log(datas.datas)
+                                                                                    const Toast = Swal.mixin({
+                                                                                        toast: true,
+                                                                                        position: "top-end",
+                                                                                        showConfirmButton: false,
+                                                                                        timer: 3000,
+                                                                                        timerProgressBar: true,
+                                                                                        didOpen: (toast) => {
+                                                                                            toast.onmouseenter = Swal.stopTimer;
+                                                                                            toast.onmouseleave = Swal.resumeTimer;
+                                                                                        }
+                                                                                    });
+                                                                                    Toast.fire({
+                                                                                        icon: "success",
+                                                                                        title: "Amont credited to The Wallet"
+                                                                                    }).then(() => window.location.reload())
 
 
+                                                                                },
+                                                                                "theme": {
+                                                                                    "color": "#3399cc"
+                                                                                }
+                                                                            };
+                                                                            var rzp1 = new Razorpay(options);
+                                                                            rzp1.on('payment.failed', async (responseFailed) => {
+                                                                                const Toast = Swal.mixin({
+                                                                                    toast: true,
+                                                                                    position: "top-end",
+                                                                                    showConfirmButton: false,
+                                                                                    timer: 3000,
+                                                                                    timerProgressBar: true,
+                                                                                    didOpen: (toast) => {
+                                                                                        toast.onmouseenter = Swal.stopTimer;
+                                                                                        toast.onmouseleave = Swal.resumeTimer;
+                                                                                    }
+                                                                                });
+                                                                                Toast.fire({
+                                                                                    icon: "warning",
+                                                                                    title: "Transaction Failed"
+                                                                                }).then(() => window.location.reload())
 
-                                                            <script>
-                                                     const stars = document.querySelectorAll(".stars i");
-                                                    stars.forEach((star, index) => {
-                                                        star.addEventListener("click",async  function() {
-                                                            const value = this.getAttribute("data-value");
-                                                            const size = this.getAttribute("data-size")
-                                                            const productId = this.getAttribute("data-product") 
-                                                            const orderID =this.getAttribute("data-orderId")  
-                                                            stars.forEach((s, i) => {
-                                                                s.classList.remove("active");
-
-                                                                if(i<= index) {
-                                                                    s.classList.add("active")
-                                                                }
-
-                                                            });
-                                                            console.log(`Ratings`,"size","productId",  value,size, productId)
-                                                            const response = await fetch(`/addratings`,{
-                                                                method:"POST",
-                                                                headers:{
-                                                                    
-                                                                    "content-type": "application/json",
-                                                            
-                                                                },
-                                                                body: JSON.stringify({
-                                                                    value:value,
-                                                                    size: size,
-                                                                    productId: productId,
-                                                                    orderID: orderID,
-                                                                })
-                                                                
-                                                           
-                                                            })
-                                                            if(!response){
-                                                                throw new Error("internal server Error")
-                                                            }
-                                                            const data= await response.json()
-                                                            console.log(data);
-                                                           
-                                                            
-                                                        });
-                                                    });
-
-                                                 </script>
+                                                                            });
+                                                                            rzp1.open();
 
 
 
-
-
-                                                 data-value="<%= i + 1 %>" data-size="<%= item.size %>" data-product="<%= item.product._id %>" data-orderId="<%= items._id %>"
+                                                                        })
+                                                                    })
+                                                                </script>

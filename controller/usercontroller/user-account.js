@@ -5,6 +5,7 @@ const rating = require("../../models/user/ratings")
 const bcrypt = require("bcrypt")
 const Wallet = require("../../models/user/wallets");
 const order = require("../../models/user/order");
+const addproduct = require("../../models/addproduct/addproduct")
 const transaction = require("../../models/user/transaction")
 const instance = require("../../utils/razorpay");
 
@@ -255,9 +256,19 @@ let cancelOrder = async(req, res)=>{
             { _id: orderId, "products._id": ProductId, "products.isOrderCancelled": false },
             { $set: { "products.$.isOrderCancelled": true, "products.$.isOrderReturned": true } }
         );
-
-   
             const newOrder = await order.find({_id:orderId})
+            
+            const iteratingmap = newOrder[0].products.map( async (item)=>{
+                 const product = item.product;
+                 const size = item.size;
+                 const quantity = item.quantity;
+                 const quantityupdated= await addproduct.updateOne({_id:product, [`sizes.${size}`]:{$exists:true}},{$inc:{[`sizes.${size}.newStock`]:quantity}})
+                 console.log("quantity updated")
+                 console.log(quantityupdated)
+ 
+ 
+             })
+
             const ExtractorderDetails = await Promise.all(newOrder[0].products.map(async(product)=>{
                 return product.isOrderCancelled;
             }))
@@ -300,11 +311,23 @@ let returnOrder = async(req, res)=>{
                 { _id: orderId, "products._id": ProductId, "products.isOrderReturned": false },
                 { $set: { "products.$.isOrderReturned": true } },
             );
-         
+
+            // stockManagement
             const newOrder = await order.find({_id:orderId})
+           const iteratingmap = newOrder[0].products.map( async (item)=>{
+                const product = item.product;
+                const size = item.size;
+                const quantity = item.quantity;
+                const quantityupdated= await addproduct.updateOne({_id:product, [`sizes.${size}`]:{$exists:true}},{$inc:{[`sizes.${size}.newStock`]:quantity}})
+                console.log("quantity updated")
+                console.log(quantityupdated)
+
+
+            })
             const ExtractorderDetails = await Promise.all(newOrder[0].products.map(async(product)=>{
             return product.isOrderReturned;
             }))
+            
             
             
             const allproductsReturned = ExtractorderDetails.every(value=> value === true)
@@ -354,13 +377,6 @@ let retryTransaction = async(req, res)=>{
         
     }
 }
-
-
-
-
-
-
-
 
 module.exports={user_page_account, 
     currentPassword,

@@ -127,18 +127,58 @@
                                         }else if(data.data == "couponAppiled"){
                                             const discountCoupon = document.getElementById("couponValue")
                                             const cartSuperTotal = document.getElementById("cartSubtotal1");
-                                            discountCoupon.textContent =null;
+                                            const inputCoupons = document.getElementById("inputCoupons");
+                                            
+                                            
+                                           
+                                            const discountAmount = data?.discount
+                                            console.log(discountAmount)
                                             discountCoupon.textContent = data?.discount;
-                                            cartSuperTotal.innerHTML="";
-                                            cartSuperTotal.textContent="";
+                                            inputCoupons.value=discountAmount
                                             cartSuperTotal.textContent = data?.priceAfterDiscount;
                                             party.confetti(btnelement, {
                                             count: party.variation.range(20, 40),
+                                           
+
                                         });
-                                        
-                                            
+                                        const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        }
+                                        });
+                                        Toast.fire({
+                                        icon: "success",
+                                        title: "copoun Applied"
+                                        })
+
+                                         inputCoupons.value =data?.discount; 
+                                        }else if(data.data == "invalidCoupon"){
+                                            const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        }
+                                        });
+                                        Toast.fire({
+                                        icon: "warning",
+                                        title: "Invalid Coupons"
+                                        }).then(()=>{
+                                            window.location.reload()
+                                        });
+                                           
                                         }else{
-                                            console.log("Logic Error")
+                                            console.log("logic Error");
                                         }
 
                                     }
@@ -284,6 +324,8 @@
                                                 </div>
                                                 <% } %>
                                                     <% } %>
+
+                                                    <input class="form text-right text-success font-md " id="inputCoupons" name="inputCoupons" value="">
                                                         <script>
                                                             async function updateAddressStatus(index) {
                                                                 console.log(index);
@@ -414,7 +456,9 @@
                                             </tr>
                                             <tr>
                                                 <td class="cart_total_label">Coupon Discount</td>
-                                                <td class=" text-right"> <i class="ti-gift mr-5 text-right text-success font-md" id="couponValue"></i></td>
+                                                <td class=" text-right"> <i class="ti-gift mr-5 text-right text-success font-md" id="couponValue" name="coupons"></i></td>
+                                                
+
                                             </tr>
                                             <tr>
                                                 <td class="cart_total_label">Total</td>
@@ -508,6 +552,8 @@
                                     console.log("address Selected");
                                     var paymentMethod = document.querySelector('input[name="payment_option"]:checked');
                                     console.log('paymentMethod.value=========', paymentMethod.value);
+                                    var inputCoupon = document.getElementById("inputCoupons").value;
+                                    var inputCoupons =parseInt(inputCoupon)
 
                                     if(paymentMethod.value == "Cash on delivery") {
                                         console.log("cash on delivery choosen");
@@ -518,7 +564,8 @@
                                             },
                                             body: JSON.stringify({
                                                 paymentMethod: paymentMethod.value,
-                                                selectedAddress: selectedAddress.value
+                                                selectedAddress: selectedAddress.value,
+                                                inputCoupons:inputCoupons
 
                                             })
                                         })
@@ -542,7 +589,8 @@
                                             },
                                             body: JSON.stringify({
                                                 paymentMethod: paymentMethod.value,
-                                                selectedAddress: selectedAddress.value
+                                                selectedAddress: selectedAddress.value,
+                                                inputCoupons:inputCoupons
                                             })
                                         });
                                         if (!response) {
@@ -596,7 +644,8 @@
                                             },
                                             body: JSON.stringify({
                                                 paymentMethod: paymentMethod.value,
-                                                selectedAddress: selectedAddress.value
+                                                selectedAddress: selectedAddress.value,
+                                                inputCoupons:inputCoupons
                                             })
                                         });
                                         if (!response) {

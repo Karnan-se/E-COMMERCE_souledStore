@@ -1,6 +1,7 @@
 const { log } = require("console")
 const product = require("../../models/addproduct/addproduct")
 const cart = require("../../models/user/cart")
+const Order = require("../../models/user/order")
 const { default: mongoose } = require("mongoose")
 
 
@@ -80,14 +81,7 @@ let addtoCart = async(req, res)=>{
                 const Localprice =quantity*price;
                 allprice += Localprice;
                 console.log(`${allprice} this is total price`)
-
-           
-
-                
-
                 var updatePrice= await cart.updateOne({_id:data._id, "items._id" : itemId},{$set:{"items.$.price":Localprice}})
-               
-            
             }
            
             const totalPrice = await cart.updateOne({userId:userId},{$set:{totalprice:allprice}} )
@@ -237,6 +231,27 @@ let updatePriceToCart = async(req, res)=>{
     }
 }
 
+let checkStock = async(req, res)=>{
+    try {
+        
+        const stockSize = req.query.stockSize;
+        console.log(stockSize)
+        const productId = req.query.productId;
+        console.log(productId);
+      
+        const productDetails = await product.findOne({_id:productId})
+        const stock = productDetails.sizes[stockSize].newStock;
+
+       console.log(stock);
+       await res.status(200).json({data:stock})
+
+
+    }catch (error){
+        console.log(error.message)
+        
+    }
+}
+
 
 module.exports={
     shop_cart,
@@ -244,5 +259,7 @@ module.exports={
     DeleteItem,
     quantityUpdate,
     updatePriceToCart,
+    checkStock,
+    
 
 }

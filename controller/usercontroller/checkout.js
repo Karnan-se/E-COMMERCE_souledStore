@@ -38,6 +38,8 @@ let welcomePage =async(req, res)=>{
 
         const selectedAddress = req.body.selectedAddress;
         const paymentMethod = req.body.paymentMethod;
+        let inputCoupons =  req.body.inputCoupons ?? 0;
+        console.log(inputCoupons)
         console.log(paymentMethod)
 
         const userDetail = req.session.userisAuth;
@@ -54,7 +56,8 @@ const cartDetail = await cart.findOne({userId:userId})
        const productinCart = cartDetail.items.map((item)=>{
             return item
         })
-        const TotalPrice = cartDetail.totalprice;
+        if(cartDetail){
+        const TotalPrice = (cartDetail.totalprice)-parseInt(inputCoupons);
         console.log(TotalPrice)
 
        const newOrder = new OrderDetails({
@@ -63,7 +66,8 @@ const cartDetail = await cart.findOne({userId:userId})
         totalAmount:TotalPrice,
         products:productinCart,
         paymentMethod:paymentMethod,
-        paymentStatus:"Cashondelivery",
+        
+        coupon:inputCoupons,
         
         addresstoDeliver:{
             username:userDetail.name,
@@ -72,15 +76,20 @@ const cartDetail = await cart.findOne({userId:userId})
             state:trueAddress.State,
             district:trueAddress.Street,
             city:trueAddress.City,
+            paymentStatus:"pending"
         }
         })
 
         const saveOrder = await  newOrder.save()
         var trueorderId = saveOrder._id;
         console.log(trueorderId);
+    
 
         if(paymentMethod == "Cash on delivery"){
-            
+            const statusupdatecod = await OrderDetails.findOne({_id:trueorderId})
+            statusupdatecod.paymentStatus = "Cash-on-Delivery";
+            await statusupdatecod.save();
+
                return await res.status(200).json({data:"welcome Page"})
         }
 
@@ -129,7 +138,8 @@ const cartDetail = await cart.findOne({userId:userId})
             return await res.status(200).json({data:"failed"})
         }  
        
-    }      
+    }
+}      
     } catch (error) {
         console.log(error.message)
         
@@ -143,24 +153,35 @@ const paymentStatus = async(req, res)=>{
         const orderId = req.query.orderId;
         const userId = req.session.userisAuth._id;
         const updatePaymentStatus = await OrderDetails.updateOne({_id:orderId},{$set:{paymentStatus:Status}})
+        const findOrder = await OrderDetails.findOne({_id: orderId })
 
         // stockMangement
-        if(updatePaymentStatus && updatePaymentStatus=="PaymentRecieved"){
+        if(updatePaymentStatus && findOrder.paymentStatus=="PaymentRecieved"){
 
         const cartDetail = await cart.findOne({userId:userId})
-        const productinCart = cartDetail.items.map((item)=>{
-            return item
-        })
-            for(items of productinCart){
-                const quantity=items.quantity;
-                const size = items.size;
-                const product =items.product;
+        const productinCart = cartDetail.items.map(async (item)=>{
+            const quantity = item.quantity;
+            const size = item.size;
+            const product =item.product;
+
+            const quantityupdated=await addproduct.updateOne({_id:product, [`sizes.${size}`]:{$exists:true}},{$inc:{[`sizes.${size}.newStock`]:-quantity}})
+            console.log(quantityupdated)
         
-                const quantityupdated=await addproduct.updateOne({_id:product, [`sizes.${size}`]:{$exists:true}},{$inc:{[`sizes.${size}.newStock`]:-quantity}})
-                console.log(quantityupdated)
-            }
+               
+            })
+             
+        
+            // for(items of productinCart
+            //     const quantity=items.quantity;
+            //     const size = items.size;
+            //     const product =items.product;
+        
+            //     const quantityupdated=await addproduct.updateOne({_id:product, [`sizes.${size}`]:{$exists:true}},{$inc:{[`sizes.${size}.newStock`]:-quantity}})
+            //     console.log(quantityupdated)
+            // }
 
         }
+        console.log("Payement Status updated");
         await res.status(200).json({data:"paymentStatus UPDated"})
    
     } catch (error) {
@@ -214,8 +235,12 @@ let applyCoupon = async(req, res)=>{
         const userId = req.session.userisAuth._id;
         console.log(userId)
         const findCoupons = await Coupons.findOne({coupon_code:couponCode})
+
+        if(findCoupons){
        
         const isUserIdPresent = findCoupons.userId.includes(userId);
+       
+        
        if(!isUserIdPresent){
 
         if(date > findCoupons.expiryDate){
@@ -244,6 +269,9 @@ let applyCoupon = async(req, res)=>{
         console.log("oldUser")
         return await res.status(200).json({data:"oldUser"})
        }
+    }else{
+        return await res.status(200).json({data:"invalidCoupon"})
+    }
 
 
         

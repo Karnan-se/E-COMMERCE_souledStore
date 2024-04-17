@@ -46,9 +46,12 @@ userrouter.get("/retryTransaction",MyAccount.retryTransaction)
 userrouter.get("/shop-product-right",productController.shop_product_right)
 userrouter.get("/shop-cart",shopCart.shop_cart )
 userrouter.get("/addtoCart",shopCart.addtoCart )
+
 userrouter.get("/deleteFromCart",shopCart.DeleteItem )
 userrouter.get("/quantityUpdate",shopCart.quantityUpdate )
 userrouter.get("/updatePriceToCart",shopCart.updatePriceToCart)
+
+userrouter.get("/checkStock",shopCart.checkStock )
 
 
 

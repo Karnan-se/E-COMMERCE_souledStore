@@ -253,11 +253,55 @@
                                             <ul class="list-filter size-filter font-small">
 
                                                 <% Object.keys(productDetails.sizes).forEach(size => { %>
-                                                    <li><a href="#" data-size="<%= size %>" class="size-option"><%= size %></a></li>
+                                                    <li><a href="#" data-size="<%= size %>"  data-product =<%= productDetails._id%>  class="size-option" onclick="getStock(this)"><%= size %></a></li>
                                                 <% }) %>
+                                                <ul class="product-meta font-xs color-grey mt-50">
+                                                    <li>Availability:<span class="in-stock  ml-5" id="stock" ></span></li>
+                                                </ul>
                                                 
                                             </ul>
                                         </div>
+                                        <script>
+                                           async  function getStock(btnelement) {
+                                                const size = btnelement.getAttribute("data-size");
+                                                const productId = btnelement.getAttribute("data-product");
+                                                console.log(productId)
+                                                console.log(`size selected ${size}`);
+                                                const response  = await fetch(`/checkStock?stockSize=${size}&productId=${productId}`,{
+                                                    method:"GET",
+                                                })
+                                                if(!response){
+                                                    throw new Error("Internal Server Error")
+                                                }
+                                                const data = await response.json();
+                                                const stockValue = data.data;
+                                               const stock = document.getElementById("stock")
+                                               stock.innerHTML=`Available : ${stockValue}`
+                                               stock.classList.add("text-success");
+                                               if(stockValue<6){
+                                                stock.classList.remove("text-success");
+                                                stock.classList.remove("text-danger");
+                                                stock.classList.add("text-warning");
+                                               }
+                                               if(stockValue<1){
+                                                stock.innerHTML=`OUT OF STOCK: ${stockValue}`
+                                               stock.classList.add("text-danger");
+                                               const addtocart = document.getElementById("addtocart")
+                                               addtocart.disabled =true
+                                               addtocart.classList.add("btn-warning")
+                                               addtocart.textContent= "OUT OF STOCK"
+                                               }else{
+                                                addtocart.classList.remove("btn-warning")
+                                                addtocart.textContent= "Add to cart"
+                                                addtocart.disabled = false
+
+
+
+
+                                               }
+                                            }
+                                        </script>
+                                        
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                         <div class="detail-extralink">
 
@@ -271,7 +315,7 @@
 
 
                                             <div class="product-extra-link2">
-                                                <button type="submit" class="button button-add-to-cart addtoCart" data-index="<%= productDetails._id %>">Add to cart</button>
+                                                <button type="submit" class="button button-add-to-cart addtoCart" data-index="<%= productDetails._id %>" id="addtocart">Add to cart</button>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                         
                                             </div>
@@ -390,19 +434,7 @@
                                                 });
                                             
                                         </script>
-
-
-
-
-
-
-
-
-                                        <ul class="product-meta font-xs color-grey mt-50">
-                                      
-                                            <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li>
-                                            <li>Availability:<span class="in-stock text-success ml-5"><%= productDetails.stock %> Items In Stock</span></li>
-                                        </ul>
+                                        
                                     </div>
                                     <!-- Detail Info -->
                                 </div>

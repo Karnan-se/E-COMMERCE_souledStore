@@ -19,7 +19,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
     <link rel="stylesheet" href="iziToast.min.css">
-    <script src="iziToast.min.js" type="text/javascript"></script>
+    
     
 </head>
 
@@ -193,7 +193,7 @@
 
 
 <!------------------------------------------------------------------------------------------------------------------------------------------------------- cancel Button -->
-                                                                                <% if(items.paymentStatus == "PaymentFailed") {%>
+                                                                                <% if(items.paymentStatus == "PaymentFailed" || items.paymentStatus == "Pending") {%>
                                                                                     <button type="button"  class=" btn btn-danger d-none" >Retry-transaction</button>
                                                                                         <% } else if(item.isOrderCancelled == true || item.isOrderReturned == true ){%>
 
@@ -259,7 +259,7 @@
                                                                     <div>
                                                                         <% if(items.orderStatus == "delivered" || items.orderStatus == "Cancelled" || items.orderStatus== "Returned") {%>
                                                                             <button class="track-button btn d-none btn-warning" data-bs-target="#orderDetailsModal"  data-bs-toggle="modal">Track</button>
-                                                                            <% }else if(items.paymentStatus == "PaymentFailed"){%>
+                                                                            <% }else if(items.paymentStatus == "PaymentFailed" || items.paymentStatus == "Pending"){%>
 
                                                                                 <button type="button"  class=" btn btn-danger retryTransaction "  data-amount="<%=items.totalAmount%>" data-orderId="<%=items._id%>">Retry-transaction</button>
 
@@ -1013,64 +1013,65 @@
                                                 </div>
                                                 <script>
                                                     async function addAddress() {
+                                                
+                                                       
+                                                
+                                                        
                                                         const result = await Swal.fire({
-                                                            title: "Enter  Address",
+                                                            title: "Enter Address",
                                                             html:
                                                                 '<input id="houseName" class="swal2-input" placeholder="House Name">' +
+                                                                '<p id="houseNameError"></p>' +
                                                                 '<input id="streetName" class="swal2-input" placeholder="Street Name">' +
+                                                                '<p id="StreetError"></p>' +
                                                                 '<input id="city" class="swal2-input" placeholder="City">' +
-                                                                '<input id="state" class="swal2-input" placeholder="State">',
+                                                                '<p id="cityError"></p>' +
+                                                                '<input id="state" class="swal2-input" placeholder="State">' +
+                                                                '<p id="stateError"></p>',
                                                             showCancelButton: true,
                                                             confirmButtonText: 'Submit',
-                                                            cancelButtonText: 'Cancel',
-
-
-                                                            preConfirm: () => {
-                                                                return {
-                                                                    houseName: document.getElementById('houseName').value,
-                                                                    streetName: document.getElementById('streetName').value,
-                                                                    city: document.getElementById('city').value,
-                                                                    state: document.getElementById('state').value
-                                                                }
-                                                            }
-
-
-                                                        })
-
+                                                            cancelButtonText: 'Cancel'
+                                                        });
+                                                        var houseNameInput = document.getElementById("houseName");
+                                                        var houseNameError = document.getElementById("houseNameError");
+                                                        
+                                                        
+                                                        var houseName = houseNameInput.value.trim();
+                                                        if (houseName.length < 3) {
+                                                            houseNameError.innerHTML = "House name is required and must be at least 3 characters long";
+                                                            houseNameError.style.color = "red";
+                                                            return false;
+                                                        } else {
+                                                            
+                                                            houseNameError.innerHTML = "";
+                                                        }
+                                                
+                                                        // Handle the result if the user confirms
                                                         if (result.isConfirmed) {
                                                             const address = result.value;
-                                                            console.log(address)
-                                                            console.log(address.city)
-
-
+                                                
                                                             try {
-
-
                                                                 const response = await fetch(`/addAddress`, {
                                                                     method: "POST",
                                                                     headers: {
-
                                                                         "content-Type": "application/json"
                                                                     },
                                                                     body: JSON.stringify({ address })
-                                                                })
-
-                                                                if (!response) {
-                                                                    throw new Error("internal server Error")
+                                                                });
+                                                
+                                                                if (!response.ok) {
+                                                                    throw new Error("Internal Server Error");
                                                                 }
-                                                                const data = await response.json({})
-
+                                                                const data = await response.json();
                                                             } catch (error) {
-
+                                                                console.error(error);
                                                             }
-
-
                                                         }
                                                     }
-
-
-
                                                 </script>
+                                                
+                                                
+                                                
 
 
 
@@ -1092,7 +1093,7 @@
                                                                         <label>YOUR NAME<span
                                                                                 class="required">*</span></label>
                                                                         <input id="name" class="form-control square"
-                                                                            name="name" type="text"
+                                                                            name="name" type="text" onkeyup="validateusername()"
                                                                             value="<%=userDetails?.name%>">
                                                                     </div>
 
@@ -1117,16 +1118,80 @@
                                                                     <div class="form-group col-md-6">
                                                                         <label>Save Changes<span
                                                                                 class=""></span></label>
-                                                                        <div class="input-group">
-                                                                            <button type="button"
-                                                                                class="btn btn-success" id="btnSaveName"
-                                                                                onclick="SaveName()">Save Name</button>
+                                                                        <div class="input-group"> <button type="button"class="btn btn-success" id="btnSaveName" onclick="SaveName()">Save Name</button>
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
                                                                 <script>
+                                                                function validateusername(){
+                                                                const nameInput = document.getElementById("name");
+
+                                                                
+                                                                    const name = nameInput.value.trim();
+
+                                                                    if (!/^[a-zA-Z\s'-]+$/.test(name) || /[\d!@#$%^&*()_+=\[{\]};:<>|./?,-]/.test(name)) {
+                                                                        const Toast = Swal.mixin({
+                                                                            toast: true,
+                                                                            position: "top-end",
+                                                                            showConfirmButton: false,
+                                                                            timer: 3000,
+                                                                            timerProgressBar: true,
+                                                                            didOpen: (toast) => {
+                                                                                toast.addEventListener("mouseenter", Swal.stopTimer);
+                                                                                toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                                                            }
+                                                                        });
+                                                                        Toast.fire({
+                                                                            icon: "error",
+                                                                            title: "Invalid Name"
+                                                                        });
+                                                                        return false;
+
+                                                                        if(name.length<=3){
+                                                                            return false;
+                                                                        }else{
+                                                                            return true;
+                                                                        }
+                                                                    }else{
+                                                                        return true;
+                                                                    }
+
+                                                                  
+                                                                }
+                                                                    </script> 
+                                  
+                                                                <script> 
                                                                     async function SaveName() {
-                                                                        const name = document.getElementById("name").value;
+
+                                                                        var isValid = true;
+                                                                        isValid &= validateusername();
+
+                                                                        if(!isValid){
+                                                                            swal.fire({
+                                                                                icon:warning,
+                                                                                title:"validation Error",
+
+                                                                            })
+
+                                                                        }else{ 
+
+
+                                                                        const inputname = document.getElementById("name")
+                                                                        const name =inputname.value
+                                                                        if(name.length<3){
+                                                                            Swal.fire({
+                                                                                icon: "info",
+                                                                                title:"minimum 3 charectors required"
+                                                                            })
+                                                                            inputname.style.border = "2px solid red";
+                                                                            
+
+                                                                            event,preventDefault()
+                                                                        }
+
+                                                                       
                                                                         console.log(name);
                                                                         const response = await fetch(`/updateName?name=${name}`, {
                                                                             method: "GET",
@@ -1142,9 +1207,11 @@
                                                                         Swal.fire({
                                                                             title: "Username Saved"
                                                                         })
+                                                                
 
 
                                                                     }
+                                                                }
                                                                 </script>
 
 

@@ -52,6 +52,7 @@ let addtoCart = async(req, res)=>{
         let productId = req.query.productDetails;   
         let userIncart = await cart.findOne({userId:userId}) 
         
+        
         // || !userIncart it was below
     
         if(!userId ){
@@ -84,21 +85,31 @@ let addtoCart = async(req, res)=>{
                 var updatePrice= await cart.updateOne({_id:data._id, "items._id" : itemId},{$set:{"items.$.price":Localprice}})
             }
            
-            const totalPrice = await cart.updateOne({userId:userId},{$set:{totalprice:allprice}} )
+            const allpriceupdate = await cart.updateOne({userId:userId},{$set:{totalprice:allprice}} )
             console.log(allprice);
-            return  res.status(200).json({data})
+            const datas = await cart.findOne({userId:userId}).populate("items.product");
+      
+            return  res.status(200).json({datas})
 
 
             }else{
+
+            //    here Iam going to update quantity when the size and productId is same
+            const size = req?.query?.selectedSize;
+            const cartDetails = await cart.findOne({userId:userId, "items.product":productId , "items.size":size });
+            cartDetails.items.quantity+1;
+            await cartDetails.save()
+           
+                const updatedCartDetails = await cart.findOne({userId:userId})
                 
                 console.log("product alreadyexisted")
                 const data = "already-Existed"
-                return await res.status(200).json({data})
+                return await res.status(200).json({datas:updatedCartDetails})
             }
             
 
         }else{
-        
+        // ivde userDetail illengil ulla cartinte 
 
 
         const size = req?.query?.selectedSize;
@@ -153,10 +164,7 @@ let DeleteItem = async(req, res)=>{
         { $pull: { items:{product:productId, size: null}} }
     )
     }
-    
 
-
-    
     const data = await cart.findOne({userId:userDetails}).populate("items.product")
         let whileprice =0
     for(item of data.items){

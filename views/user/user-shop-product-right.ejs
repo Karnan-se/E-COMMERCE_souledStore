@@ -263,6 +263,8 @@
                                         </div>
                                         <script>
                                            async  function getStock(btnelement) {
+                                            const addtocart = document.getElementById("addtocart")
+                                                addtocart.disabled = false
                                                 const size = btnelement.getAttribute("data-size");
                                                 const productId = btnelement.getAttribute("data-product");
                                                 console.log(productId)
@@ -423,7 +425,7 @@
 
                                                         
                                                     }else{
-                                                        console.log(data.data);
+                                                        console.log(data.datas);
                                                        window.location.href ="/shop-cart"
                                                         }
                                                         

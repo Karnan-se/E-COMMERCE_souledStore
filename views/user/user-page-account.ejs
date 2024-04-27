@@ -19,6 +19,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
     <link rel="stylesheet" href="iziToast.min.css">
+    <script src="https://unpkg.com/easyinvoice/dist/easyinvoice.min.js"></script>
     
     
 </head>
@@ -122,6 +123,30 @@
                                                 </div>
                                                 <div class="tab-pane fade" id="orders" role="tabpanel"
                                                     aria-labelledby="orders-tab">
+                                                    <!-- <script>
+                                                        async function getInvoice(orderId){
+                                                            try {
+                                                                const response = await fetch(`/getInvoice?orderId=${orderId}`,{
+                                                                    method:"GET",
+                                                                })
+                                                                if(!response){
+                                                                    throw new Error("Internal server Error")
+                                                                }
+                                                                console.log(data.filePath)
+                                                               
+                                                                const downloadUrl = `../../invoice/${data.filePath}`;
+                                                                const link = document.createElement('a');
+                                                                link.href = downloadUrl;
+
+                                                               
+                                                               
+                                                                
+                                                            } catch (error) {
+                                                                
+                                                            }
+                                                        }
+
+                                                        </script> -->
 
                                                 <%order.reverse() %>
                                               
@@ -132,8 +157,9 @@
                                                             <div>
                                                                 <h5 class="mb-0">Your Orders</h5>
                                                             </div>
+                                                            
                                                             <div>
-                                                                <a class="mb-0 invoice">#invoice</a>
+                                                                <a  href= "/getInvoice?orderId=<%= items._id %>" class="mb-0 invoice <%=items.orderStatus == "delivered"? "" : "d-none"%>"  >#invoice</a>
                                                             </div>
                                                         </div>
                                                         

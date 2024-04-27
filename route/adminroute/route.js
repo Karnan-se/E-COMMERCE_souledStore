@@ -13,14 +13,17 @@ const admin = require("../../models/admin/admin");
 const auth = require('../../middlewares/multer/adminSession')
 const orderController = require("../../controller/admincontroller/ordercontroller")
 const coupons = require("../../controller/admincontroller/coupons")
+const salesreport = require("../../controller/admincontroller/salesreport")
+
+
+
+
+
 
 router.get("/admin-login",auth.isLogout, loginController.adminLogin);
 router.get("/admindashboard", auth.isLogin, adminController.admindashboard)
 router.post("/index", adminPostcontroller.page_account_login)
 router.get("/logout", auth.isLogin, adminController.logout,)
-
-
-
 
 router.get("/page-products-grid",auth.isLogin, adminController.page_products_grid);
 router.get("/page-products-grid-2", auth.isLogin, adminController.page_products_grid_2);
@@ -50,8 +53,6 @@ router.get("/search",auth.isLogin,adminusercontroller.search)
 router.get("/page-form-product-3",auth.isLogin, addproductcontroller.page_form_product_3);
 router.get("/updatecategory",auth.isLogin,addproductcontroller.addlicense)
 router.get("/updatecategory1",auth.isLogin,addproductcontroller.addcategory)
-
-
 
 
 router.get("/updatebrand",addproductcontroller.addbrands)
@@ -95,6 +96,11 @@ router.post("/addCoupon",auth.isLogin,coupons.addcoupons)
 router.get("/toggleList",auth.isLogin,coupons.toggleCoupon)
 router.get("/editCoupon",auth.isLogin,coupons.editCoupon)
 router.post("/editCoupon",auth.isLogin,coupons.editCouponPost)
+
+
+router.get("/salesreport",auth.isLogin,salesreport.SalesReport)
+router.get("/ledger",auth.isLogin,salesreport.ledger)
+
 
 
 module.exports=router;

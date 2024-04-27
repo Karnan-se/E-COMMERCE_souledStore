@@ -5,10 +5,19 @@ const userSchema = require("../../models/user/userdetails")
 
 let orderadmin = async(req, res)=>{
     try {
-        const orderDetails = await orderSchema.find({}).populate("userId");
-        
-       
-        res.render("admin/page-orders-1.ejs",{orderDetails})
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = (page - 1)*limit
+      
+
+        const OrderCounts = await orderSchema.find()
+        console.log(OrderCounts);
+        const OrderCount = OrderCounts.length;
+        const totalPages = Math.ceil(OrderCount/limit);
+
+        const orderDetails = await orderSchema.find({}).populate("userId").skip(skip).limit(limit)
+ 
+        res.render("admin/page-orders-1.ejs",{orderDetails,totalPages, page})
 
     } catch (error) {
         console.log(error.message)

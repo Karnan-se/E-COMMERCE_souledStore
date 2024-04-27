@@ -8,6 +8,7 @@ const brand = require("../../models/addproduct/brand")
 const mongoose = require("mongoose")
 const categories= require("../../models/addproduct/categories");4
 const cart = require("../../models/user/cart")
+const WishList = require("../../models/user/wishlist")
 
 
 
@@ -30,7 +31,8 @@ let user_index = async(req, res)=>{
         const data= req.session.userisAuth;
         const userid = data?._id;
         const userID = new mongoose.Types.ObjectId(userid)
-        const userinCart= await cart.findOne({userId:userID})
+        const userinCart= await cart.findOne({userId:userID});
+        const userinWishlist = await WishList.findOne({userId:userID})
 
         const newProducts = await products.aggregate([{$match:{
             createdat: {$gte: threedays}}}])
@@ -45,7 +47,7 @@ let user_index = async(req, res)=>{
                })
             
                 
-                return res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts, userinCart})    
+                return res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts, userinCart, userinWishlist})    
             }
             const Hightolow = req.session.Highlow;
             
@@ -57,7 +59,7 @@ let user_index = async(req, res)=>{
             }
 
             
-        res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts, userinCart})
+        res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts, userinCart, userinWishlist})
     } catch (error) {
         console.log(error.message);
         

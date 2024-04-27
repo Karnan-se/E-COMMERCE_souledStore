@@ -151,59 +151,39 @@
                                     <tr class="main-heading">
                                         <th scope="col" colspan="2">Product</th>
                                         <th scope="col">Price</th>
-                                        <th scope="col">Stock Status</th>
+                                        
                                         <th scope="col">Action</th>
                                         <th scope="col">Remove</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <% wishList.product.forEach((item)=>{  %>
                                     <tr>
-                                        <td class="image product-thumbnail"><img src="/assets/imgs/shop/product-1-1.jpg" alt="#"></td>
+                                        <td class="image product-thumbnail"><img src="/temp/<%=item.productId.images[0]%>" alt="#" style="width: 100px; height: auto;"></td>
                                         <td class="product-des product-name">
-                                            <h5 class="product-name"><a href="/shop-product-right">J.Crew Mercantile Women's Short-Sleeve</a></h5>
-                                            <p class="font-xs">Maboriosam in a tonto nesciung eget<br> distingy magndapibus.
+                                            <h5 class="product-name"><a href="/shop-product-right?productId=<%= item.productId._id%>"><%= item.productId.productname %></a></h5>
+                                            <p class="font-xs">color : <%= item.productId.color %><br> materials : <%= item.productId.description%>
                                             </p>
-                                        </td>
-                                        <td class="price" data-title="Price"><span>$65.00 </span></td>
-                                        <td class="text-center" data-title="Stock">
-                                            <span class="color3 font-weight-bold">In Stock</span>
-                                        </td>
+                                        </td> 
+                                        <td class="price" data-title="Price"><span><%= item.productId.price %></span></td>
+                                        
                                         <td class="text-right" data-title="Cart">
-                                            <button class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
+                                            <button class="btn btn-sm" onclick="shopProductRight(this)" data-productId="<%= item.productId._id %>"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
                                         </td>
                                         <td class="action" data-title="Remove"><a href="#"><i class="fi-rs-trash"></i></a></td>
                                     </tr>
-                                    <tr>
-                                        <td class="image"><img src="/assets/imgs/shop/product-2-1.jpg" alt="#"></td>
-                                        <td class="product-des">
-                                            <h5 class="product-name"><a href="/shop-product-right">Amazon Essentials Women's Tank</a></h5>
-                                            <p class="font-xs">Sit at ipsum amet clita no est,<br> sed amet sadipscing et gubergren</p>
-                                        </td>
-                                        <td class="price" data-title="Price"><span>$75.00 </span></td>
-                                        <td class="text-center" data-title="Stock">
-                                            <span class="color3 font-weight-bold">In Stock</span>
-                                        </td>
-                                        <td class="text-right" data-title="Cart">
-                                            <button class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
-                                        </td>
-                                        <td class="action" data-title="Remove"><a href="#"><i class="fi-rs-trash"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="image"><img src="/assets/imgs/shop/product-3-1.jpg" alt="#"></td>
-                                        <td class="product-des">
-                                            <h5 class="product-name"><a href="/shop-product-right">Amazon Brand - Daily Ritual Women's Jersey </a></h5>
-                                            <p class="font-xs">Erat amet et et amet diam et et.<br> Justo amet at dolore
-                                            </p>
-                                        </td>
-                                        <td class="price" data-title="Price"><span>$62.00 </span></td>
-                                        <td class="text-center" data-title="Stock">
-                                            <span class="text-danger font-weight-bold">Out of stock</span>
-                                        </td>
-                                        <td class="text-right" data-title="Cart">
-                                            <button class="btn btn-sm btn-secondary"><i class="fi-rs-headset mr-5"></i>Contact Us</button>
-                                        </td>
-                                        <td class="action" data-title="Remove"><a href="#"><i class="fi-rs-trash"></i></a></td>
-                                    </tr>
+                                    <% })%>
+
+                                    <script defer>
+                                       async function shopProductRight(btn){
+                                            const productId = btn.getAttribute("data-productId");
+                                            console.log(productId);
+                                            window.location.href=`/shop-product-right?productId=${productId}`
+
+                                        }
+                                        </script>
+
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -308,7 +288,11 @@
             </div>
         </section>
         <div class="container pb-20 wow fadeIn animated">
+          
             <div class="row">
+                
+
+               
                 <div class="col-12 mb-20">
                     <div class="footer-bottom"></div>
                 </div>
@@ -321,6 +305,7 @@
                     </p>
                 </div>
             </div>
+            
         </div>
     </footer>
     <!-- Preloader Start -->

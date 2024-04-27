@@ -10,6 +10,7 @@ const shopCart = require("../../controller/usercontroller/shop-cart")
 const checkout = require("../../controller/usercontroller/checkout");
 const rating= require("../../controller/usercontroller/ratingscontroller")
 const walletController = require("../../controller/usercontroller/wallet")
+const getInvoice = require("../../controller/usercontroller/invoice")
 
 userrouter.use(express.static("public"));
 
@@ -64,12 +65,15 @@ userrouter.get("/thankYou",checkout.thanYou)
 
 
 userrouter.get("/shop-wishlist",wishlist.shopWishlist)
+userrouter.get("/addtowishList",wishlist.addtowishList)
 
 userrouter.post("/addratings",rating.addratings)
 userrouter.get("/ratings",rating.loadratings)
 userrouter.get("/wallet",walletController.walletPage)
 userrouter.get("/addtoWallet",walletController.addToWallet)
 userrouter.get("/addAmounttoWallet",walletController.addAmounttoWallet)
+
+userrouter.get("/getInvoice",getInvoice.downloadInvoice)
 
 
 

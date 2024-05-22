@@ -13,7 +13,7 @@
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-            <a href="/dashboard" class="brand-wrap">
+            <a href="/admindashboard" class="brand-wrap">
                 <img src="assets/imgs/theme/logo.jpg" class="logo" alt="Evara Dashboard">
             </a>
             <div>
@@ -129,11 +129,9 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Order List </h2>
-                    <p>Lorem ipsum dolor sit amet.</p>
+                   
                 </div>
-                <div>
-                    <input type="text" placeholder="Search order ID" class="form-control bg-white">
-                </div>
+
                 <div>
                     <a href="/addCoupon" class="btn btn-primary"><i class="material-icons md-plus"></i>Create new</a>
         </div>
@@ -145,12 +143,33 @@
                             <input type="text" placeholder="Search..." class="form-control">
                         </div>
                         <div class="col-lg-2 col-6 col-md-3">
-                            <select class="form-select">
-                                <option>Status</option>
-                                <option>Active</option>
-                                <option>Disabled</option>
-                                <option>Show all</option>
+                            <select class="form-select" id="couponStatus">
+                                <option >Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Expired">Expired</option>
+                                <option value="Show-all">Show all</option>
                             </select>
+                            <script>
+                                const coupon=document.getElementById("couponStatus").addEventListener("change", async function(){
+                                   
+                                        const response = await fetch(`/activeCoupons?status=${this.value}`,{
+                                            method:"GET"
+                                        })
+                                        if(!response){
+                                            throw new Error("Internal server Errir")
+                                        }else{
+                                            const data = await response.json({})
+                                            console.log(data)
+                                            if(data){
+                                                window.location.reload();
+                                            }
+                                           
+                                        }
+                                
+                                    })
+
+                                
+                                </script>
                         </div>
                         <div class="col-lg-2 col-6 col-md-3">
                             <select class="form-select">
@@ -202,11 +221,13 @@
                                     <% function formatDate(date) { const options={ year: 'numeric' , month: 'short' , day: 'numeric'
                                       }; return new Date(date).toLocaleDateString(undefined, options); } %>
                                       <td>
-                                        <% if (element.isListed==true) { %>
+                                        <% if (element.isListed==true && element.expiryDate>Date.now()){ %>
                                           <span class="text-success">List</span>
-                                          <% } else { %>
-                                            <span class="text-danger">Unlist</span>
-                                            <% } %>
+                                          <% } else if( element.expiryDate<Date.now()){ %>
+                                            <span class="text-danger">Expired</span>
+                                            <% } else{%>
+                                                <span class="text-danger">Unlist</span>
+                                                <%}%>
                                       </td>
                                       <td>
                                         <% if (element.isListed) { %>
@@ -248,14 +269,14 @@
             </div> <!-- card end// -->
             <div class="pagination-area mt-15 mb-50">
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
+                    <!-- <ul class="pagination justify-content-start">
                         <li class="page-item active"><a class="page-link" href="#">01</a></li>
                         <li class="page-item"><a class="page-link" href="#">02</a></li>
                         <li class="page-item"><a class="page-link" href="#">03</a></li>
                         <li class="page-item"><a class="page-link dot" href="#">...</a></li>
                         <li class="page-item"><a class="page-link" href="#">16</a></li>
                         <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
+                    </ul> -->
                 </nav>
             </div>
         </section> <!-- content-main end// -->

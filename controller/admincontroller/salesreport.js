@@ -7,9 +7,12 @@ let SalesReport = async(req, res)=>{
         const limit = parseInt(req.query.limit) || 10; 
         const skip = (page - 1) * limit; 
 
-        let orderDetails = await Order.find({paymentStatus:"PaymentRecieved"}).populate("userId")
-        .skip(skip) 
-        .limit(limit); 
+        const orderDetails = await Order.find({ paymentStatus: "PaymentRecieved" })
+    .populate("userId")
+    .sort({ _id: -1 })  // Sort by _id in descending order
+    .skip(skip)
+    .limit(limit);
+
         const OrderCount = orderDetails.length;
         const totalPages = Math.ceil(OrderCount/limit);
         

@@ -31,7 +31,7 @@
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-            <a href="/dashboard" class="brand-wrap">
+            <a href="/admindashboard" class="brand-wrap">
                 <img src="imgs/theme/logo.jpg" class="logo" alt="Evara Dashboard">
             </a>
             <div>
@@ -41,7 +41,7 @@
         <nav>
             <ul class="menu-aside">
                 <li class="menu-item">
-                    <a class="menu-link" href="/dashboard"> <i class="icon material-icons md-home"></i>
+                    <a class="menu-link" href="/admindashboard"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
@@ -160,8 +160,31 @@
                         <div class="card-body">
                             <div class="mb-4">
                                 <label for="product_title" class="form-label">Product title</label>
-                                <input type="text" placeholder="Type here" class="form-control" id="product_title" name="productname">
+                                <input type="text" placeholder="Type here" class="form-control" id="product_title" name="productname" onkeyup="textverify()">
+                                <p id="pError"></p>
                             </div>
+                            <script>
+                                function textverify(){
+
+                               const productTitle = document.getElementById("product_title");
+                               const textError = document.getElementById("pError");
+                           
+
+                               return verifyText(productTitle, textError)
+
+                                }
+                                function verifyText(title, text){
+                                    if (!/^[A-Za-z][A-Za-z\s]{2,}$/.test(title.value)) {
+                                        text.textContent = " title must be at least 3 characters long and contain only letters.";
+                                        text.style.color = "red";
+                                        return false
+                                } else {
+                                    text.textContent = "";
+                                    return true
+                                }
+                                }
+                                </script>
+
                             <div class="row gx-3">
                                 <div class="col-md-5  mb-3 d-none" >
                                     <label for="product_sku" class="form-label d-none d-none">stock</label>
@@ -196,10 +219,6 @@
                                         }else{
                                            
                                                 error.textContent =""
-
-
-                                        
-                                            
                                         }
 
                                     }
@@ -230,38 +249,72 @@
                                     <div class="col-md-4  mb-3" >
                                         
                                         <label for="sizeS">Size S:</label>
-                                        <input type="number" id="sizeS" name="sizes[S]" class="form-control"  min="0" value="0">
+                                        <input type="number" id="sizeS" name="sizes[S]" class="form-control"  min="0" value="0" onkeyup="intverify()">
                                       </div>
                                       <div class="col-md-4  mb-3">
                                         <label for="sizeM">Size M:</label>
-                                        <input type="number" id="sizeM" name="sizes[M]" min="0" value="0" class="form-control">
+                                        <input type="number" id="sizeM" name="sizes[M]" min="0" value="0" class="form-control" onkeyup="intverify()">
                                       </div>
                                       <div class="col-md-4  mb-3">
                                         <label for="sizeL">Size L:</label>
-                                        <input type="number" id="sizeL" name="sizes[L]" min="0" value="0" class="form-control">
+                                        <input type="number" id="sizeL" name="sizes[L]" min="0" value="0" class="form-control" onkeyup="intverify()">
                                       </div>
                                       <div class="col-md-4  mb-3">
                                         <label for="sizeXL">Size XL:</label>
-                                        <input type="number" id="sizeXL" name="sizes[XL]" min="0" value="0" class="form-control">
+                                        <input type="number" id="sizeXL" name="sizes[XL]" min="0" value="0" class="form-control" onkeyup="intverify()">
                                       </div>
                                       <div class="col-md-4  mb-3">
                                         <label for="sizeXXL">Size XXL:</label>
-                                        <input type="number" id="sizeXXL" name="sizes[XXL]" min="0" value="0" class="form-control">
+                                        <input type="number" id="sizeXXL" name="sizes[XXL]" min="0" value="0" class="form-control" onkeyup="intverify()">
                                       </div>
                                     <div id="error_message" style="color: red;"></div>
 
                                     </div>
                             </div>
                             <script>
-                                 const smallStock = document.getElementById("sizeS").value;
-                                 const mediumStock = document.getElementById("sizeS").value;
-                                 const largeStock = document.getElementById("sizeS").value;
-                                 const XlStock = document.getElementById("sizeS").value;
-                                 const XXLStock = document.getElementById("sizeS").value;
+                                 function intverify(){
+                                let  smallStock = document.getElementById("sizeS")
+                                let  mediumStock = document.getElementById("sizeM")
+                                let  largeStock = document.getElementById("sizeL")
+                                let  XlStock = document.getElementById("sizeXL")
+                                let  XXLStock = document.getElementById("sizeXXL")
 
-                            
+                                 giveRedborder(smallStock)
+                                 giveRedborder(mediumStock)
+                                 giveRedborder(largeStock)
+                                 giveRedborder(XlStock)
+                                 giveRedborder(XXLStock)
+ 
+                                 let isValid = true;
+
+                                 if (!giveRedborder(smallStock)) isValid = false;
+                                 if (!giveRedborder(mediumStock)) isValid = false;
+                                 if (!giveRedborder(largeStock)) isValid = false;
+                                 if (!giveRedborder(XlStock)) isValid = false;
+                                 if (!giveRedborder(XXLStock)) isValid = false;
+
+
+                                 console.log(isValid)
+
+                                 return isValid;
+
+
+                                 }
+                                 console.log(intverify())
+
+                                 function giveRedborder(stock){
+                                  
+                                if(stock.value< 0){
+                                    stock.style.border= "1px solid red"
+                                        return false
+                                }else{
+                                    stock.style.border= "1px solid black"
+                                    return true
+                                }
+
+                                 }
                                  
-                                 
+
                                 </script>
                          
                         </div>
@@ -270,10 +323,23 @@
                         <div class="card-body">
                             <div>
                                 <label class="form-label">Description</label>
-                                <textarea placeholder="Type here" class="form-control" rows="4" name="Description"></textarea>
+                                <textarea placeholder="Type here" class="form-control" rows="4" name="Description" id="description" onkeyup="descverify()"></textarea>
+                                <p id="descError"></p>
                             </div>
                         </div>
                     </div> <!-- card end// -->
+
+                    <script>
+                        function descverify(){
+                           const desc = document.getElementById("description")
+                           const Error = document.getElementById("descError")
+
+                            return verifyText(desc, Error)
+
+                                }
+
+                        
+                        </script>
 
 
                     <div class="tab-content wow fadeIn animated mx-4 d-flex" id="myTabContent">
@@ -581,11 +647,6 @@ updateCategory(selectedCategoryId, result.value);
     });
     </script>
 
-
-
-
-                
-                    
                     <h5 class="mb-3 text-center text-warning">Heroic charecters</h5>
 
 
@@ -848,6 +909,34 @@ updateCategory(selectedCategoryId, result.value);
             
             return false;
         }
+
+        if (!intverify()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Some stock values are less than zero.',
+        });
+        return false;
+    }
+    if(!textverify()){
+     
+        Swal.fire({
+            icon:"error",
+            title: "Error",
+            text:"Product Title is not Valid"
+        })
+        return false
+    }
+    if(!descverify()){
+        Swal.fire({
+            icon:"error",
+            title: "Error",
+            text:"Product Title is not Valid"
+        })
+        return false
+        
+    }
+
         const productTitle = document.getElementById('product_title').value;
         const productColor = document.getElementById('product_color').value;
         const productSize = document.querySelector('select[name="size"]').value;
@@ -885,10 +974,7 @@ updateCategory(selectedCategoryId, result.value);
         
 
         return true;
-    }
-
-
-    
+    }   
     
 async function save() {
     if(validateForm()){

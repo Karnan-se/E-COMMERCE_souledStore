@@ -96,6 +96,7 @@ router.post("/addCoupon",auth.isLogin,coupons.addcoupons)
 router.get("/toggleList",auth.isLogin,coupons.toggleCoupon)
 router.get("/editCoupon",auth.isLogin,coupons.editCoupon)
 router.post("/editCoupon",auth.isLogin,coupons.editCouponPost)
+router.get("/activeCoupons",coupons.activeCoupons)
 
 
 router.get("/salesreport",auth.isLogin,salesreport.SalesReport)

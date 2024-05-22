@@ -5,17 +5,44 @@ const mongoose= require("mongoose")
 let coupons = async(req, res)=>{
     try {
 
-        
-        const coupon = await Coupon.find({})
-
-
-        res.render("admin/coupons.ejs",{coupon})
+        console.log("redirected")
+       
+        if(req.session.active){  
+            console.log("only activve")
+            delete req.session.active;
+            let coupon1 = await Coupon.aggregate([{$match:{isListed:true, expiryDate:{$gte:new Date()}}},{$sort:{_id:-1}}])
+             res.render("admin/coupons.ejs",{coupon:coupon1})
+            return delete req.session.active;
+           
+        }else if(req.session.expired){
+            delete req.session.expired;
+            console.log("expired");
+            let coupon1 = await Coupon.aggregate([{$match:{isListed:true, expiryDate:{$lte:new Date()}}},{$sort:{_id:-1}}])
+             res.render("admin/coupons.ejs",{coupon:coupon1});
+             
+        }
+        const coupon = await Coupon.aggregate([{$match:{}},{$sort:{_id:-1}}])
+       return res.render("admin/coupons.ejs",{coupon})
         
     } catch (error) {
+        console.log(error.message)
         
     }
 }
 
+let activeCoupons = async(req, res)=>{
+    const status1  = req.query.status
+    console.log(status1)
+    if(status1 == "Active"){
+        req.session.active =true
+       return res.json({data:"reload"})
+
+    }else if(status1 == "Expired"){
+        req.session.expired = true
+        return res.json({data:"reload"})
+        
+    }
+}
 
 let addcouponspage = async(req, res)=>{
     try {
@@ -112,5 +139,6 @@ module.exports={
     addcoupons,
     toggleCoupon,
     editCoupon,
-    editCouponPost
+    editCouponPost,
+    activeCoupons
 }

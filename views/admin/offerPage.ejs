@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend//page-orders-1 by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+<head>
+<%- include('./partials/header.ejs') %>
+
+
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="/admindashboard" class="brand-wrap">
+                <img src="assets/imgs/theme/logo.jpg" class="logo" alt="Evara Dashboard">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item">
+                    <a class="menu-link" href="/dashboard"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="/page-products-list"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                                  <a href="/page-products-list"> Product List</a>                 
+                                                  
+                                       
+                        <a href="/page-categories">Categories</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu active">
+                    <a class="menu-link" href="/page-orders-1"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/page-orders-1" class="active">Offer List </a>
+                       
+                       
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                 <li class="menu-item has-submenu active">
+                    <a class="menu-link" href="/admin-user-page"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Users</span>
+                    </a>
+                    <div class="submenu">
+                        
+                  
+                        <a href="/admin-user-page" class="">User-Details</a>
+                        
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="/page-form-product-3"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add product</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/page-form-product-3" class="">Add product </a>
+                    </a>
+               
+                </li>
+                <%- include('./partials/aside-2.ejs') %>
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <form class="searchform">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                       
+                    </div>
+                    <datalist id="search_terms">
+                        <option value="Products">
+                        <option value="New orders">
+                        <option value="Apple iphone">
+                        <option value="Ahmed Hassan">
+                    </datalist>
+                </form>
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon" href="#">
+                            <i class="material-icons md-notifications animation-shake"></i>
+                            <span class="badge rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img src="assets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                        </div>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="assets/imgs/people/avatar2.jpg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">OFFER LIST </h2>
+                   
+                </div>
+
+                <div>
+                    <a href="/addoffer" class="btn btn-primary"><i class="material-icons md-plus"></i>Create new</a>
+        </div>
+            </div>
+            <div class="card mb-4">
+                <header class="card-header">
+                    <div class="row gx-3">
+                        <div class="col-lg-4 col-md-6 me-auto">
+                            <input type="text" placeholder="Search..." class="form-control">
+                        </div>
+                        <div class="col-lg-2 col-6 col-md-3">
+                            <select class="form-select" id="couponStatus">
+                                <option >Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Expired">Expired</option>
+                                <option value="Show-all">Show all</option>
+                            </select>
+                            <!-- <script>
+                                const coupon=document.getElementById("couponStatus").addEventListener("change", async function(){
+                                   
+                                        const response = await fetch(`/activeCoupons?status=${this.value}`,{
+                                            method:"GET"
+                                        })
+                                        if(!response){
+                                            throw new Error("Internal server Errir")
+                                        }else{
+                                            const data = await response.json({})
+                                            console.log(data)
+                                            if(data){
+                                                window.location.reload();
+                                            }
+                                           
+                                        }
+                                
+                                    })
+
+                                
+                                </script> -->
+                        </div>
+                        <div class="col-lg-2 col-6 col-md-3">
+                            <select class="form-select">
+                                <option>Show 20</option>
+                                <option>Show 30</option>
+                                <option>Show 40</option>
+                            </select>
+                        </div>
+                    </div>
+                </header> 
+                <!-- card-header end// -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th>Offer Code</th>
+                               
+                                <th scope="col">percentage/discount Price</th>
+                                
+                                <th scope="col">Max amount</th>
+                                
+                                <th scope="col">Exp date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col"> Action </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% if (offer.length> 0) { %>
+                                <% offer.forEach(element=> { %>
+                                  <tr>
+                                    <td>
+                                      <%= element.OfferName %>
+                                    </td>
+                                   <% if(element.fixedRate ==0 || element.fixedRate == null) {%>
+                                    <td>
+                                      <%= element.discountPercent %>%  
+                                    </td>
+                                    <% }else {%>
+                                        <td>
+                                            <%= element.discountPercent  %>₹
+                                          </td>
+                                          <% }%>
+
+                                    <td>
+                                      <%= element.maxDiscountAmount %>
+                                    </td>
+                                    <td>
+                                      <%= formatDate(element.ExpiryDate) %>
+                                    </td>
+                                    <% function formatDate(date) { const options={ year: 'numeric' , month: 'short' , day: 'numeric'
+                                      }; return new Date(date).toLocaleDateString(undefined, options); } %>
+                                      <td>
+                                        <% if (element.is_List ==true && element.ExpiryDate>Date.now()){ %>
+                                          <span class="text-success">List</span>
+                                          <% } else if( element.ExpiryDate<Date.now()){ %>
+                                            <span class="text-danger">Expired</span>
+                                            <% } else{%>
+                                                <span class="text-danger">Unlist</span>
+                                                <%}%>
+                                      </td>
+                                      <td>
+                                        <% if (element.is_List) { %>
+                                          <a class="badge rounded alert-danger"
+                                            onclick="toggleList('<%= element._id %>')">Unlist</a>
+                                          <% } else { %>
+                                            <a class="badge rounded alert-success" onclick="toggleList('<%= element._id %>')">List</a>
+                                            <% } %>
+                                            
+                                              <a href="/editOffer?couponId=<%= element._id %>" class="badge rounded alert-secondary"
+                                                onclick="editCoupon('<%= element._id %>')">Edit</a>
+                                      </td>
+                                  </tr>
+                                  <% }) %>
+                                    <% } else { %>
+                                      <tr>
+                                        <td colspan="8">No coupons available.</td>
+                                      </tr>
+                                      <% } %>
+                            </tbody>
+                          </table>
+
+                          <script>
+                           async function toggleList(offerID){
+                            const response= await fetch(`/toggleoffer?offerID=${offerID}`,{
+                                method:"GET",
+                            })
+                            if(!response){
+                                throw new Error("Internal Server Error")
+                            }
+                            const data = await response.json()
+                            console.log(data.data);
+                            window.location.reload();
+
+                            }
+                            </script>
+                    </div> <!-- table-responsive //end -->
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
+            <div class="pagination-area mt-15 mb-50">
+                <nav aria-label="Page navigation example">
+                    <!-- <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    </ul> -->
+                </nav>
+            </div>
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+    
+        </footer>
+    </main>
+    <%- include('./partials/footer.ejs') %>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend//page-orders-1 by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
+</html>

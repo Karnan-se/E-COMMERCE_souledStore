@@ -117,6 +117,10 @@ const addproduct = new mongoose.Schema({
         type:Boolean,
         default:true,
         required:false
+    },
+    orginalPrice:{
+        type:Number,
+        required: false
     }
 })
 

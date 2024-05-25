@@ -3,15 +3,15 @@ const mongoose=require("mongoose")
 const offerSchema = new mongoose.Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "Product",
+        ref: "addproduct",
     },
     category: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "Category",
+        ref: "categories",
     },
     discountPercent: {
         type: Number,
-        required: true
+       
     },
     maxDiscountAmount: {
         type: Number,
@@ -28,8 +28,17 @@ const offerSchema = new mongoose.Schema({
     ExpiryDate:{
         type:Date,
         required:true
+    },
+    OfferName :{
+        type: String,
+        required:false,
+    },
+    fixedRate:{
+        type: String,
+        required: false,
     }
+
 
 })
 
-module.exports = mongoose.model("Offers", offerSchema);
+module.exports = mongoose.model("Offers", offerSchema);

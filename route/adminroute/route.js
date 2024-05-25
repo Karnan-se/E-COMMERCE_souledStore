@@ -14,6 +14,7 @@ const auth = require('../../middlewares/multer/adminSession')
 const orderController = require("../../controller/admincontroller/ordercontroller")
 const coupons = require("../../controller/admincontroller/coupons")
 const salesreport = require("../../controller/admincontroller/salesreport")
+const Offer = require("../../controller/admincontroller/offerController")
 
 
 
@@ -102,6 +103,10 @@ router.get("/activeCoupons",coupons.activeCoupons)
 router.get("/salesreport",auth.isLogin,salesreport.SalesReport)
 router.get("/ledger",auth.isLogin,salesreport.ledger)
 
+router.get("/offer",auth.isLogin,Offer.offerPage);
+router.get("/addoffer",auth.isLogin,Offer.addOffer);
+router.get("/toggleoffer", auth.isLogin,Offer.toggleoffer)
+router.post("/addoffer",auth.isLogin,Offer.Submitoffer);
 
 
 module.exports=router;

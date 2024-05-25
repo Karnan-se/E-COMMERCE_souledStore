@@ -23,7 +23,7 @@ let shop_cart=async(req,res)=>{
             const price = item.product.price
 
            const Localprice = quantity*price;
-            console.log(Localprice)
+          
             arrayProduct.push(itemId);
         
             fullTotal += Localprice;

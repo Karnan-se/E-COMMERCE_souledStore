@@ -175,15 +175,20 @@
                             <div class="row mb-50">
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-gallery">
-                                        <span class="zoom-icon"><i class="fi-rs-search"></i></span>
                                         <!-- MAIN SLIDES -->
-                                        <div class="product-image-slider">]
-                                            <% for( let i=0; i<productDetails.images.length ;i++) {%>
-                                            <figure class="border-radius-10">                                    
-                                                <img src="/temp/<%= productDetails.images[i] %>" alt="product image">
-                                            </figure>
-                                            <% } %>          
-                                        </div>
+                                        <div class="container">
+                                            <div class="row product-image-slider">
+                                              <% for(let i = 0; i < productDetails.images.length; i++) { %>
+                                              <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                                <figure class="border-radius-10 overflow-hidden position-relative imageContainer">
+                                                  <img src="/temp/<%= productDetails.images[i] %>" alt="product image" class="img-fluid w-100 h-150 object-fit-cover">
+                                                </figure>
+                                              </div>
+                                              <% } %>
+                                            </div>
+                                          </div>
+                                          
+                                          
                                         <!-- THUMBNAILS -->
                                         <div class="slider-nav-thumbnails pl-15 pr-15">
                                             <% for( let i=0; i<productDetails.images.length ;i++) {%>

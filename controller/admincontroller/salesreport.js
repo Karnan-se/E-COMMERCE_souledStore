@@ -78,8 +78,27 @@ let ledger = async(req, res)=>{
         
     }
 }
+let customDate = async(req, res)=>{
+    try{
+        const fromDate = new Date (req.query.fromDate);
+        const toDate = new Date(req.query.toDate);
+        console.log(fromDate, toDate);
+        const orderDetails = await Order.find({
+            paymentStatus: "PaymentRecieved",
+            date: { $gte: fromDate, $lte: toDate }
+          }).populate("userId").sort({_id:-1})
+          console.log(orderDetails);
+          await res.status(200).json({orderDetails})
+
+    }catch(error){
+        console.log(error.message)
+
+    }
+}
 module.exports={
     SalesReport,
     ledger,
+    customDate,
+
 }
 

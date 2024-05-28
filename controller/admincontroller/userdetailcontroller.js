@@ -68,26 +68,15 @@ let toggle = async(req, res)=>{
 
     try {
 
-        var userId = await req.query.userId;
+        const {userId}=  req.query;
         console.log(userId)
       
         const userdetails= await user.findOne({_id:userId})
-        if (userdetails.isActive==true){
-            var update = await user.updateOne({_id : userId}, {$set:{isActive:false}}).catch((error)=>{
-                console.log("if part worked")
-
-            })
-              
-        }else{
-            var update = await user.updateOne({_id : userId}, {$set:{isActive:true}}).catch((error)=>{
-                console.log(`else part worked${error}`)
-            })
-   
-        }
-        res.json({update})
-     
-          
         
+        userdetails.isActive=!userdetails.isActive
+        await userdetails.save() 
+     
+      return  await res.status(200).json({userdetails})  
         
     } catch (error) {
         console.log(error)

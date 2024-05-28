@@ -157,6 +157,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <% if (typeof wishList !== "undefined" && wishList.product.length > 0) { %>
                                     <% wishList.product.forEach((item)=>{  %>
                                     <tr>
                                         <td class="image product-thumbnail"><img src="/temp/<%=item.productId.images[0]%>" alt="#" style="width: 100px; height: auto;"></td>
@@ -182,6 +183,9 @@
 
                                         }
                                         </script>
+                                        <%}else{%>
+                                            
+                                            <%}%>
 
                                     
                                 </tbody>

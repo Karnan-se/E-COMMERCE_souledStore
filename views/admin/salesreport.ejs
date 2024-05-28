@@ -146,6 +146,109 @@
                             <button class="btn btn-brand" id="pdf" onclick="downloadPdf()">Download-Pdf</button>
                         </div>
                         <div class="col-lg-2 col-6 col-md-3">
+                            <label for="from_date" class="form-label">From</label>
+                            <input type="date" name="expiry_date" class="form-control" id="fromdate" onchange="validatefromDate()">
+                            <span id="date-error1" class="error-msg"></span>
+                          </div>
+                          <div class="col-lg-2 col-6 col-md-3">
+                            <label for="expiry_date" class="form-label">To</label>
+                            <input type="date" name="expiry_date" class="form-control" id="todate" onchange="validateDate()">
+                            <span id="date-error" class="error-msg"></span>
+                          </div>
+                          <script>
+                          async  function validateDate() {
+                          const dateError = document.getElementById("date-error");
+                          const dateInput = document.getElementById("todate").value;
+                          const fromdate = document.getElementById("fromdate").value;
+                          if(!fromdate){
+                            dateError.innerHTML = "please choose from Date";
+                            dateError.style.color = "red";
+                            return false
+                          }
+                          const currentDate = new Date();
+                          const selectedDate = new Date(dateInput);
+                          const selectedFromDate = new Date(fromdate)
+                          if (selectedDate < selectedFromDate) {
+                            dateError.innerHTML = "From Date should not be greater";
+                            dateError.style.color = "red";
+                            return false;
+                          }
+                          dateError.innerHTML = "";
+                          if(validatefromDate){
+                            console.log("fetch Called")
+                            const response = await fetch(`/customDate?fromDate=${selectedFromDate}&toDate=${selectedDate}`,{
+                                method: "GET",
+                            })
+                            if(!response){
+                                throw new Error("internal server Error")
+                            }
+                            const data = await response.json()
+                            console.log(data)
+                            if(data){
+                                
+                                const orderDetailsContainer = document.querySelector("#orderDetailsContainer");
+                                orderDetailsContainer.innerHTML = "";
+
+                                data.orderDetails.forEach(orderDetail => {
+                                        orderDetailsContainer.innerHTML += `
+                                            <tr>
+                                                <td id="orderId">${orderDetail.orderID}</td>
+                                                <td><b id="userName">${orderDetail.userId.name}</b></td>
+                                                <td id="Email">${orderDetail.userId.email}</td>
+                                                <td id="totalAmount"> &#8377;${orderDetail.totalAmount}</td>
+                                                <td><span id="orderStatus" class="badge rounded-pill ${orderDetail.orderStatus === "Pending" ? "alert-warning" : "alert-success"}">${orderDetail.orderStatus}</span></td>
+                                                <td id="date">${new Date(orderDetail.date).toLocaleDateString()}</td>
+
+                                                <td id="paymentStatus"><span class="badge rounded-pill ${orderDetail.paymentStatus === "Pending" || orderDetail.paymentStatus === "PaymentFailed" ? "alert-danger" : "alert-success"}">${orderDetail.paymentStatus}</span></td>
+                                                <td id="textEnd" class="text-end">
+                                                    <div class="dropdown">
+                                                        <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"><i class="material-icons md-more_horiz"></i></a>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item" href="#">View detail</a>
+                                                            <a class="dropdown-item" href="#">Edit info</a>
+                                                            <a class="dropdown-item text-danger" href="#">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>`
+
+                            })
+                          }
+                          return true;
+                        }
+                    }
+                        function validatefromDate(){
+                            const dateError = document.getElementById("date-error1");
+                            const dateInput = document.getElementById("fromdate").value;
+                            const toDate = document.getElementById("todate").value;
+
+                            const currentDate = new Date();
+                            const selectedDate = new Date(dateInput);
+                            const selectedToDate = new Date(toDate);
+                            if(toDate){
+                                if(selectedDate > selectedToDate){
+                                dateError.innerHTML = "Please choose The date leser Than To";
+                                dateError.style.color = "red";
+                                return false;
+
+                                }
+                            }
+
+                            if(selectedDate > currentDate){
+                                dateError.innerHTML = "cannot choose future Date";
+                                dateError.style.color = "red";
+                                return false;
+                          }
+                          dateError.innerHTML = "";
+                          return true;
+                        }
+                       
+
+                                
+                            </script>
+                        
+
+                        <div class="col-lg-2 col-6 col-md-3">
                             <select class="form-select ledger">
                                 <option value="day">day</option>
                                 <option value="weekly">weekly</option>
@@ -207,15 +310,6 @@
                             });
                         </script>
                         
-
-        
-                        <div class="col-lg-2 col-6 col-md-3">
-                            <select class="form-select">
-                                <a href="/somthing"><option>Show 20</option></a>
-                                <option>Show 30</option>
-                                <option>Show 40</option>
-                            </select>
-                        </div>
                     </div>
                 </header> <!-- card-header end// -->
                 <div class="card-body">

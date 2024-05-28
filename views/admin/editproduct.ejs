@@ -7,6 +7,8 @@
 <%- include('./partials/header.ejs') %>
 <link rel="stylesheet" href="/assets/css/deletethis.css">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js" integrity="sha512-JyCZjCOZoyeQZSd5+YEAcFgz2fowJ1F1hyJOXgtKu4llIa0KneLcidn5bwfutiehUTiOuK87A986BZJMko0eWQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.css" integrity="sha512-087vysR/jM0N5cp13Vlp+ZF9wx6tKbvJLwPO8Iit6J7R+n7uIMMjg37dEgexOshDmDITHYY5useeSmfD1MYiQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <style>
     .preview-images {
@@ -155,8 +157,32 @@
                         <div class="card-body">
                             <div class="mb-4">
                                 <label for="product_title" class="form-label">Product title</label>
-                                <input type="text" placeholder="" class="form-control" id="product_title" name="productname" value="<%= product.productname %>">
+                                <input type="text" placeholder="" class="form-control" id="product_title" name="productname" value="<%= product.productname %>" onkeyup="textverify()">
+                                <p id="pError"></p>
+
                             </div>
+                            <script>
+                                function textverify(){
+
+                               const productTitle = document.getElementById("product_title");
+                               const textError = document.getElementById("pError");
+                           
+
+                               return verifyText(productTitle, textError)
+
+                                }
+                                function verifyText(title, text){
+                                    if (!/^[A-Za-z][A-Za-z\s]{2,}$/.test(title.value)) {
+                                        text.textContent = " title must be at least 3 characters long and contain only letters.";
+                                        text.style.color = "red";
+                                        return false
+                                } else {
+                                    text.textContent = "";
+                                    return true
+                                }
+                                }
+                                </script>
+
                             <div class="row gx-3">
                                 <div class="col-md-4  mb-3 d-none">
                                     <label for="product_sku" class="form-label">stock</label>
@@ -203,39 +229,73 @@
                                     <div class="col-md-4  mb-3" >
                                         
                                         <label for="sizeS">Size S:</label>
-                                        <input type="number" id="sizeS" name="sizes[S]" class="form-control"  min="0" value="<%= product.sizes.S.newStock %>">
+                                        <input type="number" id="sizeS" name="sizes[S]" class="form-control"  min="0" value="<%= product.sizes.S.newStock %>"  onkeyup="intverify()" >
                                       </div>
                                       <div class="col-md-4  mb-3">
                                         <label for="sizeM">Size M:</label>
-                                        <input type="number" id="sizeM" name="sizes[M]" min="0" value="<%= product.sizes.M?.newStock %>" class="form-control">
+                                        <input type="number" id="sizeM" name="sizes[M]" min="0" value="<%= product.sizes.M?.newStock %>" class="form-control"  onkeyup="intverify()">
                                       </div>
                                       <div class="col-md-4  mb-3">
                                         <label for="sizeL">Size L:</label>
-                                        <input type="number" id="sizeL" name="sizes[L]" min="0" value="<%= product.sizes.L?.newStock %>" class="form-control">
+                                        <input type="number" id="sizeL" name="sizes[L]" min="0" value="<%= product.sizes.L?.newStock %>" class="form-control"  onkeyup="intverify()">
                                       </div>
                                       <div class="col-md-4  mb-3">
                                         <label for="sizeXL">Size XL:</label>
-                                        <input type="number" id="sizeXL" name="sizes[XL]" min="0" value="<%= product.sizes.Xl?.newStock %>" class="form-control">
+                                        <input type="number" id="sizeXL" name="sizes[XL]" min="0" value="<%= product.sizes.Xl?.newStock %>" class="form-control"  onkeyup="intverify()">
                                       </div>
                                       <div class="col-md-4  mb-3">
                                         <label for="sizeXXL">Size XXL:</label>
-                                        <input type="number" id="sizeXXL" name="sizes[XXL]" min="0" value="<%= product.sizes.XXl?.newStock %>" class="form-control">
+                                        <input type="number" id="sizeXXL" name="sizes[XXL]" min="0" value="<%= product.sizes.XXl?.newStock %>" class="form-control"  onkeyup="intverify()">
                                       </div>
                                     <div id="error_message" style="color: red;"></div>
 
                                     </div>
                             
-                            <script>
-                                 const smallStock = document.getElementById("sizeS").value;
-                                 const mediumStock = document.getElementById("sizeS").value;
-                                 const largeStock = document.getElementById("sizeS").value;
-                                 const XlStock = document.getElementById("sizeS").value;
-                                 const XXLStock = document.getElementById("sizeS").value;
-
-                            
-                                 
-                                 
-                                </script>
+                                    <script>
+                                        function intverify(){
+                                       let  smallStock = document.getElementById("sizeS")
+                                       let  mediumStock = document.getElementById("sizeM")
+                                       let  largeStock = document.getElementById("sizeL")
+                                       let  XlStock = document.getElementById("sizeXL")
+                                       let  XXLStock = document.getElementById("sizeXXL")
+       
+                                        giveRedborder(smallStock)
+                                        giveRedborder(mediumStock)
+                                        giveRedborder(largeStock)
+                                        giveRedborder(XlStock)
+                                        giveRedborder(XXLStock)
+        
+                                        let isValid = true;
+       
+                                        if (!giveRedborder(smallStock)) isValid = false;
+                                        if (!giveRedborder(mediumStock)) isValid = false;
+                                        if (!giveRedborder(largeStock)) isValid = false;
+                                        if (!giveRedborder(XlStock)) isValid = false;
+                                        if (!giveRedborder(XXLStock)) isValid = false;
+       
+       
+                                        console.log(isValid)
+       
+                                        return isValid;
+       
+       
+                                        }
+                                        console.log(intverify())
+       
+                                        function giveRedborder(stock){
+                                         
+                                       if(stock.value< 0){
+                                           stock.style.border= "1px solid red"
+                                               return false
+                                       }else{
+                                           stock.style.border= "1px solid black"
+                                           return true
+                                       }
+       
+                                        }
+                                        
+       
+                                       </script>
                                      
                                 </div>
                             
@@ -246,10 +306,24 @@
                         <div class="card-body">
                             <div>
                                 <label class="form-label">Description</label>
-                                <textarea placeholder="Type here" class="form-control" rows="4" name="Description" value="<%= product.description %>"><%= product.description %></textarea>
+                                <textarea placeholder="Type here" class="form-control" rows="4"  name="Description" id="description"  value="<%= product.description %>" onkeyup="descverify()"><%= product.description %></textarea>
+                                <p id="descError"></p>
                             </div>
                         </div>
                         </div>
+
+
+                        <script>
+                            function descverify(){
+                               const desc = document.getElementById("description")
+                               const Error = document.getElementById("descError")
+    
+                                return verifyText(desc, Error)
+    
+                                    }
+    
+                            
+                            </script>
 
 
 
@@ -357,20 +431,22 @@
                         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
                         
                         <script>
+                            let newdatImage = []
                             $(document).ready(function() {
                                 let createImageContainer = function(imageSrc, imageName) {
                                         let imageContainer = $($.parseHTML(`
-                                            <div class="col-lg-4 col-md-4 col-12 col-sm-6 position-relative">
+                                            <div class="col-lg-4 col-md-4 col-12 col-sm-6 position-relative" id="oldImage">
                                                 <div class="product-cart-wrap mb-30 custom-product-card">
                                                     <div class="product-img-action-wrap">
                                                         <div class="product-img product-img-zoom">
                                                             
                                                                 <div class="hover-image"></div>
-                                                                <img class="default-img" src="${imageSrc}" alt="">
+                                                                <img class="default-img inputcrop" src="${imageSrc}" alt="" >
                                                                 <button class="btn btn-primary btn-center delete-btn" data-image="${imageName}" style="font-size: 12px; line-height: 1.5; max-width: 100%>
                                                                     <i class="fas fa-solid fa-trash text-sm" style="font-size: 8px;"></i> 
                                                                     delete
                                                                 </button>
+                                                                
                                                             
                                                         </div>
                                                     </div>
@@ -380,12 +456,15 @@
                                         return imageContainer;
                                     };
 
+                                 
+
+                     
                         
                                 let imagesPreview = function(input, placeToInsertImagePreview) {
                                     if (input.files) {
                                         let filesAmount = input.files.length;
                                         
-                                        placeToInsertImagePreview.html('');
+                                        // placeToInsertImagePreview.html('');
                                         for (let i = 0; i < filesAmount; i++) {
                                             let reader = new FileReader();
                                             reader.onload = function(event) {
@@ -393,12 +472,19 @@
                                                 let imageName = input.files[i].name;
                                                 let imageContainer = createImageContainer(imageSrc , imageName);
                                                 placeToInsertImagePreview.append(imageContainer);
-                                            };
+                                                newdatImage.push(imageSrc)
+                                                
+                     
+                                           };
+                                          
                                             reader.readAsDataURL(input.files[i]);
-                                            
+                                        
                                         }
+                                        
+                                        
                                     }
                                 };
+                               
 
                                 
                                 $(document).on("click", ".delete-btn", function() {
@@ -426,25 +512,25 @@
                                     let newFileList = new DataTransfer();
                                     for(let i=0; i< newFiles.length; i++){
                                         newFileList.items.add(newFiles[i])
+                                       
                                     }
                                     inputImages.files =newFileList.files;
-          
-                                 
-                                    let newInput = $("<input>")
-                                        .attr("type", "file")
-                                        .attr("name", "Images")
-                                        .attr("id", "input-images")
-                                        .attr("accept", "image/*")
-                                        .attr("multiple", true)
-                                        .css("display", "none");
+
+                                    // let newInput = $("<input>")
+                                    //     .attr("type", "file")
+                                    //     .attr("name", "Images")
+                                    //     .attr("id", "input-images")
+                                    //     .attr("accept", "image/*")
+                                    //     .attr("multiple", true)
+                                    //     .css("display", "none");
                                         
-                                        $(document.body).append(newInput);
-                                        newInput.files = inputFiles;
-                                        console.log(`${newInput.files} hey this is newFile`)
+                                    //     $(document.body).append(newInput);
+                                    //     newInput.files = inputFiles;
+                                    //     console.log(`${newInput.files} hey this is newFile`)
                                       
-                                        newInput.prop("files", newInput.files);
-                                        newInput.trigger('change');
-                                        positionRelative.remove();
+                                    //     newInput.prop("files", newInput.files);
+                                    //     newInput.trigger('change');
+                                    //     positionRelative.remove();
                                                                
                                         }
                                 })
@@ -464,6 +550,26 @@
                                 });
                             });
                         </script>
+
+                        <script defer>
+                            console.log("hi")
+                             document.addEventListener('DOMContentLoaded', function() {
+                                console.log(newdatImage)
+                                
+                                if(newdatImage){
+                                    console.log("we got The image")
+                                    const cropper  = new Cropper(newdatImage[0],{
+                                        aspectRatio: 16 / 9,
+                                        viewMode: 1,
+
+                                    })
+                                    
+                                }
+                             })
+
+                            
+
+                            </script>
                         
                         <style>
                             .btn-center {
@@ -581,6 +687,43 @@
             return false;
  
         }
+        if(gender == "" || gender== "gender"){
+                Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please select the gender',
+            });
+            return false;
+
+            }
+            
+        if (!intverify()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Some stock values are less than zero.',
+        });
+        return false;
+    }
+    if(!textverify()){
+     
+        Swal.fire({
+            icon:"error",
+            title: "Error",
+            text:"Product Title is not Valid"
+        })
+        return false
+    }
+    if(!descverify()){
+        Swal.fire({
+            icon:"error",
+            title: "Error",
+            text:"Product Title is not Valid"
+        })
+        return false
+        
+    }
+
 
         return true;
     }

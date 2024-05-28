@@ -694,6 +694,9 @@ if (cartCountElement) {
                                                 </div>
                                                 <div class="product-price">
                                                     <span>&#x20b9 <%= product[i].price%></span>
+                                                    <span class="<%= (product[i].price != product[i].orginalPrice) ? 'old-price' : 'd-none' %>">
+                                                        <%= product[i]?.orginalPrice ?? '' %>
+                                                      </span>
                                                     
                                                 </div>
                                                 <div class="product-action-1 show">
@@ -1311,7 +1314,8 @@ if (cartCountElement) {
                                     </div>
                                     <div class="product-price">
                                         <span><%= newProducts[i].price %></span>
-                                        <!-- <span class="old-price">$245.8</span> -->
+                                        
+                                        <span class="old-price"><%= newProducts[i].orginalPrice%> </span>
                                     </div>
                                 </div>
                             </div>

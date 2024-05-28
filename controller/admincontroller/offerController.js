@@ -160,10 +160,13 @@ let toggleoffer = async(req, res)=>{
                 }))
                 
                 console.log("all The product Updated", )
-              
-
+            
             }
+           
         }
+        console.log("upto here working")
+        return await res.status(200).json({data:"reload"})
+  
 
         
     } catch (error) {

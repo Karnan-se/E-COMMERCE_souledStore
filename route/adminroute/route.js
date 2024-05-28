@@ -15,6 +15,7 @@ const orderController = require("../../controller/admincontroller/ordercontrolle
 const coupons = require("../../controller/admincontroller/coupons")
 const salesreport = require("../../controller/admincontroller/salesreport")
 const Offer = require("../../controller/admincontroller/offerController")
+const Dashboard = require("../../controller/admincontroller/dashboard") 
 
 
 
@@ -22,7 +23,7 @@ const Offer = require("../../controller/admincontroller/offerController")
 
 
 router.get("/admin-login",auth.isLogout, loginController.adminLogin);
-router.get("/admindashboard", auth.isLogin, adminController.admindashboard)
+router.get("/admindashboard", auth.isLogin, Dashboard.admindashboard)
 router.post("/index", adminPostcontroller.page_account_login)
 router.get("/logout", auth.isLogin, adminController.logout,)
 
@@ -102,11 +103,15 @@ router.get("/activeCoupons",coupons.activeCoupons)
 
 router.get("/salesreport",auth.isLogin,salesreport.SalesReport)
 router.get("/ledger",auth.isLogin,salesreport.ledger)
+router.get("/customDate", auth.isLogin,salesreport.customDate)
 
 router.get("/offer",auth.isLogin,Offer.offerPage);
 router.get("/addoffer",auth.isLogin,Offer.addOffer);
 router.get("/toggleoffer", auth.isLogin,Offer.toggleoffer)
 router.post("/addoffer",auth.isLogin,Offer.Submitoffer);
 
+
+router.get("/sales", auth.isLogin,Dashboard.sales)
+router.get("/fetchdashboard", auth.isLogin,Dashboard.fetchDashboard)
 
 module.exports=router;

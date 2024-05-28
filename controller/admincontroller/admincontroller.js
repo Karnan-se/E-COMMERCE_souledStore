@@ -1,15 +1,6 @@
 const { json } = require("stream/consumers");
 
 
-let admindashboard = async(req, res)=>{
-    try {
-      
-        res.render("admin/dashboard.ejs",)
-    } catch (error) {
-        console.log(error);
-        
-    }
-}
 
 
 let page_products_grid = async(req, res)=>{
@@ -198,7 +189,7 @@ let logout = async(req,res)=>{
 }
 
 module.exports={ 
-    admindashboard, 
+   
     page_products_grid,
     page_products_grid_2,
    

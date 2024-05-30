@@ -186,7 +186,7 @@
                         <table class="table table-hover">
                             <thead>
                               <tr>
-                                <th>Offer Code</th>
+                                <th>Product or category Desc</th>
                                
                                 <th scope="col">percentage/discount Price</th>
                                 
@@ -210,7 +210,7 @@
                                     </td>
                                     <% }else {%>
                                         <td>
-                                            <%= element.discountPercent  %>₹
+                                            <%= element.fixedRate  %>₹
                                           </td>
                                           <% }%>
 
@@ -239,8 +239,8 @@
                                             <a class="badge rounded alert-success" onclick="toggleList('<%= element._id %>')">List</a>
                                             <% } %>
                                             
-                                              <a href="/editOffer?couponId=<%= element._id %>" class="badge rounded alert-secondary"
-                                                onclick="editCoupon('<%= element._id %>')">Edit</a>
+                                              <!-- <a href="/editOffer?offerId=<%= element._id %>" class="badge rounded alert-secondary"
+                                                >Edit</a> -->
                                       </td>
                                   </tr>
                                   <% }) %>

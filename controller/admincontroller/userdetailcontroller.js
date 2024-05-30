@@ -10,7 +10,7 @@ let admin_user_page = async(req, res)=>{
     {
         console.log('active sort')
 
-       let users = await user.find({isActive:'true'});
+       let users = await user.find({isActive:true});
 
    console.log(users)
         return res.render("admin/admin-user-page.ejs",{users:users})
@@ -49,7 +49,7 @@ let admin_user_page = async(req, res)=>{
 
         delete req.session.disabledsort   
 
-        users = await user.find();
+       const users = await user.find({});
         return res.render("admin/admin-user-page.ejs",{users:users})
 
         
@@ -69,14 +69,13 @@ let toggle = async(req, res)=>{
     try {
 
         const {userId}=  req.query;
-        console.log(userId)
-      
-        const userdetails= await user.findOne({_id:userId})
-        
-        userdetails.isActive=!userdetails.isActive
-        await userdetails.save() 
-     
-      return  await res.status(200).json({userdetails})  
+        const userdetails = await user.findOne({_id:userId});
+        userdetails.isActive = !userdetails.isActive;
+         userdetails.save()
+        console.log(userdetails)
+      return res.status(200).json({data:"Hey"})
+
+  
         
     } catch (error) {
         console.log(error)

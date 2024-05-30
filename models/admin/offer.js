@@ -11,6 +11,7 @@ const offerSchema = new mongoose.Schema({
     },
     discountPercent: {
         type: Number,
+        default:0,
        
     },
     maxDiscountAmount: {
@@ -34,8 +35,9 @@ const offerSchema = new mongoose.Schema({
         required:false,
     },
     fixedRate:{
-        type: String,
+        type: Number,
         required: false,
+        default:0,
     }
 
 

@@ -109,6 +109,7 @@ router.get("/offer",auth.isLogin,Offer.offerPage);
 router.get("/addoffer",auth.isLogin,Offer.addOffer);
 router.get("/toggleoffer", auth.isLogin,Offer.toggleoffer)
 router.post("/addoffer",auth.isLogin,Offer.Submitoffer);
+router.get("/editOffer",auth.isLogin,Offer.editOffer);
 
 
 router.get("/sales", auth.isLogin,Dashboard.sales)

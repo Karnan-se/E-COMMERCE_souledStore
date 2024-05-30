@@ -226,11 +226,11 @@
                                         </a>
                                     </td>
                                     <td><template class="__cf_email__" data-cfemail="2c4940494d42435e1e1c1e1c6c49544d415c4049024f4341">[email&#160;protected]</template></td>
-                                    <td><span class="badge rounded-pill <%= users[i].isActive== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= users[i].isActive==true?"Active" : "blocked"%></span></td>
+                                    <td><span class="badge rounded-pill <%= users[i].isActive=== true? "alert-success" : "alert-warning"%> " id="status<%= i %>"><%= users[i].isActive === true?"Active" : "blocked"%></span></td>
                                     <td><%= users[i].formateDate() %></td>
                                     <td class="text-end">
                                         <input type="" value="<%= users[i]._id %>" id="userId<%= i %>" hidden> 
-                                        <a class="btn btn-sm btn-brand rounded font-sm mt-15 toggle-btn" onclick="toggle('<%= i %>')"><%= users[i].isActive==true?"block": "activate"%></a>
+                                        <a class="btn btn-sm btn-brand rounded font-sm mt-15 toggle-btn" onclick="toggle(`<%=users[i]._id%>`)"><%= users[i].isActive===true? "block": "activate"%></a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -278,28 +278,21 @@
 
 
 
-function toggle(index) {
-    const userId = document.getElementById(`userId${index}`).value
-    
-
+async function toggle(userId) {
+  
     console.log(userId)
-    fetch(`/toggle?userId=${userId}`, {
+    const response = await fetch(`/toggle?userId=${userId}`, {
         method: "GET",
        
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-             response.json();
-        })
-        .then(data => {
-            console.log(data);
-            window.location.reload()
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-        });
+    if(!response){
+        throw new Error("Internal Server Error")
+    }
+
+    const data = await response.json()
+    if(data){
+        window.location.reload()
+    }
         
 }
 

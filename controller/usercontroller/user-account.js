@@ -37,6 +37,7 @@ let currentPassword= async(req, res)=>{
     try {
         const currentPassword = req.body.password;
         const userDetails = req.session.userisAuth;
+        console.log(userDetails);
         const encrypyedPassword = await bcrypt.compare(currentPassword, userDetails.password)
         console.log(encrypyedPassword);
         if(encrypyedPassword == true){

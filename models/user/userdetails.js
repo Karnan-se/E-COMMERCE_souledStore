@@ -77,14 +77,7 @@ const user = new mongoose.Schema({
             next(error)
         }
     })
-    user.pre('save', async function(next){
-        try{
-            this.isActive= true;
-            next();
-        }catch(error){
-            console.log(`this is the middleware for save function ${error}`)
-        }
-    })
+    
 
     user.methods.formateDate = function () {
         return format(this.date, 'dd-MM-yyyy')

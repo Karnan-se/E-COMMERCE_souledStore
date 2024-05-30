@@ -177,7 +177,8 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="col-md-6">
+
+                                                                                <div class="col-md-4">
                                                                                     <div class="d-flex flex-column">
                                                                                         <div class="product-details">
                                                                                             <div class="product-name"> <%= item.product.productname %></div>
@@ -199,16 +200,29 @@
                                                                                                         <% }%>
 
                                                                                                         <% }%>
+                                                                                                         <div class="">
+                                                                                        <div class="">Price &#x20b9; <%= item.price %></div>
+                                                                                        <div class="text-success">Discount received &#x20b9; <%= item.price %></div>
+                                                                                    </div>
 
                                                                                         </div>
                                                                                     </div>
      
                                                                                 </div>
                                                                                 <div class="col-md-4">
+                                                                                   
                                                                                     <div class="d-flex align-items-center flex-column">
-                                                                                        <div class="d-flex flex-column p-5 text-md-end"> &#x20b9; <%= item.price %></div>
-                                                                                        
-                                                                                    </div>
+                                                                                        <span class="fw-large">ADDRESS</span>
+                                                                                        <div class="d-flex flex-column p-2 text-md-end">
+                                                                                            
+                                                                                          <span class="fw-medium">
+                                                                                            <%= items.addresstoDeliver.houseaddress %><br>
+                                                                                            <%= items.addresstoDeliver.city %>, <%= items.addresstoDeliver.district %><br>
+                                                                                            <%= items.addresstoDeliver.state %><br>
+                                                                                            <%= items.addresstoDeliver.phonenumber %>
+                                                                                          </span>
+                                                                                        </div>
+                                                                                      </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1131,15 +1145,15 @@
                                                                             value="<%= userDetails?.email %>">
                                                                     </div>
 
-                                                                    <!-- <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-6">
                                                             <label>Current Password <span ></span></label>
                                                             <div class="input-group">
                                                                 <input required="" class="form-control square" name="password" type="password" id="currentPassword">
                                                                 <div class="input-group-append">
-                                                                    <button type="button" class="btn btn-success" id="btnChangePassword" disabled onclick="displayfields()">Change password</button>
+                                                                    <button type="button" class="btn btn-success" id="btnChangePassword" disabled>Change password</button>
                                                                 </div>
                                                             </div>
-                                                        </div> -->
+                                                        </div>
 
                                                                     <div class="form-group col-md-6">
                                                                         <label>Save Changes<span
@@ -1202,8 +1216,6 @@
                                                                             })
 
                                                                         }else{ 
-
-
                                                                         const inputname = document.getElementById("name")
                                                                         const name =inputname.value
                                                                         if(name.length<3){
@@ -1212,9 +1224,8 @@
                                                                                 title:"minimum 3 charectors required"
                                                                             })
                                                                             inputname.style.border = "2px solid red";
-                                                                            
-
-                                                                            event,preventDefault()
+                                    
+                                                                            event.preventDefault()
                                                                         }
 
                                                                        
@@ -1240,12 +1251,8 @@
                                                                 }
                                                                 </script>
 
-
-
-
-
-                                                                <div class="passwordFields">
-                                                                    <div class="d-none">
+                                                                <div class="passwordFields d-none" id="passwordFields">
+                                                                    <div class="">
 
                                                                         <div class="form-group col-md-12">
                                                                             <label>New Password <span></span></label>
@@ -1317,21 +1324,27 @@
 
                                                                             currentPasswordfield.style.border = "2px solid green";
                                                                             currentPasswordfield.style.borderBottomColor = "green !important"
-                                                                            document.getElementById("btns").removeAttribute("disabled")
+                                                                            const changePasswordbtn =document.getElementById("btnChangePassword")
+                                                                            changePasswordbtn.disabled=false;
+                                                                            changePasswordbtn.addEventListener("click", function(){
+                                                                                document.getElementById("passwordFields").classList.remove("d-none");
+                                                                            })
+
+                                                                            
 
 
                                                                         }
                                                                     }
 
-                                                                    async function displayfields() {
-                                                                        const elements = document.getElementsByClassName("d-none");
-                                                                        Array.from(elements).forEach(element => {
-                                                                            element.classList.remove("d-none");
-                                                                        });
+                                                                    // async function displayfields() {
+                                                                    //     const elements = document.getElementsByClassName("d-none");
+                                                                    //     Array.from(elements).forEach(element => {
+                                                                    //         element.classList.remove("d-none");
+                                                                    //     });
 
 
 
-                                                                    }
+                                                                    // }
                                                                     function validateForm() {
                                                                         const newpassword = document.getElementById("npassword").value
                                                                         const currentPassword = document.getElementById("cpassword").value

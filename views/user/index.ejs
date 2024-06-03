@@ -17,7 +17,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
-    <link rel="stylesheet" href="iziToast.min.css">
+ 
    
 </head>
 
@@ -234,9 +234,88 @@
                         <div class="search-style-2">
                             <form action="#">
                                
-                                <input type="text" placeholder="Search for items...">
+                                <input type="text" placeholder="Search for items..." id="searchProduct" onkeyup="SearchProduct()">
                             </form>
                         </div>
+                        <script>
+                           async function SearchProduct(){
+                              const search=  document.getElementById("searchProduct")
+                             const keywords= search.value
+                             const response = await fetch(`/searchProduct?keyword=${keywords}`,{
+                                method:"GET",
+                             })
+                             if(!response){
+                                throw new Error("Internal Server Error ")
+                             }
+                             const data= await response.json()
+                             console.log(data.product);
+                             if(data){
+                                updateProductList(data.product);
+
+                             }
+                            }
+
+function updateProductList(products) {
+    const container = document.getElementById("product-container");
+    container.innerHTML = ''; // Clear existing products
+    
+    const oneDay = 24 * 60 * 60 * 1000;
+    const now = new Date();
+    
+    products.forEach(product => {
+        const createdat = new Date(product.createdat);
+        const timediff = now - createdat;
+        const isNew = timediff < oneDay;
+        
+        const productHTML = `
+            <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                <div class="product-cart-wrap mb-30">
+                    <div class="product-img-action-wrap productofindex">
+                        <div class="product-img product-img-zoom">
+                            <a href="/shop-product-right?productId=${product._id}">
+                                <img class="default-img" src="/temp/${product.images[0]}" alt="">
+                                <img class="hover-img flying-Element" src="/temp/${product.images[1]}" alt="">
+                            </a>
+                        </div>
+                        <div class="product-action-1">
+                            <a aria-label="Add To Wishlist" class="action-btn hover-up wishlist" data-productId="${product._id}"><i class="fi-rs-heart"></i></a>
+                            <a aria-label="Compare" class="action-btn hover-up" href="/shop-compare"><i class="fi-rs-shuffle"></i></a>
+                        </div>
+                        <div class="product-badges product-badges-position product-badges-mrg">
+                            ${isNew ? '<span class="new">New</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="product-content-wrap">
+                        <div class="product-category">
+                            <a href="/shop-grid-right">${product.productname}</a>
+                        </div>
+                        <h2><a href="/shop-product-right">${product.productname}</a></h2>
+                        <div class="rating-result" title="90%">
+                            <span>
+                                <span>90%</span>
+                            </span>
+                        </div>
+                        <div class="product-price">
+                            <span>&#x20b9 ${product.price}</span>
+                            <span class="${product.orginalPrice > 0 ? 'old-price' : 'd-none'}">
+                                ${product.orginalPrice ? product.orginalPrice : ''}
+                            </span>
+                        </div>
+                        <div class="product-action-1 show">
+                            <a aria-label="Add To Cart" class="action-btn hover-up fi-rs-shopping-bag-add addtoCart" data-index="${product._id}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        container.insertAdjacentHTML('beforeend', productHTML);
+    });
+}
+
+                            
+                        </script>
+
                         <div class="header-action-right">
                             <div class="header-action-2">
                                 <div class="header-action-icon-2">
@@ -645,72 +724,58 @@ if (cartCountElement) {
                         <!--End nav-tabs-->
                         <div class="tab-content wow fadeIn animated" id="myTabContent">
                             <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
-                                <div class="row product-grid-4">
 
+                                <div id="product-container" class="row product-grid-4">
                                     <% for(let i=0; i<product.length; i++) {%>
-                                       <% const now = new Date() 
-                                        const createdat = new Date(product[i]?.createdat)
-                                        const timediff = now-createdat;
-                                        const oneDay = 24*60*60*1000;
-                                        const isNew = timediff < oneDay
+                                        <% const now = new Date(); 
+                                        const createdat = new Date(product[i]?.createdat);
+                                        const timediff = now - createdat;
+                                        const oneDay = 24 * 60 * 60 * 1000;
+                                        const isNew = timediff < oneDay;
                                         %>
-
-
-                                    <div class="col-lg-4 col-md-4 col-12 col-sm-6">
-                                        <div class="product-cart-wrap mb-30">
-                                            <div class="product-img-action-wrap productofindex">
-                                                <div class="product-img product-img-zoom">
-                                                    <a href="/shop-product-right?productId=<%= product[i]._id %>">
+                                
+                                        <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                                            <div class="product-cart-wrap mb-30">
+                                                <div class="product-img-action-wrap productofindex">
+                                                    <div class="product-img product-img-zoom">
                                                         <a href="/shop-product-right?productId=<%= product[i]._id %>">
-                                 
-                                                        <img class="default-img" src="/temp/<%= product[i]?.images[0] %>" alt="">
-                                                        <img class="hover-img flying-Element " src="/temp/<%= product[i]?.images[1] %>" alt="">
-                                                    </a>
+                                                            <img class="default-img" src="/temp/<%= product[i]?.images[0] %>" alt="">
+                                                            <img class="hover-img flying-Element" src="/temp/<%= product[i]?.images[1] %>" alt="">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-action-1">
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up wishlist" data-productId="<%= product[i]?._id %>"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Compare" class="action-btn hover-up" href="/shop-compare"><i class="fi-rs-shuffle"></i></a>
+                                                    </div>
+                                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                                        <% if (isNew) { %>
+                                                            <span class="new">New</span>
+                                                        <% } %>
+                                                    </div>
                                                 </div>
-                                                <div class="product-action-1">
-                                                   
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up wishlist" data-productId="<%= product[i]?._id %>"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Compare" class="action-btn hover-up" href="/shop-compare"><i class="fi-rs-shuffle"></i></a>
-                                                </div>
-                                                <div class="product-badges product-badges-position product-badges-mrg">
-                                                    <% if (isNew) { %>
-                                                        <span class="new">New</span>
-                                                      <% } else { %>
-                                                        <!-- <span class="hot best sale">Hot</span> -->
-                                                      <% } %>
-                                                </div>
-                                            </div>
-
-                                           
-                                            <div class="product-content-wrap ">
-                                                <div class="product-category">
-                                                    <a href="/shop-grid-right"><%= product[i].productname%></a>
-                                                </div>
-                                                <h2><a href="/shop-product-right"><%= product[i].productname%></a></h2>
-                                                <div class="rating-result" title="90%">
-                                                    <span>
-                                                        <span>90%</span>
-                                                    </span>
-                                                </div>
-                                                <div class="product-price">
-                                                    <span>&#x20b9 <%= product[i].price%></span>
-                                                    <span class="<%= (product[i].orginalPrice >0) ? 'old-price' : 'd-none' %>">
-                                                        <%= product[i]?.orginalPrice ?? '' %>
-                                                      </span>
-                                                    
-                                                </div>
-                                                <div class="product-action-1 show">
-                                     
-                                                    <a aria-label="Add To Cart" class="action-btn hover-up fi-rs-shopping-bag-add addtoCart" data-index="<%= product[i]._id %>"></i></a>
-
-
+                                                <div class="product-content-wrap">
+                                                    <div class="product-category">
+                                                        <a href="/shop-grid-right"><%= product[i].productname %></a>
+                                                    </div>
+                                                    <h2><a href="/shop-product-right"><%= product[i].productname %></a></h2>
+                                                    <div class="rating-result" title="90%">
+                                                        <span><span>90%</span></span>
+                                                    </div>
+                                                    <div class="product-price">
+                                                        <span>&#x20b9 <%= product[i].price %></span>
+                                                        <span class="<%= (product[i].orginalPrice > 0) ? 'old-price' : 'd-none' %>">
+                                                            <%= product[i]?.orginalPrice ?? '' %>
+                                                        </span>
+                                                    </div>
+                                                    <div class="product-action-1 show">
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up fi-rs-shopping-bag-add addtoCart" data-index="<%= product[i]._id %>"></a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
                                     <% } %>
                                 </div>
+                                
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
                                     const wishListbuttons= document.querySelectorAll(".wishlist")
@@ -840,7 +905,7 @@ if (cartCountElement) {
                                            </script>
 
                                 <!--End product-grid-4-->
-                            </div>
+                        </div>
                             <!--En tab one (Featured)-->
 
 <!-- if you want to ADD for female you can use here -->

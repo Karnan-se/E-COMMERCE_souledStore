@@ -103,7 +103,7 @@
                                 </div>
                                 <div class="bt-1 border-color-1 mt-15 mb-15"></div>
                                 <div class="short-desc mb-30">
-                                    <p class="font-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi,!</p>
+                                    <!-- <p class="font-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi,!</p> -->
                                 </div>
                                 <div class="attr-detail attr-color mb-15">
                                     <strong class="mr-10">Color</strong>
@@ -313,10 +313,10 @@
                                         <div class="detail-extralink">
 
 
-                                            <div class="detail-qty border radius">
-                                                <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                            <div class="detail-qty ">
+                                                <!-- <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
                                                 <span class="qty-val qnty"  data-product-Id="<%= productDetails._id%>" >1</span>
-                                                <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                                <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a> -->
                                             </div>
 
 
@@ -427,8 +427,22 @@
                                                         window.location.href="/user-login"
         
                                                     }else if(data.data =="already-Existed"){
-
-                                                        
+                                                        const Toast = Swal.mixin({
+                                                        toast: true,
+                                                         position: "top-end",
+                                                        showConfirmButton: false,
+                                                        timer: 3000,
+                                                        timerProgressBar: true,
+                                                         didOpen: (toast) => {
+                                                            toast.onmouseenter = Swal.stopTimer;
+                                                            toast.onmouseleave = Swal.resumeTimer;
+                                                        }
+                                                        });
+                                                        Toast.fire({
+                                                        icon: "warning",
+                                                        title: "Product Already Exist in Cart"
+                                                        })
+    
                                                     }else{
                                                         console.log(data.datas);
                                                        window.location.href ="/shop-cart"

@@ -66,7 +66,7 @@
                                                     <div class="image-container position-relative">
                                                         <img src="/temp/<%= item.product.images[0] %>" alt="#" class="largerImage">
                                                         <button class="btn btn-primary delete-btn position-absolute top-100  start-50 translate-middle d-none " style="font-size: 12px; line-height: 1;" data-toggle="tooltip" title="Delete">
-                                                            <i class="fas fa-trash text-sm" style="font-size: 8px;" data-value="<%= item.product._id %>" data-size="<%= item.size %>"></i> delete
+                                                            <i class="fas fa-trash text-sm checkStock" style="font-size: 8px;" data-value="<%= item.product._id %>" data-size="<%= item.size %>"></i> delete
                                                         </button>
                                                     </div>
                                                 </td>
@@ -75,7 +75,9 @@
                                                 <h5 class="product-name"><%= item.product.productname%><a href="/shop-product-right"></a></h5>
                                                 <p class="font-xs"><br> 
                                                 </p>
+                                                <p class="out stock-warning" data-size="<%= item.size%>" data-product="<%=item.product._id %>"></p>
                                             </td>
+                                            
                                             
                                            
                                             <td class="price" data-title="Price"><span>&#x20B9;<%= item.product.price%></span></td>
@@ -84,10 +86,8 @@
                                             <td class="text-center" data-title="Stock">
                                                 <div class="detail-qty border radius  m-auto">
                                                     <a  class="qty-down "><i class="fi-rs-angle-small-down up"></i></a>
-                                                    <span class="qty-val qnty" data-product-Id="<%= item.product._id %>"><%= item.quantity %></span>
-                                                    <a  class="qty-up"><i class="fi-rs-angle-small-up down"></i></a>
-                                     
-
+                                                    <span class="qty-val qnty" data-product-Id="<%= item.product._id %>" data-size="<%= item.size %>"><%= item.quantity %></span>
+                                                    <a  class="qty-up"><i class="fi-rs-angle-small-up down" > </i></a>
                                                 </div>
                                                 <td> <input type="text" value="<%= item.product._id %>" class="d-none" data-product-Id="<%= item.product._id %>"></td>
                                                 
@@ -108,6 +108,7 @@
                                                         <option  data-index="<%= item.product._id%>" value="XXl" <%= item?.size == "XXl" ? 'selected' : '' %> >XXL</option> 
                                                     </select>
                                                 </span> 
+                                                
                                             </td>                                     
                                     </tr>
 
@@ -115,6 +116,55 @@
                                     
                                    
                                 <% }) %>
+
+                                <script>
+                                     document.addEventListener('DOMContentLoaded',  function() {
+
+                                        const stockWarning = document.querySelectorAll(".stock-warning")
+                                        console.log("dbwjebfbjebf bqjbefjbwef jjjb jb3 jf")
+
+                                        stockWarning.forEach(async(item)=>{
+                                           const Size= item.getAttribute("data-size")
+                                           const ProductId = item.getAttribute("data-product")
+                                           const response = await fetch(`/checkStock?stockSize=${Size}&productId=${ProductId}`,{
+                                            method:"GET",
+                                           })
+                                           if(!response){
+                                            throw new Error("Internal Server Erro")
+                                           }
+                                           const data = await response.json();
+                                           if(data.stock <= 0){
+                                            console.log("no Stock")
+                                            item.textContent = "Out of Stock";
+                                            item.setAttribute('data-stock', 'out');
+                                            item.style.color = 'red';
+                                           }else {
+                                            item.textContent= "In Stock";
+                                            item.setAttribute('data-stock', 'in');
+                                            item.style.color ="green"
+                                           }
+                                          
+                                        })
+
+                                     })
+                                </script>
+                                <script>
+                                    function checkforStock(){
+                                        const stockWarning = document.querySelectorAll(".stock-warning")
+                                        stockWarning.forEach((item)=>{
+                                            const stock = item.getAttribute("data-stock");
+                                            if(stock == "out"){
+                                                console.log("all The Value is true")
+                                                return false    
+                                            }
+                                            
+                                        })
+
+
+                                    }
+                                </script>
+
+
                                 <script>
                                     async function updateSize(select){
                                         const selectedSize = select.value;
@@ -196,11 +246,44 @@
                                                     const qtyElement = button.parentElement.querySelector(".qnty");
                                                     let qty = parseInt(qtyElement.textContent);
                                                     const productId = button.parentElement.querySelector(".qnty").getAttribute("data-product-Id")
-                                                    console.log(productId)
+                                                    const stockWarning = button.closest("tr").querySelector(".stock-warning");
+                                                    const Size = button.parentElement.querySelector(".qnty").getAttribute("data-size")
+                                                    console.log(Size);
+                                                    console.log(productId);
+
+                                                    const stockresponse = await fetch(`/checkStock?stockSize=${Size}&productId=${productId}`,{
+                                                        method:"GET"
+                                                    })
+                                                    if(!stockresponse){
+                                                        throw new Error("Internal Server Error")
+                                                    }else{
+                                                        const data = await stockresponse.json()
+                                                        console.log(data)
+                                                        if(data.data <= 0){
+                                                            console.log("no stock")
+                                                         } else if(qty == data.data){
+                                                            console.log("max Content");
+
+                                                            stockWarning.textContent ="MAX STOCK"
+                                                            stockWarning.style.color ="red"
+                                                            setTimeout(()=>{
+                                                                stockWarning.textContent =""
+
+                                                            }, 2000)
+
+                                
+
+                                                        }else{
+                                                            stockWarning.textContent =""
+                                                            qty += 1 && qty <data.data
+                                                            qtyElement.textContent = qty;
+                                                            
+
+                                                        }
+                                                    }
                                                     
                                                    
-                                                    qty += 1 && qty <10
-                                                    qtyElement.textContent = qty;
+                                                    
 
                                                     const response = await fetch(`/quantityUpdate?number=${qty}&productId=${productId}`,{
 
@@ -317,12 +400,36 @@
                             <Script>
                                 async function checkout(){
                                     const allItemsHaveSize = Array.from(document.querySelectorAll('.size-dropdown')).every((select) => select.value !== 'Null');
+                                        const allproducts =[]
+                                    const isProduct = document.querySelectorAll(".product-name")
+                                     isProduct.forEach((items)=>{
+                                        allproducts.push(items)
+                                         
+                                    })
+
+                                    checkforStock()
+                                    if(!checkforStock){
+                                        Swal.fire({
+                                             icon: 'error',
+                                             title: 'Oops...',
+                                             text: 'Please check the Stock'
+                                         });
+
+                                    }
+
 
                                     if (!allItemsHaveSize) {
                                          Swal.fire({
                                              icon: 'error',
                                              title: 'Oops...',
                                              text: 'Please select a size for all items The Items'
+                                         });
+
+                                        } else if(allproducts==0){
+                                           return  Swal.fire({
+                                             icon: 'error',
+                                             title: 'Oops...',
+                                             text: 'No items in The Cart'
                                          });
                                           } else {
 

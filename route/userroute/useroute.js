@@ -18,6 +18,7 @@ userrouter.get("/",userController.user_index)
 userrouter.get("/user-login",userController.userlogin)
 userrouter.get("/user-register",userController.user_register)
 userrouter.get("/user-logout",userController.user_out)
+userrouter.get("/searchProduct", userController.search)
 
 userrouter.post("/user-login",userpostcontroller.user_login) 
 userrouter.post("/user-register",userpostcontroller.user_register)
@@ -64,6 +65,7 @@ userrouter.get("/WalletPaymentCancelled",checkout.WalletPaymentCancelled)
 userrouter.get("/thankYou",checkout.thanYou)
 
 
+
 userrouter.get("/shop-wishlist",wishlist.shopWishlist)
 userrouter.get("/addtowishList",wishlist.addtowishList)
 
@@ -74,6 +76,8 @@ userrouter.get("/addtoWallet",walletController.addToWallet)
 userrouter.get("/addAmounttoWallet",walletController.addAmounttoWallet)
 
 userrouter.get("/getInvoice",getInvoice.downloadInvoice)
+
+
 
 
 

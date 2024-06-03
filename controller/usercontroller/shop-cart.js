@@ -104,7 +104,7 @@ let addtoCart = async(req, res)=>{
                 
                 console.log("product alreadyexisted")
                 const data = "already-Existed"
-                return await res.status(200).json({datas:updatedCartDetails})
+                return await res.status(200).json({data})
             }
             
 

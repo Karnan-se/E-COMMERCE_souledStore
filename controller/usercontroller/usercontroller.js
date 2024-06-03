@@ -115,27 +115,38 @@ else{
     }
 }
 const shop_grid_right = async(req, res)=>{
-    try {
-        const product = await products.find();
-        const productId=product[0]._id
-        console.log(productId)
+    try {  
+        const apparelcategoryId = req.query.ApparelCategory
         const ApparelCategory = await categories.find({isActive:true})
         
+        const allproduct = await products.find({category:apparelcategoryId, isActive:true}).populate("category")
+        const product = allproduct.filter((items)=> items.category.isActive=true)
+
+        const lowtohigh = req.session.low_High;
         
+        if(lowtohigh){
+            delete req.session.low_High
+            product.sort((a, b)=>{
+            return a.price - b.price
+           })
+        }
+        console.log(product)
+        const Hightolow = req.session.Highlow;
+            
+        if(Hightolow){
+            delete req.session.Highlow;
+            product.sort((a, b)=>{
+                return b.price - a.price;
+            })
+        }
+
         
-        const shirt = await asyncLookup.karnan("categories", "category","_id",productId )
-        console.log(shirt[0]?.newcat[0].categoryname)
-        const apparelcategoryId = req.query.ApparelCategory
-        console.log(apparelcategoryId);
-        
-       
-        
-        const newproduct = await products.find({category:apparelcategoryId,});
        
 
-        res.render("user/user-shop-grid-right.ejs",{product:newproduct, ApparelCategory})
+        res.render("user/user-shop-grid-right.ejs",{product, ApparelCategory,apparelcategoryId})
         
     } catch (error) {
+        console.log(error.message)
         
     }
 }
@@ -172,7 +183,13 @@ let user_out = async(req, res)=>{
 
 let low_High = async (req, res)=>{
     try {
+        const {grid} = req.query;
+        
         req.session.low_High = true;
+        if(grid =="lowtohigh"){
+            const apparelcategoryId = req.query.ApparelCategory
+            return res.redirect(`/shop-grid-right?ApparelCategory=${apparelcategoryId}`)
+        }
         res.redirect("/")
         
     } catch (error) {
@@ -182,11 +199,43 @@ let low_High = async (req, res)=>{
 }
 let High_low = async(req, res)=>{
     try {
+        const {grid} = req.query;
+        
         req.session.Highlow = true;
+        if(grid == "hightolow"){
+            const apparelcategoryId = req.query.ApparelCategory
+
+            return res.redirect(`/shop-grid-right?ApparelCategory=${apparelcategoryId}`)
+        }
         res.redirect("/")
         
     } catch (error) {
         console.log(error.message)
+    }
+}
+
+let search = async(req, res)=>{
+    try {
+        const {keyword} = req.query
+       
+        const allProducts = await products.find({ productname: { $regex: new RegExp(keyword, 'i') } })
+        .populate('category');
+
+const product = allProducts.filter(products => {
+return (products.isActive === true || products.category.isActive === true);
+});
+
+console.log(product);
+console.log(product[0].productname)
+
+await res.status(200).json({product})
+
+     
+        
+        
+    } catch (error) {
+        console.log(error.message)
+        
     }
 }
 
@@ -202,4 +251,5 @@ module.exports={user_index,
      submit_image, 
      user_out,
     low_High,
-    High_low}
+    High_low,
+    search}

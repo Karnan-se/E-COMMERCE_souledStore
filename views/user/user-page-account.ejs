@@ -18,7 +18,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
-    <link rel="stylesheet" href="iziToast.min.css">
+    
     <script src="https://unpkg.com/easyinvoice/dist/easyinvoice.min.js"></script>
     
     
@@ -224,14 +224,39 @@
                                                                                         </div>
                                                                                       </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="">
+                                                                                <div class="col-md-2">
+                                                                                    <% if (items?.paymentStatus === "PaymentRecieved" &&  item.isOrderCancelled == false && item.isOrderReturned == false) { %>
+                                                                                        <div class="d-flex position-relative" style="width: 60px; height: 60px;">
+                                                                                            <img src="/assets/orderimages/paid.jpeg" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Paid Image">
+                                                                                        </div>
+                                                                                    <% } else if (items?.paymentStatus === "pending") { %>
+                                                                                        <div class="d-flex position-relative" style="width: 60px; height: 60px;">
+                                                                                            <img src="/assets/orderimages/pending.jpeg" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Pending Image">
+                                                                                        </div>
+                                                                                    <% } else if (items?.paymentStatus === "PaymentFailed") { %>
+                                                                                        <div class="d-flex position-relative" style="width: 60px; height: 60px;">
+                                                                                            <img src="/assets/orderimages/failed.jpeg" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Failed Image">
+                                                                                        </div>
+                                                                                        <%} else if(items?.orderStatus == "Cancelled" ) {%>
+                                                                                            <div class="d-flex position-relative" style="width: 60px; height: 60px;">
+                                                                                                <img src="/assets/orderimages/cancelled.jpeg" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Failed Image">
+                                                                                            </div>
+                                                                                            <%} else if(item.isOrderCancelled == true) {%>
+                                                                                                <div class="d-flex position-relative" style="width: 60px; height: 60px;">
+                                                                                                    <img src="/assets/orderimages/cancelled.jpeg" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Failed Image">
+                                                                                                </div>
+                                                                                                <%}else if (item.isOrderReturned == true) {%>
+                                                                                                    <div class="d-flex position-relative" style="width: 60px; height: 60px;">
+                                                                                                        <img src="/assets/orderimages/returned.webp" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Failed Image">
+                                                                                                    </div>
+                                                                                                    <%}%>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br>
+                                                                       
                                                                             <div class="action-buttons">
-                                                                            
-
-
 <!------------------------------------------------------------------------------------------------------------------------------------------------------- cancel Button -->
                                                                                 <% if(items.paymentStatus == "PaymentFailed" || items.paymentStatus == "Pending") {%>
                                                                                     <button type="button"  class=" btn btn-danger d-none" >Retry-transaction</button>
@@ -247,6 +272,7 @@
                                                                                
                                                                                 
                                                                             </div>
+
                                                                             <div class="rating-feedback d-flex justify-content-between align-items-center">
                                                                                 <div class="rating-stars">
                                                                                     <div class="rating-box">
@@ -261,38 +287,14 @@
                                                                                         </div>
                                                                                       </div>
                                                                                 </div>
+                                                                                
 
-
-                                                                                <% if (items?.paymentStatus === "PaymentRecieved" &&  item.isOrderCancelled == false && item.isOrderReturned == false) { %>
-                                                                                    <div class="d-flex position-relative" style="width: 60px; height: 60px;">
-                                                                                        <img src="/assets/orderimages/paid.jpeg" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Paid Image">
-                                                                                    </div>
-                                                                                <% } else if (items?.paymentStatus === "pending") { %>
-                                                                                    <div class="d-flex position-relative" style="width: 60px; height: 60px;">
-                                                                                        <img src="/assets/orderimages/pending.jpeg" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Pending Image">
-                                                                                    </div>
-                                                                                <% } else if (items?.paymentStatus === "PaymentFailed") { %>
-                                                                                    <div class="d-flex position-relative" style="width: 60px; height: 60px;">
-                                                                                        <img src="/assets/orderimages/failed.jpeg" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Failed Image">
-                                                                                    </div>
-                                                                                    <%} else if(items?.orderStatus == "Cancelled" ) {%>
-                                                                                        <div class="d-flex position-relative" style="width: 60px; height: 60px;">
-                                                                                            <img src="/assets/orderimages/cancelled.jpeg" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Failed Image">
-                                                                                        </div>
-                                                                                        <%} else if(item.isOrderCancelled == true) {%>
-                                                                                            <div class="d-flex position-relative" style="width: 60px; height: 60px;">
-                                                                                                <img src="/assets/orderimages/cancelled.jpeg" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Failed Image">
-                                                                                            </div>
-                                                                                            <%}else if (item.isOrderReturned == true) {%>
-                                                                                                <div class="d-flex position-relative" style="width: 60px; height: 60px;">
-                                                                                                    <img src="/assets/orderimages/returned.webp" class="img-fluid position-absolute top-0 start-0 end-0 bottom-0 m-auto" style="object-fit: contain; width: 100%; height: 100%;" alt="Failed Image">
-                                                                                                </div>
-                                                                                                <%}%>
+                                                                                
 
                                                                             </div>
-                                                                        </div>
-                                                                        <hr>
-                                                                    <% }) %>
+                                                                                                
+                                                                                                <hr>
+                                                                                            <% }) %>
                                                                     
                                                                     
                                                                     <hr>
@@ -308,6 +310,7 @@
                                                                             <button class="track-button btn btn-warning " data-bs-target="#orderDetailsModal"  data-bs-toggle="modal">Track</button>
                                                                             <%}%>
                                                                         </div>
+
                                                                     <div class="total d-flex  justify-content-end" style="font-size: 24px; font-weight: bold; width: 100%;">
                                                                         Total Price: &#x20b9;  <%= items.totalAmount %>
                                                                     </div>
@@ -1051,72 +1054,121 @@
                                                                         </div>
                                                     </div>
                                                 </div>
-                                                <script>
-                                                    async function addAddress() {
+                                            <script>
+                                                async function addAddress() {
+                                                    const result = await Swal.fire({
+                                                        title: "Enter Address",
+                                                        html: `
+                                                            <input id="houseName" class="swal2-input" placeholder="House Name" onkeyup="validateInput(this)">
+                                                            <p id="houseNameError"></p>
+                                                            <input id="streetName" class="swal2-input" placeholder="Street Name" onkeyup="validateInput(this)">
+                                                            <p id="streetError"></p>
+                                                            <input id="city" class="swal2-input" placeholder="City" onkeyup="validateInput(this)">
+                                                            <p id="cityError"></p>
+                                                            <input id="state" class="swal2-input" placeholder="State" onkeyup="validateInput(this)">
+                                                            <p id="stateError"></p>
+                                                        `,
+                                                        showCancelButton: true,
+                                                        confirmButtonText: 'Submit',
+                                                        cancelButtonText: 'Cancel',
+                                                        preConfirm: () => {
+                                                            const houseNameInput = document.getElementById("houseName");
+                                                            const streetNameInput = document.getElementById("streetName");
+                                                            const cityInput = document.getElementById("city");
+                                                            const stateInput = document.getElementById("state");
                                                 
-                                                       
+                                                            const houseNameError = document.getElementById("houseNameError");
+                                                            const streetError = document.getElementById("streetError");
+                                                            const cityError = document.getElementById("cityError");
+                                                            const stateError = document.getElementById("stateError");
                                                 
-                                                        
-                                                        const result = await Swal.fire({
-                                                            title: "Enter Address",
-                                                            html:
-                                                                '<input id="houseName" class="swal2-input" placeholder="House Name">' +
-                                                                '<p id="houseNameError"></p>' +
-                                                                '<input id="streetName" class="swal2-input" placeholder="Street Name">' +
-                                                                '<p id="StreetError"></p>' +
-                                                                '<input id="city" class="swal2-input" placeholder="City">' +
-                                                                '<p id="cityError"></p>' +
-                                                                '<input id="state" class="swal2-input" placeholder="State">' +
-                                                                '<p id="stateError"></p>',
-                                                            showCancelButton: true,
-                                                            confirmButtonText: 'Submit',
-                                                            cancelButtonText: 'Cancel'
-                                                        });
-                                                        var houseNameInput = document.getElementById("houseName");
-                                                        var houseNameError = document.getElementById("houseNameError");
-                                                        
-                                                        
-                                                        var houseName = houseNameInput.value.trim();
-                                                        if (houseName.length < 3) {
-                                                            houseNameError.innerHTML = "House name is required and must be at least 3 characters long";
-                                                            houseNameError.style.color = "red";
-                                                            return false;
-                                                        } else {
-                                                            
-                                                            houseNameError.innerHTML = "";
-                                                        }
+                                                            const houseName = houseNameInput.value.trim();
+                                                            const streetName = streetNameInput.value.trim();
+                                                            const city = cityInput.value.trim();
+                                                            const state = stateInput.value.trim();
                                                 
-                                                        // Handle the result if the user confirms
-                                                        if (result.isConfirmed) {
-                                                            const address = result.value;
+                                                            let isValid = true;
                                                 
-                                                            try {
-                                                                const response = await fetch(`/addAddress`, {
-                                                                    method: "POST",
-                                                                    headers: {
-                                                                        "content-Type": "application/json"
-                                                                    },
-                                                                    body: JSON.stringify({ address })
-                                                                });
-                                                
-                                                                if (!response.ok) {
-                                                                    throw new Error("Internal Server Error");
-                                                                }
-                                                                const data = await response.json();
-                                                            } catch (error) {
-                                                                console.error(error);
+                                                            if (houseName.length < 3) {
+                                                                houseNameError.textContent = "House name is required and must be at least 3 characters long";
+                                                                houseNameError.style.color = "red";
+                                                                isValid = false;
+                                                            } else {
+                                                                houseNameError.textContent = "";
                                                             }
+                                                
+                                                            if (streetName.length < 3) {
+                                                                streetError.textContent = "Street name is required and must be at least 3 characters long";
+                                                                streetError.style.color = "red";
+                                                                isValid = false;
+                                                            } else {
+                                                                streetError.textContent = "";
+                                                            }
+                                                
+                                                            if (city.length < 3) {
+                                                                cityError.textContent = "City is required and must be at least 3 characters long";
+                                                                cityError.style.color = "red";
+                                                                isValid = false;
+                                                            } else {
+                                                                cityError.textContent = "";
+                                                            }
+                                                
+                                                            if (state.length < 2) {
+                                                                stateError.textContent = "State is required and must be at least 2 characters long";
+                                                                stateError.style.color = "red";
+                                                                isValid = false;
+                                                            } else {
+                                                                stateError.textContent = "";
+                                                            }
+                                                
+                                                            if (!isValid) {
+                                                                return false;
+                                                            }
+                                                
+                                                            return { houseName, streetName, city, state };
+                                                        }
+                                                    });
+                                                
+                                                    if (result.isConfirmed) {
+                                                        const address = result.value;
+                                                
+                                                        try {
+                                                            const response = await fetch(`/addAddress`, {
+                                                                method: "POST",
+                                                                headers: {
+                                                                    "Content-Type": "application/json"
+                                                                },
+                                                                body: JSON.stringify({ address })
+                                                            });
+                                                
+                                                            if (!response.ok) {
+                                                                throw new Error("Internal Server Error");
+                                                            }
+                                                
+                                                            const data = await response.json();
+                                                            console.log(data);
+                                                            if(data){
+                                                                window.location.reload()
+                                                            }
+                                                        } catch (error) {
+                                                            console.error(error);
                                                         }
                                                     }
+                                                }
+                                                
+                                                function validateInput(input) {
+                                                    const regex = /^[a-zA-Z0-9]*$/;
+                                                    if (!regex.test(input.value)) {
+                                                        input.value = input.value.replace(/[^a-zA-Z0-9]/g, '');
+                                                    }
+                                                }
+
+
                                                 </script>
-                                                
-                                                
-                                                
 
 
 
-
-                                                <div class="tab-pane fade" id="account-detail" role="tabpanel"
+                                              <div class="tab-pane fade" id="account-detail" role="tabpanel"
                                                     aria-labelledby="account-detail-tab">
                                                     <div class="card">
                                                         <div class="card-header">

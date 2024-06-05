@@ -8,7 +8,8 @@ const brand = require("../../models/addproduct/brand")
 const mongoose = require("mongoose")
 const categories= require("../../models/addproduct/categories");4
 const cart = require("../../models/user/cart")
-const WishList = require("../../models/user/wishlist")
+const WishList = require("../../models/user/wishlist");
+
 
 
 
@@ -26,7 +27,20 @@ let user_index = async(req, res)=>{
         const brandDetails = await brand.find({isActive: true})
 
         // here is the product 
-        const fcat = await lookupAll.lookupAllCategory("categories", "category", "_id")
+        // const fcat = await lookupAll.lookupAllCategory("categories", "category", "_id")
+        const page = parseInt(req.query.page) || 1;
+        const limit =  5;
+        const skip = (page-1) * limit;
+
+        const allproducts = await products.find({isActive:true}).populate("category")
+        const filteredProduct = allproducts.filter((item)=> item.category.isActive == true)
+        
+      
+
+        const totalPages = Math.ceil((filteredProduct.length)/limit)
+        const product = filteredProduct.slice(skip, skip+limit)
+        
+
         
         const data= req.session.userisAuth;
         const userid = data?._id;
@@ -42,24 +56,24 @@ let user_index = async(req, res)=>{
         
             if(lowtohigh){
                 delete req.session.low_High
-               fcat.sort((a, b)=>{
+                product.sort((a, b)=>{
                 return a.price - b.price
                })
             
                 
-                return res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts, userinCart, userinWishlist})    
+                return res.render("user/index.ejs",{message1, product:product, ApparelCategory, productDetails, brandDetails , data, newProducts, userinCart, userinWishlist, totalPages})    
             }
             const Hightolow = req.session.Highlow;
             
             if(Hightolow){
                 delete req.session.Highlow;
-                fcat.sort((a, b)=>{
+                product.sort((a, b)=>{
                     return b.price - a.price;
                 })
             }
 
             
-        res.render("user/index.ejs",{message1, product:fcat, ApparelCategory, productDetails, brandDetails , data, newProducts, userinCart, userinWishlist})
+        res.render("user/index.ejs",{message1, product:product, ApparelCategory, productDetails, brandDetails , data, newProducts, userinCart, userinWishlist, totalPages})
     } catch (error) {
         console.log(error.message);
         

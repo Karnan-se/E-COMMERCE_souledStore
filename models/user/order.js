@@ -51,6 +51,11 @@ const {format} = require('date-fns')
                     default:0,
                     required:false,
                    },
+                   discountrecieved:{
+                    type:Number,
+                    default:0,
+                    required:false,
+                   },
                    isOrderCancelled :{
                     type:Boolean,
                     default:false

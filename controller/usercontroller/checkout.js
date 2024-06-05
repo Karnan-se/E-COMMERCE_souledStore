@@ -52,10 +52,22 @@ let welcomePage =async(req, res)=>{
 
 
         
-const cartDetail = await cart.findOne({userId:userId})
+const cartDetail = await cart.findOne({userId:userId}).populate("items.product")
        const productinCart = cartDetail.items.map((item)=>{
-            return item
+     
+        const discount = item.product.orginalPrice - item.product.price
+        console.log(discount, "this is discount")
+        if(item.product.orginalPrice == 0){
+            return item;
+        }
+        
+        return {
+            ...item._doc,  
+            discountrecieved: discount 
+        }
         })
+        cartDetail.markModified('items');
+        console.log(productinCart)
         if(cartDetail){
         const TotalPrice = (cartDetail.totalprice)-parseInt(inputCoupons);
         console.log(TotalPrice)
@@ -66,6 +78,7 @@ const cartDetail = await cart.findOne({userId:userId})
         totalAmount:TotalPrice,
         products:productinCart,
         paymentMethod:paymentMethod,
+        
         
         coupon:inputCoupons,
         
@@ -90,11 +103,20 @@ const cartDetail = await cart.findOne({userId:userId})
             statusupdatecod.paymentStatus = "Cash-on-Delivery";
             await statusupdatecod.save();
 
+
+            // stock updation
+            const cartDetail = await cart.findOne({userId:userId})
+            const productinCart = cartDetail.items.map(async (item)=>{
+                const quantity = item.quantity;
+                const size = item.size;
+                const product =item.product;
+    
+                const quantityupdated=await addproduct.updateOne({_id:product, [`sizes.${size}`]:{$exists:true}},{$inc:{[`sizes.${size}.newStock`]:-quantity}})
+                console.log(quantityupdated)
+            })
+
                return await res.status(200).json({data:"welcome Page"})
         }
-
-
-
 
     //   const DeletefromCart = await cart.deleteOne({userId:userId,items:productinCart})
     //   console.log("cart is empty now");
@@ -242,6 +264,10 @@ let applyCoupon = async(req, res)=>{
        
         
        if(!isUserIdPresent){
+
+        if(findCoupons.isListed == false){
+            return res.status(200).json({data:"unlisted"})
+        }
 
         if(date > findCoupons.expiryDate){
             console.log("Date is Expired")

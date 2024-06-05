@@ -133,15 +133,13 @@
                                             throw new Error("Internal Server Erro")
                                            }
                                            const data = await response.json();
-                                           if(data.stock <= 0){
+                                           console.log(data)
+                                           if(data.data == 0){
                                             console.log("no Stock")
+                                            item.removeAttribute('data-stock');
                                             item.textContent = "Out of Stock";
                                             item.setAttribute('data-stock', 'out');
                                             item.style.color = 'red';
-                                           }else {
-                                            item.textContent= "In Stock";
-                                            item.setAttribute('data-stock', 'in');
-                                            item.style.color ="green"
                                            }
                                           
                                         })
@@ -149,18 +147,24 @@
                                      })
                                 </script>
                                 <script>
-                                    function checkforStock(){
-                                        const stockWarning = document.querySelectorAll(".stock-warning")
-                                        stockWarning.forEach((item)=>{
+                                    function checkforStock() {
+                                        const stockWarning = document.querySelectorAll(".stock-warning");
+                                        let allInStock = true;
+
+                                        stockWarning.forEach((item) => {
                                             const stock = item.getAttribute("data-stock");
-                                            if(stock == "out"){
-                                                console.log("all The Value is true")
-                                                return false    
+                                            if (stock === "out") {
+                                                allInStock = false;
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Oops...',
+                                                    text: 'Please check the Stock'
+                                                });
+                                                return; // Exit the forEach loop on first out of stock item
                                             }
-                                            
-                                        })
+                                        });
 
-
+                                        return allInStock;
                                     }
                                 </script>
 
@@ -397,7 +401,7 @@
                 </div>
             </div>
         </section>
-                            <Script>
+                            <script>
                                 async function checkout(){
                                     const allItemsHaveSize = Array.from(document.querySelectorAll('.size-dropdown')).every((select) => select.value !== 'Null');
                                         const allproducts =[]
@@ -409,12 +413,7 @@
 
                                     checkforStock()
                                     if(!checkforStock){
-                                        Swal.fire({
-                                             icon: 'error',
-                                             title: 'Oops...',
-                                             text: 'Please check the Stock'
-                                         });
-
+                                         return 
                                     }
 
 

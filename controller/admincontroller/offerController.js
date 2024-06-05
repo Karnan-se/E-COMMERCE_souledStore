@@ -9,6 +9,7 @@ let offerPage = async(req, res)=>{
 
    try {
     let offer = await Offermodule.find({})
+   offer.reverse()
 
     res.render("admin/offerPage.ejs",{offer})
     
@@ -116,8 +117,9 @@ let toggleoffer = async(req, res)=>{
             }
 // only dicount Applied for The  Products which has higher discount
             if(products.orginalPrice>0 && (products.orginalPrice-products.price)<discountAmount){  
-                products.price -= discountAmount;
-                console.log("Product Saved Here")
+                products.price = (products.orginalPrice- discountAmount);
+                // products.orginalPrice = cachePrice;
+                console.log("Product Saved Here higher discount Than category")
                 await products.save();
                 return await res.status(200).json({data:"The Discount is already greater"})
             }
@@ -139,13 +141,11 @@ let toggleoffer = async(req, res)=>{
             let discountAmount ;
             if(islIsted.discountPercent>0){
                 discountAmount=Math.floor((products.orginalPrice*islIsted.discountPercent)/100)
-            }else{
+            }else if(islIsted.fixedRate > 0){
                 discountAmount= products.orginalPrice-islIsted.fixedRate
             }
-
-
-
-            if(products.orginalPrice==0 || products.price !== products.orginalPrice-discountAmount){
+            if(products.orginalPrice==0 ){
+                // products.price !== products.orginalPrice-discountAmount
                 console.log("not unlisted bcz this discount is not belongs to this Product")
 
             }else{   
@@ -222,14 +222,18 @@ async function togggleOfferCategory(categoryId, offerId, res){
                const discountAmount = Math.floor((items.orginalPrice*islIsted.discountPercent)/100);
                
                console.log("unListing", discountAmount);
-                if(items.orginalPrice !== 0 && items.price !== (items.orginalPrice-discountAmount)){
+                if(items.orginalPrice !== 0 && items.price !== Math.abs(items.orginalPrice-discountAmount)){
                     console.log("not UnListed bcz this Product not belongs to discount Category")
                     console.log(items.productname)
 
                 }else{
+                    if(discountAmount == 0){
+                        console.log("discountAmoun is zero",items.productname )
+                    }else{
                     items.price=items.orginalPrice;
                     items.orginalPrice = 0;
                     await items.save();
+                    }
 
                 }
             }

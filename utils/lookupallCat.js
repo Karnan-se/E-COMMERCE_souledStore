@@ -21,7 +21,7 @@ try {
         }}
            
     ])
-    console.log(fcat)   
+    
     return fcat
 } catch (error) {
     console.log(error.message);

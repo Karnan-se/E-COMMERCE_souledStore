@@ -775,6 +775,20 @@ if (cartCountElement) {
                                         </div>
                                     <% } %>
                                 </div>
+
+                                <div class="pagination-area mt-15 mb-50">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <%console.log(totalPages)%>
+                                            <% for (let i = 1; i <= totalPages; i++) { %>
+                                               
+                                                    <a class="page-link" href="/?page=<%= i %>"><%= i %></a>
+                                                </li>
+                                            <% } %>
+                                        </ul>
+                                        
+                                    </nav>
+                                </div>
                                 
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {

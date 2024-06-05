@@ -201,12 +201,33 @@
 
                                                                                                         <% }%>
                                                                                                          <div class="">
-                                                                                        <div class="">Price &#x20b9; <%= item.price %></div>
-                                                                                        <div class="text-success">Discount received &#x20b9; <%= item.price %></div>
+
+                                                                                                            <span class="<%= (item.orginalPrice > 0) ? 'old-price' : 'd-none' %>">
+                                                                                                                <%= item.orginalPrice ?? '' %>
+                                                                                                            </span>
+
+                                                                                                            <div class="d-flex align-items-center">
+                                                                                                                <% if (item.discountrecieved > 0) { %>
+                                                                                                                    <span class="">Price</span>
+                                                                                                                    <span class="old-price me-2 mx-2">&#x20b9; <%= item.price + item.discountrecieved %></span>
+                                                                                                                <% } %>
+                                                                                                                <div> &#x20b9; <%= item.price %></div>
+                                                                                                            </div>
+                                                                                                           
+
+                                                                                        <div class="text-brand <%= item.discountrecieved <= 0 ? 'd-none' : '' %>">
+                                                                                            Discount received &#x20b9; <%= item.discountrecieved %>
+                                                                                        </div>
                                                                                     </div>
 
                                                                                         </div>
                                                                                     </div>
+                                                                                    <style>
+                                                                                        .old-price {
+                                                                                            text-decoration: line-through;
+                                                                                            color: grey;
+                                                                                        }
+                                                                                    </style>
      
                                                                                 </div>
                                                                                 <div class="col-md-4">

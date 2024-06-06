@@ -87,6 +87,10 @@ let Submitoffer = async(req, res)=>{
     }
 }
 
+
+
+
+
 let toggleoffer = async(req, res)=>{
     try {
         const {offerID} = req.query;
@@ -270,8 +274,14 @@ let editOffer = async(req, res)=>{
     try {
         const {offerId} = req.query;
         console.log(offerId)
+
+        const products = await Product.aggregate([{$match:{isActive:true}}])
+        const categories = await Category.aggregate([{$match:{isActive:true}}])
+
         const Offer = await Offermodule.findOne({_id:offerId});
-        res.render("admin/editoffer.ejs",{Offer})
+        const formattedExpiryDate = Offer.ExpiryDate ? Offer.ExpiryDate.toISOString().split('T')[0] : '';
+
+        res.render("admin/editoffer.ejs",{Offer, products, categories, formattedExpiryDate})
         
     } catch (error) {
         console.log(error.message)
@@ -279,10 +289,79 @@ let editOffer = async(req, res)=>{
     }
 }
 
+let submitEditOffer = async(req, res)=>{
+    try{
+    
+        const {
+            productSelect,
+            // OfferName,
+            productDetails,
+            DiscountType,
+            max_amount, 
+            expiry_date,
+            percentage =0,
+            fixedRate =0,
+          } = req.body;
+
+
+          console.log(productSelect,  productDetails,  DiscountType, max_amount, expiry_date, percentage, fixedRate);
+
+        //   Category 658dd87f106f82635bad85e1 Percentage 500 2024-06-30 15 0
+
+          const {offerId} = req.query;
+          console.log(offerId)
+
+
+
+          const offer =await Offermodule.findOne({_id:offerId});
+
+
+          let Offername;
+          if(productSelect == "Category"){
+            const CategoryName = await Category.findById({_id:productDetails})
+             Offername =  CategoryName.categoryname;
+             offer.category =productDetails;
+          }else{
+            const ProductName = await Product.findOne({_id:productDetails})
+             Offername = ProductName.productname
+             offer.product =productDetails;
+          }
+
+            offer.OfferName=Offername
+            offer.maxDiscountAmount=max_amount;
+            offer.ExpiryDate = expiry_date;
+            offer.discountPercent=percentage;
+            offer.fixedRate=fixedRate;
+            
+
+          
+          const offerData=await offer.save()
+          console.log(offerData);
+
+
+          res.redirect("/offer")
+          
+               
+                   
+
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+
+
+
+
+
 module.exports ={
     offerPage,
     addOffer,
     Submitoffer,
     toggleoffer,
-    editOffer
+    editOffer,
+    submitEditOffer
 }

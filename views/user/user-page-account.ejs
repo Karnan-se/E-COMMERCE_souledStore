@@ -335,6 +335,13 @@
                                                                     <div class="total d-flex  justify-content-end" style="font-size: 24px; font-weight: bold; width: 100%;">
                                                                         Total Price: &#x20b9;  <%= items.totalAmount %>
                                                                     </div>
+
+                                                                   
+
+
+
+
+
                                                                     <style>
                                                                         .rating-box{
                                                                             cursor: pointer;
@@ -362,7 +369,17 @@
      
                                                             </div>
                                                         </div>
+                                                        
+
+
+
+
+
                                                     </div>
+
+
+
+
                                                      <style>
                                                          .table-responsive {
                                                          overflow-x: hidden;
@@ -426,6 +443,27 @@
                                                       
                                                     
                                                     <% }) %>
+
+                                                    <div class="pagination-area mt-15 mb-50">
+                                                        <nav aria-label="Page navigation example">
+                                                            <ul class="pagination">
+                                                            
+                                                                <% for (let i = 1; i <= totalPages; i++) { %>
+                                                                   
+                                                                        <a class="page-link" href="/myAccount?orderpage=<%= i %>"><%= i %></a>
+                                                                    </li>
+                                                                <% } %>
+                                                            </ul>
+                                                            
+                                                        </nav>
+                                                    </div>
+
+
+
+
+
+
+
                                                     <script>
                                                         const retryButton = document.querySelectorAll(".retryTransaction");
                                                         retryButton.forEach((retry)=>{

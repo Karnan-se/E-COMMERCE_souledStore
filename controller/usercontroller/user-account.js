@@ -12,19 +12,30 @@ const instance = require("../../utils/razorpay");
 let user_page_account = async(req, res)=>{
     try {
         const userDetails = req.session.userisAuth;
-        const order = await orders.find({userId:userDetails}).populate("products.product");
+
+        const page = parseInt(req.query.orderpage) || 1;
+        const limit =  5;
+        const skip = (page-1) * limit;
+
+       
+
+        const order = await orders.find({userId:userDetails}).populate("products.product").skip(skip).limit(limit)
         const ratings = await rating.find({userId:userDetails._id});
         const WalletDetail = await Wallet.findOne({userId:userDetails._id})
+
+
+
+        const totalPages = Math.ceil((order.length)/limit)
         const data= req.session.userisAuth;
         
         if(req.session.passwordUpdated){
             delete req.session.passwordUpdated;
             const message="passwordUpdated";
             
-            return res.render("user/user-page-account.ejs",{userDetails,message,order, ratings, WalletDetail, data})
+            return res.render("user/user-page-account.ejs",{userDetails,message,order, ratings, WalletDetail, data, totalPages})
         }
        
-       return res.render("user/user-page-account.ejs",{userDetails, order, ratings, WalletDetail, data})
+       return res.render("user/user-page-account.ejs",{userDetails, order, ratings, WalletDetail, data,totalPages })
 
 
         

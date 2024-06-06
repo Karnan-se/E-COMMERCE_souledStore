@@ -233,15 +233,15 @@
                                       </td>
                                       <td>
                                         <% if (element.is_List) { %>
-                                          <a class="badge rounded alert-danger"
-                                            onclick="toggleList('<%= element._id %>')">Unlist</a>
-                                          <% } else { %>
-                                            <a class="badge rounded alert-success" onclick="toggleList('<%= element._id %>')">List</a>
-                                            <% } %>
+                                            <a class="badge rounded alert-danger" onclick="toggleList('<%= element._id %>')">Unlist</a>
+                                        <% } else if (element.ExpiryDate < Date.now()) { %>
                                             
-                                              <!-- <a href="/editOffer?offerId=<%= element._id %>" class="badge rounded alert-secondary"
-                                                >Edit</a> -->
-                                      </td>
+                                        <% } else { %>
+                                            <a class="badge rounded alert-success" onclick="toggleList('<%= element._id %>')">List</a>
+                                        <% } %>
+                                        <a href="/editOffer?offerId=<%= element._id %>" class="badge rounded alert-secondary">Edit</a>
+                                    </td>
+                                    
                                   </tr>
                                   <% }) %>
                                     <% } else { %>

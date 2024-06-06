@@ -70,6 +70,7 @@
                
                 </li>
                 <%- include('./partials/aside-2.ejs') %>
+
                 <main class="main-wrap">
                     <section class="content-main">
                       <div class="content-header">
@@ -86,53 +87,92 @@
                                   <%= locals.alert %>
                                 </div>
                               <% } %>
-                              <form action="/addOffer" method="post" onsubmit="return validateForm()">
 
+
+                              <form action="/EditOffer?offerId=<%=Offer._id %>" method="post" onsubmit="return validateForm()">
                                 <div class="mb-4">
                                   <label for="productSelect" class="form-label">Select Product or category</label>
-                                  <select id="productSelect" name="productSelect" class="form-control">
-                                    <option value="" disabled selected>Select Product</option> 
-                                    <option value="product">Product</option>
-                                    <option value="Category">Category</option>
+                                  <select id="productSelect" disabled name="productSelect" class="form-control">
+                                    <option value="" disabled>Select Product</option>
+                                    <option value="product" <%= Offer.product ? 'selected' : '' %>>Product</option>
+                                    <option value="Category" <%= Offer.category ? 'selected' : '' %>>Category</option>
                                   </select>
                                   <div id="dynamic-content"></div>
-                                 
-                                  
                                 </div>
-<!-- 
-                                <div class="mb-4">
-                                  <label for="OfferName" class="form-label">Offer Name</label>
-                                  <input type="text" placeholder="Type here" name="OfferName" class="form-control" id="offerName" class="d-none" />
-                                  <span id="code-error" class="error-msg"></span>
-                                </div> -->
-                               
+
+                                <!-- subNames -->
+                                
+                                <select  name="productSelect" class="form-control d-none">
+                                  <option value="" disabled>Select Product</option>
+                                  <option value="product" <%= Offer.product ? 'selected' : '' %>>Product</option>
+                                  <option value="Category" <%= Offer.category ? 'selected' : '' %>>Category</option>
+                                </select>
+
+                                <label for="DiscountType" class="form-label d-none">Discount-Type</label>
+                                <select  name="DiscountType" class="form-control d-none">
+                                  <option value="" disabled>Discount-Type</option>
+                                  <option value="Percentage" <%= Offer.discountPercent > 0 ? 'selected' : '' %>>Percentage</option>
+                                  <option value="fixedPrice" <%= Offer.fixedRate > 0 ? 'selected' : '' %>>fixedPrice</option>
+                                </select>
 
 
+
+                                <% if (Offer.product) { %>
+                                  <label for="productDetails" class="form-label">Select Product</label>
+                                  <select id="productDetails" name="productDetails" class="form-control">
+                                    <option value="" disabled>Select Product</option>
+                                    <% products.forEach((product) => { %>
+                                      <option value="<%= product._id %>" <%= Offer.productId== product._id ? 'selected' : '' %>><%= product.productname %></option>
+                                    <% }) %>
+                                  </select>
+                                <% } else if (Offer.category) { %>
+                                  <label for="categoryDetails" class="form-label">Select Category</label>
+                                  <select id="categoryDetails" name="productDetails" class="form-control">
+                                    <option value="" disabled>Select Category</option>
+                                    <% categories.forEach((category) => { %>
+                                      <option value="<%= category._id %>" <%= Offer.category.toString() === category._id.toString() ? 'selected' : '' %>><%= category.categoryname %></option>
+                                    <% }) %>
+                                  </select>
+                                <% } %>
+                
                                 <div class="mb-4">
                                   <label for="DiscountType" class="form-label">Discount-Type</label>
-                                  <select id="DiscountType" name="DiscountType" class="form-control">
-                                    <option value="" disabled selected>Discount-Type</option>
-                                    <option value="Percentage">Percentage</option>
-                                    <option value="fixedPrice">fixedPrice</option>
+                                  <select id="DiscountType" name="DiscountType" disabled class="form-control">
+                                    <option value="" disabled>Discount-Type</option>
+                                    <option value="Percentage" <%= Offer.discountPercent > 0 ? 'selected' : '' %>>Percentage</option>
+                                    <option value="fixedPrice" <%= Offer.fixedRate > 0 ? 'selected' : '' %>>fixedPrice</option>
                                   </select>
                                   <div id="dynamic-content2"></div>
-                                 
+                
+                                  <% if (Offer.discountPercent > 0) { %>
+                                    <div class="mb-4">
+                                      <label class="form-label">Percentage</label>
+                                      <input placeholder="Enter The Discount Percentage" value="<%= Offer.discountPercent %>" name="percentage" class="form-control" id="percentage" onkeyup="validatePrice()">
+                                      <span id="price-error" class="error-msg"></span>
+                                    </div>
+                                  <% } else { %>
+                                    <div class="mb-4">
+                                      <label class="form-label">Fixed Rate</label>
+                                      <input placeholder="Enter The fixed Rate" value="<%= Offer.fixedRate %>" name="fixedRate" class="form-control" id="fixedRate" onkeyup="">
+                                      <span id="price-error" class="error-msg"></span>
+                                    </div>
+                                  <% } %>
+                
                                   <span id="code-error2" class="error-msg2"></span>
                                 </div>
-                      
-                  
+                
                                 <div class="mb-4">
                                   <label for="max_amount" class="form-label">Maximum Discount</label>
-                                  <input type="text" placeholder="0" name="max_amount" class="form-control" id="max_amount" min="0" onkeyup="validateMaxAmount()" />
+                                  <input type="text" placeholder="0" name="max_amount" class="form-control" id="max_amount" min="0" value="<%= Offer.maxDiscountAmount %>" onkeyup="validateMaxAmount()" />
                                   <span id="max-amount-error" class="error-msg"></span>
                                 </div>
-                  
+                
                                 <div class="mb-4">
                                   <label for="expiry_date" class="form-label">Expiry Date</label>
-                                  <input type="date" name="expiry_date" class="form-control" id="expiry_date" onchange="validateDate()">
+                                  <input type="date" name="expiry_date" class="form-control" id="expiry_date" value="<%= formattedExpiryDate %>" onchange="validateDate()">
                                   <span id="date-error" class="error-msg"></span>
                                 </div>
-                  
+                
                                 <div class="d-grid">
                                   <button type="submit" class="btn btn-primary">Add Offer</button>
                                   <span id="submit-error" class="error-msg"></span>
@@ -142,178 +182,129 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <script>
-
-              // dynamic content of Price tag
-                      document.getElementById("DiscountType").addEventListener("change", function(){
-                        if(this.value == "Percentage"){
-                          var DiscountType = `
-                          <div class="mb-4">
-                                  <label class="form-label">Percentage</label>
-                                  <input placeholder="Enter The Discount Percentage" value="0" name="percentage" class="form-control" id="percentage" onkeyup="validatePrice()">
-                                  <span id="price-error" class="error-msg"></span>
-                                </div> `
-                            document.getElementById("dynamic-content2").innerHTML = DiscountType;
-
-
-                        }else if(this.value == "fixedPrice"){
-                          DiscountType =` 
-                          <div class="mb-4">
-                                  <label class="form-label">Fixed Rate</label>
-                                  <input placeholder="Enter The fixed Rate" value="0" name="fixedRate" class="form-control" id="fixedRate" onkeyup="">
-                                  <span id="price-error" class="error-msg"></span>
-                                </div> `
-
-                            document.getElementById("dynamic-content2").innerHTML = DiscountType;
-
-                        }
-                      })
-                      </script>
-
-                      
-                      <script>
-                        document.getElementById("productSelect").addEventListener("change", function(){
-                          console.log(this.value)
-                          if(this.value === "product"){
-                            var newContent = `
-                            <div class="mb-4">
-                              <label for="product" class="form-label">Select Product</label>
-                              <select id="productDetails" name="productDetails" class="form-control">
-                                <option value="" disabled selected>Select Product</option>
-                                <% products.forEach((items)=> { %>    
-                                <option value="<%= items._id%>"><%= items.productname%></option>
-
-                                <%})%>
-                  
-                              </select>
-                            </div>`
-                            document.getElementById("dynamic-content").innerHTML = newContent;
-                          }else if(this.value === "Category"){
-                            newContent = `
-                            <div class="mb-4">
-                              <label for="product" class="form-label">Select Category</label>
-                              <select id="productDetails" name="productDetails" class="form-control">
-                                <option value="" disabled selected>Select Category</option>
-                                <% categories.forEach((items)=> { %>    
-                                <option value="<%= items._id%>"><%= items.categoryname%></option>
-
-                                <%})%>
-                  
-                              </select>
-                            </div>`
-                            document.getElementById("dynamic-content").innerHTML = newContent;
-
-                            
-                          }
-                          
-                        })
-                        
-                        document.querySelectorAll('.productDetails').addEventListener('change', function() {
-                        console.log("Selected value:", this.value);
-                        })
-
-
-                        
-                        
-
-                      </script>
-
-                             
-
-                      <script>
-
-                        // function validateCode() {
-                        //   var codeError = document.getElementById("code-error");
-                        //   var code = document.getElementById("coupon_code").value.trim();
-                        //   var uppercaseRegex = /^[A-Z0-9]+$/;
-                        //   if (!uppercaseRegex.test(code)) {
-                        //     codeError.innerHTML = "Coupon code must contain only uppercase letters and numbers";
-                        //     codeError.style.color = "red";
-                        //     return false;
-                        //   }
-                        //   codeError.innerHTML = "";
-                        //   return true;
-                        // }
-                        function validatePrice() {
-                          var priceError = document.getElementById("price-error");
-                          var price = document.getElementById("percentage").value.trim();
-                          if (price.length === 0 || isNaN(price) || parseFloat(price) <= 0 || parseFloat(price) > 100) {
-                            priceError.innerHTML = "Invalid entry";
-                            priceError.style.color = "red";
-                            return false;
-                          }
-                          priceError.innerHTML = "";
-                          return true;
-                        }
-        
-                        function validateMaxAmount() {
-                          var maxAmountError = document.getElementById("max-amount-error");
-                          var maxAmount = document.getElementById("max_amount").value.trim();
-                          if (maxAmount.length === 0 || maxAmount < 1 || isNaN(maxAmount) || parseFloat(maxAmount) < 0) {
-                            maxAmountError.innerHTML = "Invalid entry";
-                            maxAmountError.style.color = "red";
-                            return false;
-                          }
-                          maxAmountError.innerHTML = "";
-                          return true;
-                        }
-                      
-                        function validateDate() {
-                          var dateError = document.getElementById("date-error");
-                          var dateInput = document.getElementById("expiry_date").value;
-                          var currentDate = new Date();
-                          var selectedDate = new Date(dateInput);
-                          if (selectedDate <= currentDate) {
-                            dateError.innerHTML = "Please select a future date";
-                            dateError.style.color = "red";
-                            return false;
-                          }
-                          dateError.innerHTML = "";
-                          return true;
-                        }
-                      
-                        function validateForm() {
-                          console.log("form validation")
-                          var isValid = true;
-
-                          isValid &= validatePrice()
-                          
-                          isValid &= validateMaxAmount();
-                          isValid &= validateDate();
-
-                          const percentage = parseFloat(document.getElementById("percentage")?.value) ?? 0;
-                          const fixedRate = parseFloat(document.getElementById("fixedRate")?.value) ?? 0;
-                          console.log(percentage,fixedRate ) 
-                          const ProductSelection = document.getElementById("productDetails")?.value ?? 0
-
-                          if(percentage==null || percentage== 0  && fixedRate == 0 || fixedRate == null){
-                            isValid = false
-                          }
-                          console.log(ProductSelection, "ProductSelection")
-                          if(ProductSelection == null || ProductSelection == 0 || ProductSelection == "undefined"){
-                            console.log("it is null");
-                            const selectProduct= document.getElementById("productDetails")
-                            selectProduct.style.border ="1px solid red" 
-                            isValid = false; 
-                          }
-  
-                          var submitError = document.getElementById("submit-error");
-                          if (!isValid) {
-                            submitError.innerHTML = "Please enter all the fields correctly to submit";
-                            submitError.style.color = "red";
-                            return false;
-                          } else {
-                            submitError.innerHTML = "";
-                            return true;
-                        }
-                    }
-                      </script>
                     </section>
-                  </main>>
-    <%- include('./partials/footer.ejs') %>
-</body>
-
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend//page-orders-1 by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
-</html>
+                  </main>
+                
+                  <script>
+                    document.getElementById("DiscountType").addEventListener("change", function() {
+                      if (this.value == "Percentage") {
+                        var DiscountType = `
+                        <div class="mb-4">
+                          <label class="form-label">Percentage</label>
+                          <input placeholder="Enter The Discount Percentage" value="0" name="percentage" class="form-control" id="percentage" onkeyup="validatePrice()">
+                          <span id="price-error" class="error-msg"></span>
+                        </div>`;
+                        document.getElementById("dynamic-content2").innerHTML = DiscountType;
+                      } else if (this.value == "fixedPrice") {
+                        DiscountType = `
+                        <div class="mb-4">
+                          <label class="form-label">Fixed Rate</label>
+                          <input placeholder="Enter The fixed Rate" value="0" name="fixedRate" class="form-control" id="fixedRate" onkeyup="">
+                          <span id="price-error" class="error-msg"></span>
+                        </div>`;
+                        document.getElementById("dynamic-content2").innerHTML = DiscountType;
+                      }
+                    });
+                
+                    document.getElementById("productSelect").addEventListener("change", function() {
+                      if (this.value === "product") {
+                        var newContent = `
+                        <div class="mb-4">
+                          <label for="productDetails" class="form-label">Select Product</label>
+                          <select id="productDetails" name="productDetails" class="form-control">
+                            <option value="" disabled selected>Select Product</option>
+                            <% products.forEach((items) => { %>    
+                            <option value="<%= items._id %>"><%= items.productname %></option>
+                            <% }) %>
+                          </select>
+                        </div>`;
+                        document.getElementById("dynamic-content").innerHTML = newContent;
+                      } else if (this.value === "Category") {
+                        newContent = `
+                        <div class="mb-4">
+                          <label for="categoryDetails" class="form-label">Select Category</label>
+                          <select id="categoryDetails" name="productDetails" class="form-control">
+                            <option value="" disabled selected>Select Category</option>
+                            <% categories.forEach((items) => { %>    
+                            <option value="<%= items._id %>"><%= items.categoryname %></option>
+                            <% }) %>
+                          </select>
+                        </div>`;
+                        document.getElementById("dynamic-content").innerHTML = newContent;
+                      }
+                    });
+                
+                    function validatePrice() {
+                      var priceError = document.getElementById("price-error");
+                      var price = document.getElementById("percentage")?.value.trim();
+                      if (price.length === 0 || isNaN(price) || parseFloat(price) <= 0 || parseFloat(price) > 100) {
+                        priceError.innerHTML = "Invalid entry";
+                        priceError.style.color = "red";
+                        return false;
+                      }
+                      priceError.innerHTML = "";
+                      return true;
+                    }
+                
+                    function validateMaxAmount() {
+                      var maxAmountError = document.getElementById("max-amount-error");
+                      var maxAmount = document.getElementById("max_amount").value.trim();
+                      if (maxAmount.length === 0 || maxAmount < 1 || isNaN(maxAmount) || parseFloat(maxAmount) < 0) {
+                        maxAmountError.innerHTML = "Invalid entry";
+                        maxAmountError.style.color = "red";
+                        return false;
+                      }
+                      maxAmountError.innerHTML = "";
+                      return true;
+                    }
+                
+                    function validateDate() {
+                      var dateError = document.getElementById("date-error");
+                      var dateInput = document.getElementById("expiry_date").value;
+                      var currentDate = new Date();
+                      var selectedDate = new Date(dateInput);
+                      if (selectedDate <= currentDate) {
+                        dateError.innerHTML = "Please select a future date";
+                        dateError.style.color = "red";
+                        return false;
+                      }
+                      dateError.innerHTML = "";
+                      return true;
+                    }
+                
+                    function validateForm() {
+                      var isValid = true;
+                      isValid &= validatePrice();
+                      isValid &= validateMaxAmount();
+                      isValid &= validateDate();
+                
+                      const percentage = parseFloat(document.getElementById("percentage")?.value) ?? 0;
+                      const fixedRate = parseFloat(document.getElementById("fixedRate")?.value) ?? 0;
+                      const productSelection = document.getElementById("productDetails")?.value ?? document.getElementById("categoryDetails")?.value ?? 0;
+                
+                      if ((percentage == null || percentage == 0) && (fixedRate == null || fixedRate == 0)) {
+                        isValid = false;
+                      }
+                
+                      if (productSelection == null || productSelection == 0 || productSelection == "undefined") {
+                        const selectProduct = document.getElementById("productDetails") || document.getElementById("categoryDetails");
+                        if (selectProduct) {
+                          selectProduct.style.border = "1px solid red";
+                        }
+                        isValid = false;
+                      }
+                
+                      var submitError = document.getElementById("submit-error");
+                      if (!isValid) {
+                        submitError.innerHTML = "Please enter all the fields correctly to submit";
+                        submitError.style.color = "red";
+                        return false;
+                      } else {
+                        submitError.innerHTML = "";
+                        return true;
+                      }
+                    }
+                  </script>
+                  <%- include('./partials/footer.ejs') %>
+                </body>
+                </html>

@@ -352,7 +352,7 @@
                                         <div class="product-img product-img-zoom">
                                             <!-- <a href="/shop-product-right"> -->
                                                 <div class="hover-image"></div>
-                                                <div class="preview-images d-flex flex-wrap justify-content-start position-relative">
+                                                <div   id="cropped-images-container" class="preview-images d-flex flex-wrap justify-content-start position-relative">
                                                     <!-- Images and buttons will be dynamically inserted here -->
                                                 </div>
                                             <!-- </a> -->
@@ -384,98 +384,70 @@
                 <script>
                     $(document).ready(function() {
                         let createImageContainer = function(imageSrc, imageName) {
-                                let imageContainer = $($.parseHTML(`
-                                    <div class="col-lg-4 col-md-4 col-12 col-sm-6 position-relative">
-                                        <div class="product-cart-wrap mb-30 custom-product-card">
-                                            <div class="product-img-action-wrap">
-                                                <div class="product-img product-img-zoom">
-                                                    
-                                                        <div class="hover-image"></div>
-                                                        <img class="default-img" src="${imageSrc}" alt="" id="newImages">
-                                                        <button class="btn btn-primary btn-center delete-btn" data-image="${imageName}" style="font-size: 12px; line-height: 1; max-width: 100%>
-                                                            <i class="fas fa-solid fa-trash text-sm" style="font-size: 8px;"></i> 
-                                                            delete
-                                                        </button>
-                                                        <button class="btn btn-primary crop mx-5" style="line-height: 1"> Crop</button>
-                                                    
-                                                </div>
+                            let imageContainer = $($.parseHTML(`
+                                <div class="col-lg-4 col-md-4 col-12 col-sm-6 position-relative">
+                                    <div class="product-cart-wrap mb-30 custom-product-card">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <div class="hover-image"></div>
+                                                <img class="default-img" src="${imageSrc}" alt="" id="newImages">
+                                                <button class="btn btn-primary btn-center delete-btn" data-image="${imageName}" style="font-size: 12px; line-height: 1; max-width: 100%">
+                                                    <i class="fas fa-solid fa-trash text-sm" style="font-size: 8px;"></i> 
+                                                    delete
+                                                </button>
+                                                <button class="btn btn-primary crop mx-5" style="line-height: 1">Crop</button>
                                             </div>
                                         </div>
                                     </div>
-                                `));
-                                return imageContainer;
-                            };
-
+                                </div>
+                            `));
+                            return imageContainer;
+                        };
                 
                         let imagesPreview = function(input, placeToInsertImagePreview) {
                             if (input.files) {
-                                let filesAmount = input.files.length;                            
+                                let filesAmount = input.files.length;
                                 placeToInsertImagePreview.html('');
                                 for (let i = 0; i < filesAmount; i++) {
                                     let reader = new FileReader();
                                     reader.onload = function(event) {
                                         let imageSrc = event.target.result;
                                         let imageName = input.files[i].name;
-                                        let imageContainer = createImageContainer(imageSrc , imageName);
+                                        let imageContainer = createImageContainer(imageSrc, imageName);
                                         placeToInsertImagePreview.append(imageContainer);
                                     };
                                     reader.readAsDataURL(input.files[i]);
-                                    
                                 }
                             }
                         };
-
-                        $(document).on("click", ".delete-btn", function() {
+                
+                        $(document).on("click", ".delete-btn", function(event) {
                             console.log("delete button clicked");
-                            let imageName = event.target.getAttribute('data-image');  
-                            $(this).closest(".position-relative").remove();                                
-                            let positionRelative = event.target.closest('.position-relative');
-                            let inputImages = document.getElementById("input-images")
-                            console.log(inputImages.files)
-                            
-
-                            if(inputImages){
-                                let inputFiles=inputImages.files;
-                                console.log(inputFiles)
+                            let imageName = event.target.getAttribute('data-image');
+                            $(this).closest(".position-relative").remove();
+                            let inputImages = document.getElementById("input-images");
+                            console.log(inputImages.files);
+                
+                            if (inputImages) {
+                                let inputFiles = inputImages.files;
+                                console.log(inputFiles);
                                 console.log("inputfiles worked");
-                                let newFiles =[]
-                            for(let i=0; i<inputFiles.length; i++){
-                                if(inputFiles[i].name !== imageName){
-                                    newFiles.push(inputFiles[i])
-                                    console.log(newFiles[i])
-                                    console.log(i)
+                                let newFiles = [];
+                                for (let i = 0; i < inputFiles.length; i++) {
+                                    if (inputFiles[i].name !== imageName) {
+                                        newFiles.push(inputFiles[i]);
+                                        console.log(newFiles[i]);
+                                        console.log(i);
+                                    }
                                 }
+                
+                                let newFileList = new DataTransfer();
+                                for (let i = 0; i < newFiles.length; i++) {
+                                    newFileList.items.add(newFiles[i]);
+                                }
+                                inputImages.files = newFileList.files;
                             }
-
-                            let newFileList = new DataTransfer();
-                            for(let i=0; i< newFiles.length; i++){
-                                newFileList.items.add(newFiles[i])
-                            }
-                            inputImages.files =newFileList.files;
-
-                                
-                                        let newInput = $("<input>")
-                                        .attr("type", "file")
-                                        .attr("name", "Images")
-                                        .attr("id", "input-images")
-                                        .attr("accept", "image/*")
-                                        .attr("multiple", true)
-                                        .css("display", "none");
-                                        
-                                        $(document.body).append(newInput);
-                                        newInput.files = inputFiles;
-                                        console.log(`${newInput.files} hey this is newFile`)
-                                      
-                                        newInput.prop("files", newInput.files);
-                                        newInput.trigger('change');
-                                        positionRelative.remove();
-                                                               
-                                        }
-                                })
-                                                       
-                                
-                        
-                    
+                        });
                 
                         $("#input-images").on("change", function() {
                             $('.preview-images').html('');
@@ -489,22 +461,20 @@
                             $(this).find('img').fadeTo(300, 1);
                             $(this).find('.btn-center').hide();
                         });
-                    });
-                </script>
-                <script>
-                    $(document).ready(function() {
+                
                         $(document).on("click", ".crop", function() {
                             let inputImages = document.getElementById("input-images");
-                    
+                
                             if (inputImages.files.length > 0) {
                                 let imagesHTML = "";
+                                let cropperInstances = [];
                                 for (let i = 0; i < inputImages.files.length; i++) {
                                     let reader = new FileReader();
                                     reader.onload = function(e) {
                                         imagesHTML += `<div style="display:inline-block; margin: 5px;">
-                                      <img src="${e.target.result}" id="image-${i}" style="max-width: 200px; max-height: 400px; margin-bottom: 10px;">
-                                   </div>`;
-                                        if (i == inputImages.files.length - 1) {
+                                            <img src="${e.target.result}" id="image-${i}" style="max-width: 200px; max-height: 400px; margin-bottom: 10px;">
+                                        </div>`;
+                                        if (i === inputImages.files.length - 1) {
                                             Swal.fire({
                                                 title: "Crop Images",
                                                 html: `<div id="images-container">${imagesHTML}</div>`,
@@ -512,8 +482,8 @@
                                                 confirmButtonText: 'Crop',
                                                 didOpen: () => {
                                                     for (let j = 0; j < inputImages.files.length; j++) {
-                                                        new Cropper(document.getElementById(`image-${j}`), {
-                                                            aspectRatio: 1,
+                                                        let cropper = new Cropper(document.getElementById(`image-${j}`), {
+                                                            aspectRatio: 9 / 16,
                                                             viewMode: 1,
                                                             autoCropArea: 1,
                                                             movable: true,
@@ -521,16 +491,44 @@
                                                             rotatable: true,
                                                             scalable: true,
                                                         });
+                                                        cropperInstances.push(cropper);
                                                     }
                                                 },
                                                 preConfirm: () => {
                                                     let croppedImages = [];
-                                                    for (let j = 0; j < inputImages.files.length; j++) {
-                                                        let cropper = Cropper.instances[j];
+                                                    for (let j = 0; j < cropperInstances.length; j++) {
+                                                        let cropper = cropperInstances[j];
                                                         let canvas = cropper.getCroppedCanvas();
                                                         croppedImages.push(canvas.toDataURL());
                                                     }
-                                                    console.log(croppedImages);
+                                                    return { croppedImages, cropperInstances };
+                                                }
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    let { croppedImages } = result.value;
+                                                    let newFileList = new DataTransfer();
+                                                    let originalFileNames = [];
+                                                    
+                                                    for (let i = 0; i < inputImages.files.length; i++) {
+                                                        originalFileNames.push(inputImages.files[i].name);
+                                                    }
+                
+                                                    croppedImages.forEach((src, index) => {
+                                                        let imageName = originalFileNames[index]; 
+                                                        let imageContainer = createImageContainer(src, imageName);
+                                                    
+                                                        let originalImageContainer = $(`button[data-image="${imageName}"]`).closest(".position-relative");
+                                                        originalImageContainer.find("img.default-img").attr("src", src);
+                
+                                                        
+                                                        cropperInstances[index].getCroppedCanvas().toBlob((blob) => {
+                                                            let file = new File([blob], imageName, { type: 'image/png' });
+                                                            newFileList.items.add(file);
+                                                            if (index === croppedImages.length - 1) {
+                                                                inputImages.files = newFileList.files;
+                                                            }
+                                                        });
+                                                    });
                                                 }
                                             });
                                         }
@@ -539,8 +537,17 @@
                                 }
                             }
                         });
+                
+                        // Initial display of images
+                        let inputImages = document.getElementById("input-images");
+                        imagesPreview(inputImages, $("#cropped-images-container"));
                     });
-                    </script>
+                </script>
+                
+                
+                
+            </script>
+            
                     
 
 

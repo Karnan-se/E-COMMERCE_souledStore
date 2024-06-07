@@ -8,6 +8,8 @@
 </head>
 
 <body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
     <% if( typeof(newmessage) !== "undefined") { %>
 
@@ -373,11 +375,11 @@
 
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
                 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.js" integrity="sha512-9KkIqdfN7ipEW6B6k+Aq20PV31bjODg4AA52W+tYtAE0jE0kMx49bjJ3FgvS56wzmyfMUHbQ4Km2b7l9+Y/+Eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+               
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" integrity="sha512-aa9kPB0RB5pcLpSziNYssVzPhcUSlt/ouQpQfktNSx5JqI1U2AbOqTfRIFmdYq0+ZQLXfS7vARv5Bw+P0pY1Kw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
                 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+          
 
                 <script>
                     $(document).ready(function() {
@@ -390,10 +392,11 @@
                                                     
                                                         <div class="hover-image"></div>
                                                         <img class="default-img" src="${imageSrc}" alt="" id="newImages">
-                                                        <button class="btn btn-primary btn-center delete-btn" data-image="${imageName}" style="font-size: 12px; line-height: 1.5; max-width: 100%>
+                                                        <button class="btn btn-primary btn-center delete-btn" data-image="${imageName}" style="font-size: 12px; line-height: 1; max-width: 100%>
                                                             <i class="fas fa-solid fa-trash text-sm" style="font-size: 8px;"></i> 
                                                             delete
                                                         </button>
+                                                        <button class="btn btn-primary crop mx-5" style="line-height: 1"> Crop</button>
                                                     
                                                 </div>
                                             </div>
@@ -488,6 +491,57 @@
                         });
                     });
                 </script>
+                <script>
+                    $(document).ready(function() {
+                        $(document).on("click", ".crop", function() {
+                            let inputImages = document.getElementById("input-images");
+                    
+                            if (inputImages.files.length > 0) {
+                                let imagesHTML = "";
+                                for (let i = 0; i < inputImages.files.length; i++) {
+                                    let reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        imagesHTML += `<div style="display:inline-block; margin: 5px;">
+                                      <img src="${e.target.result}" id="image-${i}" style="max-width: 200px; max-height: 400px; margin-bottom: 10px;">
+                                   </div>`;
+                                        if (i == inputImages.files.length - 1) {
+                                            Swal.fire({
+                                                title: "Crop Images",
+                                                html: `<div id="images-container">${imagesHTML}</div>`,
+                                                showCancelButton: true,
+                                                confirmButtonText: 'Crop',
+                                                didOpen: () => {
+                                                    for (let j = 0; j < inputImages.files.length; j++) {
+                                                        new Cropper(document.getElementById(`image-${j}`), {
+                                                            aspectRatio: 1,
+                                                            viewMode: 1,
+                                                            autoCropArea: 1,
+                                                            movable: true,
+                                                            zoomable: true,
+                                                            rotatable: true,
+                                                            scalable: true,
+                                                        });
+                                                    }
+                                                },
+                                                preConfirm: () => {
+                                                    let croppedImages = [];
+                                                    for (let j = 0; j < inputImages.files.length; j++) {
+                                                        let cropper = Cropper.instances[j];
+                                                        let canvas = cropper.getCroppedCanvas();
+                                                        croppedImages.push(canvas.toDataURL());
+                                                    }
+                                                    console.log(croppedImages);
+                                                }
+                                            });
+                                        }
+                                    };
+                                    reader.readAsDataURL(inputImages.files[i]);
+                                }
+                            }
+                        });
+                    });
+                    </script>
+                    
 
 
 
@@ -497,7 +551,7 @@
                 <style>
                     .btn-center {
                         position: absolute;
-                        top: 80%;
+                        top: 70%;
                         left: 50%;
                         transform: translate(-50%, -50%);
                         display: none; /* Initially hide the button */
@@ -1048,6 +1102,8 @@ swal.fire({
     }
     
 </script>
+
+
 
   
 

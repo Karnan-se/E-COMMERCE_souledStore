@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <li class="menu-item has-submenu">
+    <li class="menu-item has-submenu" id="coupons1">
         <a class="menu-link" href="/coupons"> <i class="icon material-icons md-monetization_on"></i>
             <span class="text">coupons</span>
         </a>
@@ -14,7 +14,7 @@
         </div>
        
     </li>
-    <li class="menu-item has-submenu">
+    <li class="menu-item has-submenu" id="offer">
         <a class="menu-link" href="/offer"> <i class="icon material-icons md-monetization_on"></i>
             <span class="text">Offer</span>
         </a>
@@ -25,7 +25,7 @@
        
     </li>
 
-     <li class="menu-item has-submenu">
+     <li class="menu-item has-submenu" id="salesreport">
         <a class="menu-link" href="/salesreport"> <i class="icon material-icons md-monetization_on"></i>
             <span class="text">Salesreport</span>
         </a>
@@ -45,7 +45,7 @@
             <a href="/page-error-404">Error 404</a>
         </div>
     </li>
-    <li class="menu-item">
+    <li class="menu-item" id="reviews">
         <a class="menu-link" href="/page-reviews"> <i class="icon material-icons md-comment"></i>
             <span class="text">Reviews</span>
         </a>
@@ -74,6 +74,24 @@
         </a>
     </li>
 </ul>
+<script>
+    const currentUrl = window.location.pathname
+    const coupons1 = document.getElementById("coupons1")
+    const offer = document.getElementById("offer")
+    const salesreport = document.getElementById("salesreport")
+    const reviews = document.getElementById("reviews")
+
+    if(currentUrl == "/coupons"){
+        coupons1.classList.add("active")
+    }else if(currentUrl ==="/offer" ){
+        offer.classList.add("active")
+    }else if(currentUrl === "/salesreport"){
+        salesreport.classList.add("active")
+    }else if(currentUrl === "/page-reviews"){
+        reviews.classList.add("active")
+    }
+
+    </script>
 <br>
 <br>
 </nav>

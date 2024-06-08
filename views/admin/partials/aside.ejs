@@ -11,7 +11,7 @@
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
             <a href="/admindashboard" class="brand-wrap">
-                <img src="/imgs/theme/logo.jpg" class="logo" alt="Evara Dashboard">
+                <img src="assets/imgs/theme/logo.jpg" class="logo" alt="Evara Dashboard">
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
@@ -19,13 +19,13 @@
         </div>
         <nav>
             <ul class="menu-aside">
-                <li class="menu-item ">
-                    <a class="menu-link" href="/admindashboard"> <i class="icon material-icons md-home"></i>
-                        <span class="text">Dashboard</span>
+                <li class="menu-item" id="dashboard">
+                    <a class="menu-link" href="/admindashboard"> <i class="icon material-icons md-home" id="dashboard1"></i>
+                        <span class="text active">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="/page-products-list"> <i class="icon material-icons md-shopping_bag"></i>
+                <li class="menu-item has-submenu" id="product">
+                    <a class="menu-link" href="/page-products-list"> <i class="icon material-icons md-shopping_bag" ></i>
                         <span class="text">Products</span>
                     </a>
                     <div class="submenu">
@@ -35,8 +35,8 @@
                         <a href="/page-categories">Categories</a>
                     </div>
                 </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="/page-orders-1"> <i class="icon material-icons md-shopping_cart"></i>
+                <li class="menu-item has-submenu" id="order">
+                    <a class="menu-link" href="/page-orders-1"> <i class="icon material-icons md-shopping_cart" ></i>
                         <span class="text">Orders</span>
                     </a>
                     <div class="submenu">
@@ -45,8 +45,8 @@
                        
                     </div>
                 </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="/admin-user-page"> <i class="icon material-icons md-store"></i>
+                <li class="menu-item has-submenu"id="user">
+                    <a class="menu-link" href="/admin-user-page"> <i class="icon material-icons md-store" ></i>
                         <span class="text">User</span>
                     </a>
                     <div class="submenu">
@@ -55,8 +55,8 @@
                         
                     </div>
                 </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="/page-form-product-3"> <i class="icon material-icons md-add_box"></i>
+                <li class="menu-item has-submenu" id="addProduct">
+                    <a class="menu-link" href="/page-form-product-3"> <i class="icon material-icons md-add_box" ></i>
                         <span class="text">Add product</span>
                     </a>
                     <div class="submenu">
@@ -66,8 +66,8 @@
                
                 </li>
 
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="/coupons"> <i class="icon material-icons md-monetization_on"></i>
+                <li class="menu-item has-submenu" id="coupons">
+                    <a class="menu-link" href="/coupons"> <i class="icon material-icons md-monetization_on" ></i>
                         <span class="text">coupons</span>
                     </a>
                     <div class="submenu">
@@ -76,22 +76,18 @@
                     </div>
                    
                 </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="/offer"> <i class="icon material-icons md-monetization_on"></i>
+                <li class="menu-item has-submenu" id="offers">
+                    <a class="menu-link" href="/offer"> <i class="icon material-icons md-monetization_on" ></i>
                         <span class="text">Offer</span>
                     </a>
                     <div class="submenu">
                         <a href="/offer"> Offer</a>
                        
                     </div>
-                   
+
                 </li>
-
-
-
-
-             <li class="menu-item has-submenu">
-        <a class="menu-link" href="/salesreport"> <i class="icon material-icons md-monetization_on"></i>
+             <li class="menu-item has-submenu" id="salesOffer">
+        <a class="menu-link" href="/salesreport"> <i class="icon material-icons md-monetization_on" ></i>
             <span class="text">Salesreport</span>
         </a>
         <div class="submenu">
@@ -139,8 +135,37 @@
             <br>
         </nav>
     </aside>
-    
+    <script>
+
+   let currentUrl = window.location.pathname;
+   
+let dashboard = document.getElementById("dashboard");
+let product = document.getElementById(".product");
+let saleOffer = document.getElementById("salesOffer")
+let offers = document.getElementById("offers")
+let coupons = document.getElementById("coupons")
+let user = document.getElementById("user")
+let order = document.getElementById("order")
+
+if (currentUrl == "/admindashboard") {
+     dashboard.classList.add("active")  
+}else if(currentUrl == "/page-products-list"){
+    product.classList.add("active")
+}else if(currentUrl == "/salesreport"){
+    saleOffer.classList.add("active")
+}else if(currentUrl == "/offer"){
+    offers.classList.add("active")
+}else if(currentUrl == "/coupons"){
+    coupons.classList.add("active")
+}else if(currentUrl == "/admin-user-page"){
+    user.classList.add("active")
+}else if(currentUrl == "/order"){
+    order.classList.add("active")
+}
+
+        </script>
 </head>
+
 
 <body>
     

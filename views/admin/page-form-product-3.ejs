@@ -370,7 +370,7 @@
                                 <input class="form-control" type="file" name="Images" id="input-images" accept="image/*" multiple>
                             </div>
                         </div>
-                    </div> <!-- card end// -->
+                    </div> 
                 </div>
 
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
@@ -431,7 +431,7 @@
                             if (inputImages) {
                                 let inputFiles = inputImages.files;
                                 console.log(inputFiles);
-                                console.log("inputfiles worked");
+                                
                                 let newFiles = [];
                                 for (let i = 0; i < inputFiles.length; i++) {
                                     if (inputFiles[i].name !== imageName) {
@@ -483,7 +483,7 @@
                                                 didOpen: () => {
                                                     for (let j = 0; j < inputImages.files.length; j++) {
                                                         let cropper = new Cropper(document.getElementById(`image-${j}`), {
-                                                            aspectRatio: 9 / 16,
+                                                            aspectRatio: 1,
                                                             viewMode: 1,
                                                             autoCropArea: 1,
                                                             movable: true,
@@ -537,8 +537,7 @@
                                 }
                             }
                         });
-                
-                        // Initial display of images
+            
                         let inputImages = document.getElementById("input-images");
                         imagesPreview(inputImages, $("#cropped-images-container"));
                     });

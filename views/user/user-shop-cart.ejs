@@ -160,7 +160,7 @@
                                                     title: 'Oops...',
                                                     text: 'Please check the Stock'
                                                 });
-                                                return; // Exit the forEach loop on first out of stock item
+                                                // return allInStock; // Exit the forEach loop on first out of stock item
                                             }
                                         });
 
@@ -411,9 +411,10 @@
                                          
                                     })
 
-                                    checkforStock()
-                                    if(!checkforStock){
-                                         return 
+                                    const stockAvailable = await checkforStock();
+        
+                                    if (!stockAvailable) {
+                                        return;
                                     }
 
 

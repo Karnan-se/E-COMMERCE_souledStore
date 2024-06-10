@@ -140,11 +140,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% products.forEach((product, index) => { %>
+                        <% categories.forEach((category, index) => { %>
                             <tr>
                                 <td><%= index + 1 %></td>
-                                <td><%= product.productName %></td>
-                                <td><%= product.totalQuantity %></td>
+                                <td><%= category.categoryname %></td>
+                                <td><%= category.totalQuantity %></td>
                             </tr>
                         <% }) %>
                     </tbody>

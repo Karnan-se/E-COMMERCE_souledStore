@@ -15,7 +15,9 @@ const orderController = require("../../controller/admincontroller/ordercontrolle
 const coupons = require("../../controller/admincontroller/coupons")
 const salesreport = require("../../controller/admincontroller/salesreport")
 const Offer = require("../../controller/admincontroller/offerController")
-const Dashboard = require("../../controller/admincontroller/dashboard") 
+const Dashboard = require("../../controller/admincontroller/dashboard")
+const BestSelling = require("../../controller/admincontroller/bestSellingController") 
+
 
 
 
@@ -115,5 +117,8 @@ router.get("/editOffer",auth.isLogin,Offer.editOffer);
 
 router.get("/sales", auth.isLogin,Dashboard.sales)
 router.get("/fetchdashboard", auth.isLogin,Dashboard.fetchDashboard)
+
+router.get("/bestsellingProduct", auth.isLogin,BestSelling.bestsellingProduct)
+router.get("/bestsellingCategory", auth.isLogin,BestSelling.bestSellingCategory)
 
 module.exports=router;

@@ -5,7 +5,7 @@ let isLogin= async(req, res, next)=>{
         if(req.session.userisAuth){
             next()
         }else{
-            res.redirect("/admin-login")
+            res.redirect("/user-login")
         }
     }catch(error){
         
@@ -20,7 +20,7 @@ let isLogout = async(req, res, next)=>{
     try {
 
         if(req.session.userisAuth){
-            res.redirect("/admindashboard")
+            res.redirect("/")
          } else{
                 next()
             }     

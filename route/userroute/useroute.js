@@ -15,54 +15,54 @@ const getInvoice = require("../../controller/usercontroller/invoice")
 userrouter.use(express.static("public"));
 
 userrouter.get("/",userController.user_index)
-userrouter.get("/user-login",userController.userlogin)
-userrouter.get("/user-register",userController.user_register)
-userrouter.get("/user-logout",userController.user_out)
-userrouter.get("/searchProduct", userController.search)
+userrouter.get("/user-login",auth.isLogout,userController.userlogin)
+userrouter.get("/user-register",auth.isLogout,userController.user_register)
+userrouter.get("/user-logout",auth.isLogin,userController.user_out)
+userrouter.get("/searchProduct",auth.isLogin, userController.search)
 
 userrouter.post("/user-login",userpostcontroller.user_login) 
 userrouter.post("/user-register",userpostcontroller.user_register)
 
 userrouter.get("/sendotp",userpostcontroller.sendOtp)
 userrouter.get("/verifyotp",userpostcontroller.verifyOtp)
-userrouter.get("/shop-grid-right",userController.shop_grid_right)
-userrouter.get("/submit-image", userController.submit_image)
-userrouter.get("/low-to-high",userController.low_High)
-userrouter.get("/High-to-low",userController.High_low)
+userrouter.get("/shop-grid-right",auth.isLogin,userController.shop_grid_right)
+userrouter.get("/submit-image",auth.isLogin, userController.submit_image)
+userrouter.get("/low-to-high",auth.isLogin,userController.low_High)
+userrouter.get("/High-to-low",auth.isLogin,userController.High_low)
 
 
 
-userrouter.get("/myAccount",MyAccount.user_page_account)
-userrouter.post("/currentPassword",MyAccount.currentPassword)
-userrouter.post("/newpasswordchange",MyAccount.newpasswordchange)
-userrouter.post("/addAddress", MyAccount.addAddress)
-userrouter.get("/updateAddressStatus",MyAccount.updateAddressStatus)
-userrouter.get("/deleteAddress",MyAccount.deleteAddress)
-userrouter.get("/updateName",MyAccount.updateName)
-userrouter.get("/editAddressfields",MyAccount.editAddressfields)
-userrouter.get("/cancelOrder",MyAccount.cancelOrder)
-userrouter.get("/returnOrder",MyAccount.returnOrder)
-userrouter.get("/retryTransaction",MyAccount.retryTransaction)
+userrouter.get("/myAccount",auth.isLogin,MyAccount.user_page_account)
+userrouter.post("/currentPassword",auth.isLogin,MyAccount.currentPassword)
+userrouter.post("/newpasswordchange",auth.isLogin,MyAccount.newpasswordchange)
+userrouter.post("/addAddress",auth.isLogin, MyAccount.addAddress)
+userrouter.get("/updateAddressStatus",auth.isLogin,MyAccount.updateAddressStatus)
+userrouter.get("/deleteAddress",auth.isLogin,MyAccount.deleteAddress)
+userrouter.get("/updateName",auth.isLogin,MyAccount.updateName)
+userrouter.get("/editAddressfields",auth.isLogin,MyAccount.editAddressfields)
+userrouter.get("/cancelOrder",auth.isLogin,MyAccount.cancelOrder)
+userrouter.get("/returnOrder",auth.isLogin,MyAccount.returnOrder)
+userrouter.get("/retryTransaction",auth.isLogin,MyAccount.retryTransaction)
 
 
-userrouter.get("/shop-product-right",productController.shop_product_right)
-userrouter.get("/shop-cart",shopCart.shop_cart )
-userrouter.get("/addtoCart",shopCart.addtoCart )
+userrouter.get("/shop-product-right",auth.isLogin,productController.shop_product_right)
+userrouter.get("/shop-cart",auth.isLogin,shopCart.shop_cart )
+userrouter.get("/addtoCart",auth.isLogin,shopCart.addtoCart )
 
-userrouter.get("/deleteFromCart",shopCart.DeleteItem )
-userrouter.get("/quantityUpdate",shopCart.quantityUpdate )
-userrouter.get("/updatePriceToCart",shopCart.updatePriceToCart)
+userrouter.get("/deleteFromCart",auth.isLogin,shopCart.DeleteItem )
+userrouter.get("/quantityUpdate",auth.isLogin,shopCart.quantityUpdate )
+userrouter.get("/updatePriceToCart",auth.isLogin,shopCart.updatePriceToCart)
 
-userrouter.get("/checkStock",shopCart.checkStock )
+userrouter.get("/checkStock",auth.isLogin,shopCart.checkStock )
 
 
 
-userrouter.get("/checkout",checkout.checkout)
-userrouter.get("/paymentStatus",checkout.paymentStatus)
-userrouter.post("/welcomePage",checkout.welcomePage)
-userrouter.get("/applyCoupon",checkout.applyCoupon)
-userrouter.get("/WalletPaymentCancelled",checkout.WalletPaymentCancelled)
-userrouter.get("/thankYou",checkout.thanYou)
+userrouter.get("/checkout",auth.isLogin,checkout.checkout)
+userrouter.get("/paymentStatus",auth.isLogin,checkout.paymentStatus)
+userrouter.post("/welcomePage",auth.isLogin,checkout.welcomePage)
+userrouter.get("/applyCoupon",auth.isLogin,checkout.applyCoupon)
+userrouter.get("/WalletPaymentCancelled",auth.isLogin,checkout.WalletPaymentCancelled)
+userrouter.get("/thankYou",auth.isLogin,checkout.thanYou)
 
 
 

@@ -181,6 +181,7 @@ let resetpassword = async(req, res)=>{
 let logout = async(req,res)=>{
     try {
         delete  req.session.adminisAuth
+        delete req.session.userisAuth
         res.redirect("/admin-login")
         
     } catch (error) {

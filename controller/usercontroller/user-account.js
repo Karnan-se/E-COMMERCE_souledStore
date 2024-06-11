@@ -14,18 +14,22 @@ let user_page_account = async(req, res)=>{
         const userDetails = req.session.userisAuth;
 
         const page = parseInt(req.query.orderpage) || 1;
-        const limit =  5;
+        const limit =  2;
         const skip = (page-1) * limit;
 
        
-
-        const order = await orders.find({userId:userDetails}).populate("products.product").skip(skip).limit(limit)
+        const TotalOrder = await orders.find({userId:userDetails})
+        const order = (await orders.find({userId:userDetails}).populate("products.product").skip(skip).limit(limit)).reverse()
         const ratings = await rating.find({userId:userDetails._id});
         const WalletDetail = await Wallet.findOne({userId:userDetails._id})
 
+        let ordercount =TotalOrder.length
+        console.log(ordercount)
 
 
-        const totalPages = Math.ceil((order.length)/limit)
+
+        const totalPages = Math.ceil((ordercount)/limit)
+        console.log(totalPages, "totalPage")
         const data= req.session.userisAuth;
         
         if(req.session.passwordUpdated){
@@ -48,7 +52,7 @@ let currentPassword= async(req, res)=>{
     try {
         const currentPassword = req.body.password;
         const userDetails = req.session.userisAuth;
-        console.log(userDetails);
+      
         const encrypyedPassword = await bcrypt.compare(currentPassword, userDetails.password)
         console.log(encrypyedPassword);
         if(encrypyedPassword == true){

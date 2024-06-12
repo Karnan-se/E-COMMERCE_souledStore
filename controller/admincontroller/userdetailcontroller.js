@@ -73,10 +73,7 @@ let toggle = async(req, res)=>{
         userdetails.isActive = !userdetails.isActive;
          userdetails.save()
         console.log(userdetails)
-      return res.status(200).json({data:"Hey"})
-
-  
-        
+      return res.status(200).json({data:"Hey"})     
     } catch (error) {
         console.log(error)
         

@@ -81,7 +81,7 @@
                             <div class="toggle_info">
                                 <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
                                         href="#coupon" data-bs-toggle="collapse" class="collapsed"
-                                        aria-expanded="false">Click here to enter your code</a></span>
+                                        aria-expanded="false" onclick="showModal()">Click here to enter your code</a></span>
                             </div>
                             <div class="panel-collapse collapse coupon_form " id="coupon">
                                 <div class="panel-body">
@@ -93,9 +93,72 @@
                                     <div class="form-group">
                                         <button class="btn  btn-md" name="login" onclick="applyCoupon(this)" data-totalamount="<%= CartDetail.totalprice %>">Apply Coupon</button>
                                     </div>
+
+                                    <!-- Modal Structure -->
+<div id="couponModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Available Coupons</h5>
+                <button type="button" class="close" onclick="closeModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <ul id="couponList" class="list-group d-flex flex-column gap-2">
+                    <% coupon.forEach((item)=>{ %>
+                        
+                        <div class="d-flex justify-content-around">
+                        <li><%= item.coupon_code %></li>
+                        <li><%= item.percentage %></li>
+                        <li><%= item.maximumAmount %></li>
+                        <li type="button" class="btn btn-success btn-sm " onclick="applycouponto(`<%= item.coupon_code %>`)">Apply</li>
+                        </div> 
+                        
+                        
+                   <% })%>
+
+                </ul>
+
+                </ul>
+                <script>
+                   function applycouponto(couponName){
+                    console.log(couponName)
+                   const copounInput = document.getElementById("couponId")
+                   copounInput.value=couponName;
+                   closeModal()
+                    }
+
+                </script>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function showModal(){
+        document.getElementById('couponModal').style.display = 'block';
+document.getElementById('couponModal').classList.add('show');
+document.body.classList.add('modal-open');
+    }
+
+    function closeModal() {
+        document.getElementById('couponModal').style.display = 'none';
+        document.getElementById('couponModal').classList.remove('show');
+        document.body.classList.remove('modal-open');
+    }
+    </script>
+
+
+                                    
                             
                                 <script>
                                    async function applyCoupon(btnelement){
+                                  
+
                                         const couponCode = document.getElementById("couponId").value;
                                         const totalAmount = btnelement.getAttribute("data-totalamount");
                                         console.log(totalAmount)
@@ -137,7 +200,7 @@
                                             inputCoupons.value=discountAmount
                                             cartSuperTotal.textContent = data?.priceAfterDiscount;
                                             party.confetti(btnelement, {
-                                            count: party.variation.range(20, 40),
+                                            count: party.variation.range(20, 120),
                                            
 
                                         });
@@ -195,6 +258,27 @@
                                         }).then(()=>{
                                             window.location.reload()
                                         });
+
+
+                                    }else if(data.data == "expired"){
+                                        const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.onmouseenter = Swal.stopTimer;
+                                            toast.onmouseleave = Swal.resumeTimer;
+                                        }
+                                        });
+                                        Toast.fire({
+                                        icon: "warning",
+                                        title: "This Coupon is Expired"
+                                        }).then(()=>{
+                                            window.location.reload()
+                                        });
+
 
                                            
                                         }else{

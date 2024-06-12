@@ -23,9 +23,9 @@ let checkout = async(req, res)=>{
         const CartDetail = await CartDetails.findOne({userId:userDetail}).populate("items.product")
         const userDetails = await UserModel.findOne({_id: userDetail, "Address.status": true })
         const data= req.session.userisAuth;
-        console.log(userDetails)
+       const coupon =await Coupons.find({expiryDate:{$gte:new Date()}, isListed:true})
         
-       return  res.render("user/user-shop-checkout.ejs",{CartDetail, userDetails, data})
+       return  res.render("user/user-shop-checkout.ejs",{CartDetail, userDetails, data, coupon})
         
     } catch (error) {
         console.log(error.message)
@@ -252,7 +252,7 @@ let applyCoupon = async(req, res)=>{
         const couponCode = req.query.couponCode;
         const totalAmount = req.query.totalAmount;
         const date = Date.now()
-        console.log(date)
+       
         console.log(couponCode);
         const userId = req.session.userisAuth._id;
         console.log(userId)

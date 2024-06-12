@@ -48,6 +48,29 @@ let user_page_account = async(req, res)=>{
     }
 }
 
+// need to implement using fetch
+
+let transactionLoad = async(req, res)=>{
+    try {
+        const page = parseInt(req.query.orderpage) || 1;
+        const limit =  2;
+        const skip = (page-1) * limit;
+
+        const userDetails = req.session.userisAuth;
+        const TotalWalletDetail = await Wallet.findOne({userId:userDetails._id})
+        const WalletDetail = await Wallet.findOne({userId:userDetails._id}).skip(skip).limit(limit)
+
+        
+
+        res.status(200).json({data})
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
 let currentPassword= async(req, res)=>{
     try {
         const currentPassword = req.body.password;

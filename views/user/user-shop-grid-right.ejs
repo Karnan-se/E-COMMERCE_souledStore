@@ -140,7 +140,10 @@
                                          </div>
                                          <div class="product-price">
                                              <span>&#x20b9 <%= product[i].price%></span>
-                                             <span class="old-price">&#x20b9 245.8</span>
+
+                                             <span class="<%= (product[i].orginalPrice > 0) ? 'old-price' : 'd-none' %>">
+                                                <%= product[i]?.orginalPrice ?? '' %>
+                                            </span>
                                          </div>
                                          <div class="product-action-1 show">
                                              <a aria-label="Add To Cart" class="action-btn hover-up" href="/shop-cart"><i class="fi-rs-shopping-bag-add"></i></a>
@@ -153,12 +156,6 @@
                              <% } %>
                          </div>
 
-                         
-
-                         
-            
-
-                          
                         <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-start">

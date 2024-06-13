@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 
 async function dbconnect(){
    try {
-      await mongoose.connect("mongodb://127.0.0.1:27017/souled-store")
+      await mongoose.connect(process.env.MONG0_URL)
       console.log("database connected");
       
    } catch (error) {
@@ -45,7 +45,7 @@ app.use("/",router)
 app.use("/",userroute)
 
 
-app.listen(3000,()=>{
+app.listen(process.env.PORT,()=>{
    console.log("localhost 3000")
    console.log(process.env.EMAIL_HOST)
 })

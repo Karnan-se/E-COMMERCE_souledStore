@@ -25,6 +25,8 @@ let user_page_account = async(req, res)=>{
 
         let ordercount =TotalOrder.length
         console.log(ordercount)
+        const fullData = WalletDetail.history;
+        console.log(fullData, "fullData")
 
 
 
@@ -50,7 +52,7 @@ let user_page_account = async(req, res)=>{
 
 // need to implement using fetch
 
-let transactionLoad = async(req, res)=>{
+let collectTransaction = async(req, res)=>{
     try {
         const page = parseInt(req.query.orderpage) || 1;
         const limit =  2;
@@ -62,7 +64,7 @@ let transactionLoad = async(req, res)=>{
 
         
 
-        res.status(200).json({data})
+        res.status(200).json({WalletDetail})
 
         
     } catch (error) {
@@ -427,5 +429,6 @@ module.exports={user_page_account,
     editAddressfields,
     cancelOrder,
     returnOrder,
-    retryTransaction
+    retryTransaction,
+    collectTransaction
 }

@@ -74,6 +74,9 @@ userrouter.get("/ratings",rating.loadratings)
 userrouter.get("/wallet",walletController.walletPage)
 userrouter.get("/addtoWallet",walletController.addToWallet)
 userrouter.get("/addAmounttoWallet",walletController.addAmounttoWallet)
+userrouter.get("/collectTransaction",MyAccount.collectTransaction)
+
+
 
 userrouter.get("/getInvoice",getInvoice.downloadInvoice)
 

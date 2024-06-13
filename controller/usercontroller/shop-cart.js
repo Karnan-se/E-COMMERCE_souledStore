@@ -44,7 +44,6 @@ let shop_cart=async(req,res)=>{
 }
 
 
-
 let addtoCart = async(req, res)=>{
     try {
 

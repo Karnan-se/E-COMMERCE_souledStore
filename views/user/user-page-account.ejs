@@ -1657,9 +1657,16 @@
                                                                                     <th class="text-end"> Description </th>
                                                                                 </tr>
                                                                             </thead>
-                                                                            <tbody>
+                                                                            <tbody id="transactionTable">
+                                                                               <% const nonreversedfullData = JSON.parse(JSON.stringify(WalletDetail.history))%>
+                                                                               <% const fullData =nonreversedfullData.reverse() %>
+                                                                                <%console.log(fullData.length, "fullData")%>
+                                                                                 
                                                                                 <%if(WalletDetail) {%>
-                                                                                <%const reversedWallet = WalletDetail.history.reverse()%>
+                                                                                    
+                                                                                <% const reversedWallet = WalletDetail.history.reverse()%>
+                                                                                <% currentlength =5%>
+                                                                                <%reversedWallet.length=currentlength %>
                                                                                 <% reversedWallet.forEach((item)=> {%> 
                                                             
                                                                                     
@@ -1680,9 +1687,85 @@
                                                                                 </tr>
 
                                                                                 <%})%>
+               
                                                                                 <%}%>
                                                                             </tbody>
                                                                         </table>
+                                                                       
+                                                                        <div class="text-center">
+                                                                            <div><i class="fa-solid fa-caret-down" data-page='1' data-currentLength="5" data-fullData="<%=WalletDetail.history.reverse()%>" onclick="collectTransaction(this)"></i></div>
+
+                                                                            </div>
+                                                                            <style>
+                                                                            .fa-caret-down {
+                                                                                transition: transform 0.2s, font-size 0.2s;
+                                                                                position: relative;
+                                                                            }
+                                                                    
+                                                                            .fa-caret-down:hover {
+                                                                                font-size: 1.5em; /* Enlarge the icon */
+                                                                            }
+                                                                    
+                                                                            .fa-caret-down:hover::before {
+                                                                                content: "See more";
+                                                                                position: absolute;
+                                                                                top: -25px; /* Adjust as needed */
+                                                                                left: 50%;
+                                                                                transform: translateX(-50%);
+                                                                                background-color: #333;
+                                                                                color: #fff;
+                                                                                padding: 5px;
+                                                                                border-radius: 5px;
+                                                                                white-space: nowrap;
+                                                                                font-size: 0.75em; /* Adjust the font size of the popover */
+                                                                                z-index: 10;
+                                                                            }
+                                                                        </style>
+                                                                            <script>
+                                                                                 // Initialize current length
+                                                                                let length =  parseInt(`<%=WalletDetail.history.length%>`)
+                                                                                const fullData = JSON.parse('<%- JSON.stringify(fullData) %>');
+                                                                                
+                                                                                console.log(length)
+                                                                                    function collectTransaction(btnElement) {
+                                                                                        console.log("hello")
+                                                                                        console.log(fullData)
+
+                                                                                        length += 5 
+                                                                                        console.log(length)
+               
+                                                                                        const newTransactions = fullData.slice(0, length);
+                                                                                    
+                                                                                        const tableBody = document.getElementById("transactionTable");
+                                                                                        tableBody.innerHTML = ""; // Clear the existing rows
+
+                                                                                        newTransactions.forEach((item) => {
+                                                                                            const row = document.createElement("tr");
+                                                                                            row.innerHTML = `
+                                                                                                <td><b>${item.transactionId}</b></td>
+                                                                                                <td>${item.amount}</td>
+                                                                                                <td>
+                                                                                                    <div class="icontext">
+                                                                                                        <span class="text text-muted ${item.type == "Credit" ? "alertSuccess" : "alertWarning"}">${item.type}</span>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td>${new Date(item.createdAt).toLocaleDateString()}&nbsp;</td>
+                                                                                                <td class="text-end">
+                                                                                                    <a href="#" class="font-sm rounded">${item.description}</a>
+                                                                                                </td>
+                                                                                            `;
+                                                                                            tableBody.appendChild(row);
+                                                                                        });
+                                                                                    }
+                                                                                    
+                                                                                </script>
+                                                                                
+
+                                                                                
+
+
+
+
                                                                     </div> <!-- table-responsive.// -->
                                                                 </div> <!-- col end// -->
                                                              
@@ -1690,7 +1773,7 @@
                                                         </div> <!-- card-body // -->
                                                     </div> <!-- card end// -->
                                                     <div class="pagination-area mt-30 mb-50">
-                                                        <nav aria-label="Page navigation example">
+                                                        <!-- <nav aria-label="Page navigation example">
                                                             <ul class="pagination justify-content-start">
                                                                 <li class="page-item active"><a class="page-link" href="#">01</a></li>
                                                                 <li class="page-item"><a class="page-link" href="#">02</a></li>
@@ -1699,7 +1782,7 @@
                                                                 <li class="page-item"><a class="page-link" href="#">16</a></li>
                                                                 <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
                                                             </ul>
-                                                        </nav>
+                                                        </nav> -->
                                                     </div>
                                                 </section>
                                                 </div>

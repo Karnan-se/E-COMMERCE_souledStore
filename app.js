@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 
 async function dbconnect(){
    try {
-      await mongoose.connect(process.env.MONG0_URL)
+      await mongoose.connect("mongodb+srv://karnanse:Kanakais2@cluster0.1kb7msa.mongodb.net/")
       console.log("database connected");
       
    } catch (error) {

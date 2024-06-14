@@ -28,6 +28,7 @@ setTimeout(()=>{
 
 async function dbconnect(){
    try {
+      console.log("hi");
       await mongoose.connect(process.env.MONG0_URL)
       console.log("database connected");
       

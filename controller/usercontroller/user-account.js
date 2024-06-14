@@ -1,4 +1,4 @@
-const { yearsToQuarters } = require("date-fns");
+// const { yearsToQuarters } = require("date-fns");
 const userdetail = require("../../models/user/userdetails");
 const orders = require("../../models/user/order")
 const rating = require("../../models/user/ratings")
@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt")
 const Wallet = require("../../models/user/wallets");
 const order = require("../../models/user/order");
 const addproduct = require("../../models/addproduct/addproduct")
-const transaction = require("../../models/user/transaction")
+// const transaction = require("../../models/user/transaction")
 const instance = require("../../utils/razorpay");
 
 let user_page_account = async(req, res)=>{

@@ -22,13 +22,14 @@ app.use((req, res, next) => {
    next();
  });
 
-
+console.log(process.env.MONG0_URL)
 async function dbconnect(){
    try {
       await mongoose.connect(process.env.MONG0_URL)
       console.log("database connected");
       
    } catch (error) {
+      console.log(error.message)
       console.log("dataBase couldnot be connected")
       
    }

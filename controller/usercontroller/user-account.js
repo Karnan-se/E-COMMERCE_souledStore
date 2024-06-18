@@ -27,9 +27,13 @@ let user_page_account = async(req, res)=>{
 
        
         const TotalOrder = await orders.find({userId})
-        const order = (await orders.find({userId}).populate("products.product").skip(skip).limit(limit)).reverse()
+        const order = await orders.find({ userId })
+  .populate("products.product")
+  .sort({ _id: -1 }) 
+  .skip(skip)
+  .limit(limit);
         const ratings = await rating.find({userId});
-       
+        
         console.log(order, "order")
         
 

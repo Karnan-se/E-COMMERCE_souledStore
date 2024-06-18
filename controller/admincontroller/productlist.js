@@ -14,12 +14,14 @@ let page_products_list = async(req, res)=>{
         const page = parseInt(req.query.page) || 1;
         const limit = 10;
         const skip = (page-1)*limit
+        const totalPage = Math.ceil(AllProducts[0].totalProduct/limit);
+        console.log(totalPage)
        
 
         
 
         let product= await products.find().skip(skip).limit(limit)
-        res.render("admin/page-products-list.ejs",{product})
+        res.render("admin/page-products-list.ejs",{product, totalPage})
         
 
         

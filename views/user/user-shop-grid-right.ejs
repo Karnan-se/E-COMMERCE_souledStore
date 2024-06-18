@@ -172,11 +172,11 @@
                                     }
                                     const data = await response.json()
                                     console.log(data.data);
-                                    const productContainer = this.closest('.productofindex');
-                                      const flyingElement = productContainer.querySelector('.flying-Element')
-                                      const flyToElement = document.querySelector('.fly-to-element');
+                                    // const productContainer = this.closest('.productofindex');
+                                    //   const flyingElement = productContainer.querySelector('.flying-Element')
+                                    //   const flyToElement = document.querySelector('.fly-to-element');
 
-                                      flyTo(flyingElement, flyToElement);
+                                    //   flyTo(flyingElement, flyToElement);
                                       if(data.data == "redirect"){
                                         window.location.href="/user-login"
                                       }else if(data.data =="Product-Already-Exist"){

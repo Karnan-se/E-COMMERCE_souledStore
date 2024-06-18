@@ -759,7 +759,7 @@ document.body.classList.add('modal-open');
                                         }
                                         const data = await response.json();
                                         console.log(data.data);
-                                        if(data.data == "failed"){
+                                        if(data.data == "failed" || "noWallet"){
                                             Swal.fire({
                                                 icon: "warning",
                                                 title: "Insufficient Wallet Balance",

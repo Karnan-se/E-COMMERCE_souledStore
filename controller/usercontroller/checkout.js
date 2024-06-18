@@ -146,6 +146,9 @@ const cartDetail = await cart.findOne({userId:userId}).populate("items.product")
 
     if(paymentMethod == "Wallet"){
         const checkWalletbalance =await walletSchema.findOne({userId:userId})
+        if(!checkWalletbalance){
+            return await res.status(200).json({data:"noWallet"})
+        }
         const walletBalance=checkWalletbalance.TotalAmount - TotalPrice;
         if(walletBalance>0){
             const walletUpdate= await walletSchema.updateOne({userId:userId},{$inc:{TotalAmount:-TotalPrice}})

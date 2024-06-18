@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+   <title>Souled Store</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +15,7 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="https://www.thesouledstore.com/static/img/newlogo.8dcc6cc.png">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
     
@@ -98,7 +98,7 @@
                                                                 class="fi-rs-user mr-10"></i>Account details</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a class="nav-link" href="page-login-register.html"><i
+                                                        <a class="nav-link" href="/user-logout"><i
                                                                 class="fi-rs-sign-out mr-10"></i>Logout</a>
                                                     </li>
                                                 </ul>
@@ -147,6 +147,7 @@
                                                         }
 
                                                         </script> -->
+                                                        <% if(order) {%>
 
                                                 <%order.reverse() %>
                                               
@@ -458,6 +459,8 @@
                                                             
                                                         </nav>
                                                     </div>
+
+                                                    <% }%>
 
 
 
@@ -1646,7 +1649,9 @@
 
                                                                         </div>
                                                                     </header> <!-- card-header end// -->
+                                                                    <%if(WalletDetail) {%>
                                                                     <div class="table-responsive">
+                                                                        
                                                                         <table class="table table-hover">
                                                                             <thead>
                                                                                 <tr>
@@ -1658,11 +1663,16 @@
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody id="transactionTable">
-                                                                               <% const nonreversedfullData = JSON.parse(JSON.stringify(WalletDetail.history))%>
+
+                                                                                
+                                                                               
+                                                                                
+
+                                                                                <% const nonreversedfullData = JSON.parse(JSON.stringify(WalletDetail.history))%>
                                                                                <% const fullData =nonreversedfullData.reverse() %>
                                                                                 <%console.log(fullData.length, "fullData")%>
                                                                                  
-                                                                                <%if(WalletDetail) {%>
+
                                                                                     
                                                                                 <% const reversedWallet = WalletDetail.history.reverse()%>
                                                                                 <% currentlength =5%>
@@ -1687,15 +1697,56 @@
                                                                                 </tr>
 
                                                                                 <%})%>
+                                                                                <script>
+                                                                                    // Initialize current length
+                                                                                   let length =  parseInt(`<%=WalletDetail.history.length%>`)
+                                                                                   const fullData = JSON.parse('<%- JSON.stringify(fullData) %>');
+                                                                                   
+                                                                                   console.log(length)
+                                                                                       function collectTransaction(btnElement) {
+                                                                                           console.log("hello")
+                                                                                           console.log(fullData)
+   
+                                                                                           length += 5 
+                                                                                           console.log(length)
+                  
+                                                                                           const newTransactions = fullData.slice(0, length);
+                                                                                       
+                                                                                           const tableBody = document.getElementById("transactionTable");
+                                                                                           tableBody.innerHTML = ""; // Clear the existing rows
+   
+                                                                                           newTransactions.forEach((item) => {
+                                                                                               const row = document.createElement("tr");
+                                                                                               row.innerHTML = `
+                                                                                                   <td><b>${item.transactionId}</b></td>
+                                                                                                   <td>${item.amount}</td>
+                                                                                                   <td>
+                                                                                                       <div class="icontext">
+                                                                                                           <span class="text text-muted ${item.type == "Credit" ? "alertSuccess" : "alertWarning"}">${item.type}</span>
+                                                                                                       </div>
+                                                                                                   </td>
+                                                                                                   <td>${new Date(item.createdAt).toLocaleDateString()}&nbsp;</td>
+                                                                                                   <td class="text-end">
+                                                                                                       <a href="#" class="font-sm rounded">${item.description}</a>
+                                                                                                   </td>
+                                                                                               `;
+                                                                                               tableBody.appendChild(row);
+                                                                                           });
+                                                                                       }
+                                                                                       
+                                                                                   </script>
+
+                                                                              
                
-                                                                                <%}%>
+                                                                                
                                                                             </tbody>
                                                                         </table>
                                                                        
                                                                         <div class="text-center">
                                                                             <div><i class="fa-solid fa-caret-down" data-page='1' data-currentLength="5" data-fullData="<%=WalletDetail.history.reverse()%>" onclick="collectTransaction(this)"></i></div>
-
                                                                             </div>
+                                                                          
+
                                                                             <style>
                                                                             .fa-caret-down {
                                                                                 transition: transform 0.2s, font-size 0.2s;
@@ -1721,50 +1772,24 @@
                                                                                 z-index: 10;
                                                                             }
                                                                         </style>
-                                                                            <script>
-                                                                                 // Initialize current length
-                                                                                let length =  parseInt(`<%=WalletDetail.history.length%>`)
-                                                                                const fullData = JSON.parse('<%- JSON.stringify(fullData) %>');
+                                                                          <%} else {%>
+
+                                                                            <table class="table table-hover">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Transaction ID</th>
+                                                                                        <th>Paid</th>
+                                                                                        <th>TransactionType</th>
+                                                                                        <th>Date</th>
+                                                                                        <th class="text-end"> Description </th>
+                                                                                    </tr>
+                                                                                </thead>
+
+                                                                                </table>
                                                                                 
-                                                                                console.log(length)
-                                                                                    function collectTransaction(btnElement) {
-                                                                                        console.log("hello")
-                                                                                        console.log(fullData)
-
-                                                                                        length += 5 
-                                                                                        console.log(length)
-               
-                                                                                        const newTransactions = fullData.slice(0, length);
-                                                                                    
-                                                                                        const tableBody = document.getElementById("transactionTable");
-                                                                                        tableBody.innerHTML = ""; // Clear the existing rows
-
-                                                                                        newTransactions.forEach((item) => {
-                                                                                            const row = document.createElement("tr");
-                                                                                            row.innerHTML = `
-                                                                                                <td><b>${item.transactionId}</b></td>
-                                                                                                <td>${item.amount}</td>
-                                                                                                <td>
-                                                                                                    <div class="icontext">
-                                                                                                        <span class="text text-muted ${item.type == "Credit" ? "alertSuccess" : "alertWarning"}">${item.type}</span>
-                                                                                                    </div>
-                                                                                                </td>
-                                                                                                <td>${new Date(item.createdAt).toLocaleDateString()}&nbsp;</td>
-                                                                                                <td class="text-end">
-                                                                                                    <a href="#" class="font-sm rounded">${item.description}</a>
-                                                                                                </td>
-                                                                                            `;
-                                                                                            tableBody.appendChild(row);
-                                                                                        });
-                                                                                    }
-                                                                                    
-                                                                                </script>
-                                                                                
-
-                                                                                
-
-
-
+                                                                                <div class="d-flex justify-content-center text-danger">No Wallet history</div>
+                                                                            <%}%>
+                                                                           
 
                                                                     </div> <!-- table-responsive.// -->
                                                                 </div> <!-- col end// -->

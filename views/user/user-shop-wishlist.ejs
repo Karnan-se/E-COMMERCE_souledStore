@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend//shop-wishlist by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:05 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+   <title>Souled Store</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,7 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="https://www.thesouledstore.com/static/img/newlogo.8dcc6cc.png">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
 </head>
@@ -145,6 +145,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
+                            <% if (wishList) { %>
                             <table class="table shopping-summery text-center">
                                 <thead>
                                     <tr class="main-heading">
@@ -156,7 +157,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% if (typeof wishList !== "undefined" && wishList.product.length > 0) { %>
+                                    
                                     <% wishList.product.forEach((item)=>{  %>
                                     <tr>
                                         <td class="image product-thumbnail"><img src="/temp/<%=item.productId.images[0]%>" alt="#" style="width: 100px; height: auto;"></td>
@@ -182,13 +183,23 @@
 
                                         }
                                         </script>
-                                        <%}else{%>
-                                            
-                                            <%}%>
+                                       
 
                                     
                                 </tbody>
                             </table>
+
+
+                            <%}else{%>
+                                <div class="row">
+                                    
+                                    
+                                        <div class="d-flex justify-content-center align-items-center" style="height: 340px;">NO Products in WishLists</div>
+                                    
+                                    
+                                    </div>
+                                
+                                <%}%>
                         </div>
                     </div>
                 </div>

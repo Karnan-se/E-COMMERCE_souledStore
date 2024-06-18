@@ -42,12 +42,15 @@ let welcomePage =async(req, res)=>{
         console.log(inputCoupons)
         console.log(paymentMethod)
 
-        const userDetail = req.session.userisAuth;
-        console.log(userDetail.name)
+        // const userDetail = req.session.userisAuth;
+        // console.log(userDetail.name)
         const userId = req.session.userisAuth._id;
         console.log(userId);
+        const userDetail = await UserModel.findOne({_id:userId})
+        req.session.userisAuth=userDetail
 
-        const trueAddress =userDetail.Address[selectedAddress];
+        const trueAddress =userDetail.Address.status==true;
+        console.log(trueAddress)
         
 
 

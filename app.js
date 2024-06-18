@@ -21,10 +21,7 @@ app.use((req, res, next) => {
    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
    next();
  });
-setTimeout(()=>{
-   console.log(process.env.MONG0_URL)
 
-},3000)
 
 async function dbconnect(){
    try {

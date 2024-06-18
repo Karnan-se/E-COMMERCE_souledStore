@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+   <title>Souled Store</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +15,7 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="https://www.thesouledstore.com/static/img/newlogo.8dcc6cc.png">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
     <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
@@ -41,6 +41,7 @@
             <section class="mt-50 mb-50">
                 <div class="container">
                     <div class="row">
+                        <% if(CartDetail) {%>
                         <div class="col-lg-6 mb-sm-15">
                             <div class="toggle_info">
                                 <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an
@@ -77,6 +78,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-lg-6">
                             <div class="toggle_info">
                                 <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
@@ -838,6 +840,12 @@ document.body.classList.add('modal-open');
                                 </script>
                                 
                             </div>
+
+                            <% } else { %>
+                                <tr>
+                                  <td colspan="8">No Items In cart</td>
+                                </tr>
+                                <% } %>
                             
                         </div>
                     </div>

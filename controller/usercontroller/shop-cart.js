@@ -8,7 +8,7 @@ const { default: mongoose } = require("mongoose")
 
 let shop_cart=async(req,res)=>{
     try {
-       const userDetails= await req.session.userisAuth._id
+       const userDetails=  req.session.userisAuth._id
        const data= req.session.userisAuth;
        
         if(!userDetails){
@@ -114,6 +114,7 @@ let addtoCart = async(req, res)=>{
         const size = req?.query?.selectedSize;
         
         if(size){
+            console.log("this part is working as even if there is no size")
             console.log(size);
             const userCart = new cart({
                 userId: userId,

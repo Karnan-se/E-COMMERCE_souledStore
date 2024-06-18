@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+   <title>Souled Store</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,7 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="https://www.thesouledstore.com/static/img/newlogo.8dcc6cc.png">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
  
@@ -322,8 +322,11 @@ function updateProductList(products) {
                                     <a href="/shop-cart">
                                         <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg">
                                         <% if (typeof userinCart !== "undefined" && userinCart?.items?.length) { %>
-                                        <span class="pro-count blue"><%= userinCart.items.length %></span>
-                                        <% }%>
+                                        <span class="pro-count blue "><%= userinCart.items.length %></span>
+                                        <% }else{ %>
+                                            <span class="pro-count blue d-none" id="cartCounter"></span>
+
+                                           <%} %>
                                     </a>
                                 </div>
                                 <!-- <script>
@@ -816,13 +819,38 @@ if (cartCountElement) {
                                                 window.location.href="/user-login"
 
                                             }else if(data.data =="already-Existed"){
-                                                window.location.href="/shop-cart"
+                                                const Toast = Swal.mixin({
+                                                        toast: true,
+                                                         position: "top-end",
+                                                        showConfirmButton: false,
+                                                        timer: 3000,
+                                                        timerProgressBar: true,
+                                                         didOpen: (toast) => {
+                                                            toast.onmouseenter = Swal.stopTimer;
+                                                            toast.onmouseleave = Swal.resumeTimer;
+                                                        }
+                                                        });
+                                                        Toast.fire({
+                                                        icon: "warning",
+                                                        title: "Product Already Exist in Cart"
+                                                        })
+                                                
                                             }else{
-                                                const cartCounts = data.data.items.length;
+                                                const cartCounts = data.datas.items.length;
                                                 console.log(cartCounts);
-                                                window.location.reload();
-                                                const cartcountEvent =  new CustomEvent("cartCountUpdated", {detail: {count:cartCounts}})
-                                                window.dispatchEvent(cartcountEvent)
+                                                const counter = document.getElementById("cartCounter")
+                                                counter.classList.remove("d-none");
+                                                counter.textContent=cartCounts
+                                                parenElement = this.parentNode
+                                                const productContainer =parenElement.closest('.product-action-1');
+                                                console.log(productContainer)
+                                                const flyingElement = productContainer.querySelector('.flying-Element')
+                                                const flyToElement = document.querySelector('.fly-to-element');
+                                                 flyTo(flyingElement, flyToElement);
+
+                                                
+                                               
+                                               
                                                 }
                                                 
                                             

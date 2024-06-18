@@ -1,4 +1,4 @@
-// const { yearsToQuarters } = require("date-fns");
+
 const userdetail = require("../../models/user/userdetails");
 const orders = require("../../models/user/order")
 const rating = require("../../models/user/ratings")
@@ -6,27 +6,40 @@ const bcrypt = require("bcrypt")
 const Wallet = require("../../models/user/wallets");
 const order = require("../../models/user/order");
 const addproduct = require("../../models/addproduct/addproduct")
-// const transaction = require("../../models/user/transaction")
+
 const instance = require("../../utils/razorpay");
+const mongoose = require("../../models/user/userSession")
+const userSession = require("../../models/user/userSession")
 
 let user_page_account = async(req, res)=>{
     try {
         const userDetails = req.session.userisAuth;
-
+        console.log(userDetails._id, "userId");
+        const userId =  userDetails._id
+      
+  
+    
+        const WalletDetail = await Wallet.findOne({userId})
+        console.log("wallet:",WalletDetail)
         const page = parseInt(req.query.orderpage) || 1;
         const limit =  2;
         const skip = (page-1) * limit;
 
        
-        const TotalOrder = await orders.find({userId:userDetails})
-        const order = (await orders.find({userId:userDetails}).populate("products.product").skip(skip).limit(limit)).reverse()
-        const ratings = await rating.find({userId:userDetails._id});
-        const WalletDetail = await Wallet.findOne({userId:userDetails._id})
+        const TotalOrder = await orders.find({userId})
+        const order = (await orders.find({userId}).populate("products.product").skip(skip).limit(limit)).reverse()
+        const ratings = await rating.find({userId});
+       
+        console.log(order, "order")
+        
 
         let ordercount =TotalOrder.length
-        console.log(ordercount)
+
+
+        if(WalletDetail){ 
         const fullData = WalletDetail.history;
         console.log(fullData, "fullData")
+        }
 
 
 

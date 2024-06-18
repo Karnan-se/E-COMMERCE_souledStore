@@ -10,9 +10,19 @@ const asyncLookup = require('../../utils/asynclookup.js');
 
 let page_products_list = async(req, res)=>{
     try {
+        let AllProducts = await products.aggregate([{$match:{}},{$count:"totalProduct"}])
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+        const skip = (page-1)*limit
+       
 
-        let product= await products.find()
+        
+
+        let product= await products.find().skip(skip).limit(limit)
         res.render("admin/page-products-list.ejs",{product})
+        
+
+        
         
     } catch (error) {
         console.log(error);

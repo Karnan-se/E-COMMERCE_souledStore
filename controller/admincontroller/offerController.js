@@ -119,7 +119,7 @@ let toggleoffer = async(req, res)=>{
             } else {
             discountAmount = islIsted.fixedRate;
             }
-// only dicount Applied for The  Products which has higher discount
+// only dicount Applied for The  Products which has higher discount and the discount is already addded before
             if(products.orginalPrice>0 && (products.orginalPrice-products.price)<discountAmount){  
                 products.price = (products.orginalPrice- discountAmount);
                 // products.orginalPrice = cachePrice;
@@ -129,7 +129,7 @@ let toggleoffer = async(req, res)=>{
             }
 
             if(islIsted.fixedRate == 0){ 
-                console.log("percentage is orking Here")
+                console.log("percentage is working Here")
                products.price -= (discountAmount<islIsted.maxDiscountAmount)? discountAmount : islIsted.maxDiscountAmount;
 
             }else{

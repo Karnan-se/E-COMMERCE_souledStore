@@ -18,7 +18,7 @@ userrouter.get("/",userController.user_index)
 userrouter.get("/user-login",auth.isLogout,userController.userlogin)
 userrouter.get("/user-register",auth.isLogout,userController.user_register)
 userrouter.get("/user-logout",auth.isLogin,userController.user_out)
-userrouter.get("/searchProduct",auth.isLogin, userController.search)
+userrouter.get("/searchProduct", userController.search)
 
 userrouter.post("/user-login",userpostcontroller.user_login) 
 userrouter.post("/user-register",userpostcontroller.user_register)

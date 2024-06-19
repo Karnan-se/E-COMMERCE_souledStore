@@ -238,6 +238,12 @@
                             </form>
                         </div>
                         <script>
+                             document.getElementById("searchProduct").addEventListener("keydown", disableEnterKey);
+                             function disableEnterKey(event) {
+                                if (event.key === "Enter") {
+                                    event.preventDefault();
+                                }
+                            }
                            async function SearchProduct(){
                               const search=  document.getElementById("searchProduct")
                              const keywords= search.value
